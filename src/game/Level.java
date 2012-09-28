@@ -1,5 +1,6 @@
 package game;
 
+import java.util.ArrayList;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
@@ -15,6 +16,8 @@ public class Level extends Node{
     Geometry floor;
     Room[] rooms;
     Room start, finish;
+    
+    ArrayList<Item> items = new ArrayList<Item>();
     
     public Level(AssetManager assetManager){
         
