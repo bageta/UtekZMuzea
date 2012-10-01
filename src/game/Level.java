@@ -22,9 +22,9 @@ public class Level extends Node{
     public Level(AssetManager assetManager){
         
         rooms = new Room[3];
-        rooms[0] = new Room(new Vector3f(0,0,0),10,8);
-        rooms[1] = new Room(new Vector3f(14,0,0),3,20);
-        rooms[2] = new Room(new Vector3f(0,0,17),8,8);
+        rooms[0] = new Room(new Vector3f(0,0,0),10,8,0);
+        rooms[1] = new Room(new Vector3f(14,0,0),3,20,1);
+        rooms[2] = new Room(new Vector3f(0,0,17),8,8,2);
         
         start = rooms[0];
         finish = rooms[2];

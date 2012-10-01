@@ -17,13 +17,15 @@ public class Room {
     private Vector3f position;
     private float width, height;
     public ArrayList<Room> neigbours = new ArrayList<Room>();
+    public int index;
     private AssetManager assetManager;
     
     
-    public Room(Vector3f position, float width, float height){
+    public Room(Vector3f position, float width, float height, int index){
         this.position = position;
         this.width = width;
         this.height = height;
+        this.index = index;
     }
     
     public void setAssetManager(AssetManager assetManager){
