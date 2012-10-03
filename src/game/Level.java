@@ -18,6 +18,7 @@ public class Level extends Node{
     Room start, finish;
     
     ArrayList<Item> items = new ArrayList<Item>();
+    ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     
     public Level(AssetManager assetManager){
         

@@ -26,4 +26,14 @@ public class Obstacle extends Node {
     public Room getPosition(){
         return actualPosition;
     }
+    
+    public int getTypeOrdinal(){
+        int result = 0;
+        if(type == ObstacleType.DOG){
+            result = ObstacleType.DOG.ordinal();
+        } else if(type == ObstacleType.GLASS){
+            result = ObstacleType.GLASS.ordinal();
+        }
+        return result;
+    }
 }

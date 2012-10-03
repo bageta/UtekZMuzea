@@ -18,6 +18,7 @@ public class Room {
     private float width, height;
     public ArrayList<Room> neigbours = new ArrayList<Room>();
     public int index;
+    public Obstacle obstacle;
     private AssetManager assetManager;
     
     
@@ -84,5 +85,15 @@ public class Room {
     
     public Geometry[] generateDoors(){
         return null;
+    }
+    
+    public void setObstacle(Obstacle obstacle){
+        if(this.obstacle == null){
+            this.obstacle = obstacle;
+        }
+    }
+    
+    public boolean hasObstacle(){
+        return !(obstacle==null);
     }
 }

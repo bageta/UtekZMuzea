@@ -58,15 +58,30 @@ public class Planner {
         //StateVariable pro polohu zlodeje:
         StateVariable thiefLocation = problem.newVariable("thief", levelState.rooms.length);
         
-        //StateVariables udavajici pocatecni polohy veci nutnych k ostraneni prekazek:
+        //StateVarialbes udavajici polohy prekazek:
+        
+            StateVariable[] obstaclesLocations = new StateVariable[levelState.obstacles.size()];
+            for(int i=0; i<levelState.obstacles.size(); ++i){
+                obstaclesLocations[i] = problem.newVariable("obstacle" + i, levelState.rooms.length + 1);
+            }
+            
+        //StateVariables udavajici polohy veci nutnych k ostraneni prekazek:
         StateVariable[] itemsLocations = new StateVariable[levelState.items.size()];
         for (int i=0; i<levelState.items.size(); ++i){
-            itemsLocations[i] = problem.newVariable("item" + i, levelState.items.size() + 1);
+            itemsLocations[i] = problem.newVariable("item" + i, levelState.rooms.length + 1);
         }
         
         for(Room r : levelState.rooms){
             for(Room rr: r.neigbours)
-            addMoveThiefAction(problem, thiefLocation, r.index, rr.index);
+                if(!rr.hasObstacle())
+                    addMoveThiefAction(problem, thiefLocation, r.index, rr.index);
+        }
+        
+        for(Room r : levelState.rooms){
+            for(Room rr: r.neigbours)
+                for(int i=0; i<levelState.obstacles.size(); ++i)
+                    addMoveThiefOverAction(problem, thiefLocation, r.index, rr.index,
+                            obstaclesLocations[i]);
         }
         
         for(int item=0; item< levelState.items.size(); ++item){
@@ -83,8 +98,40 @@ public class Planner {
                     levelState.items.get(i).actualPosition.index));
         }
         
+        for(int i=0; i<levelState.obstacles.size(); ++i){
+            problem.addInitialStateCondition(new Condition(itemsLocations[i],
+                    levelState.obstacles.get(i).actualPosition.index));
+        }
+        
         problem.addGoalCondition(new Condition(thiefLocation, levelState.finish.index));
         return problem;
     }
     
+    private void addMoveThiefAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to){
+        Operator op = problem.newAction(String.format("move: %d->%d", from, to));
+        
+        op.getPreconditions().add(new Condition(thiefLocation, from));
+        
+        op.getEffects().add(new Condition(thiefLocation, to));
+    }
+    
+    private void addMoveThiefOverAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to, StateVariable obstacleLocation){
+        Operator op = problem.newAction(String.format("move: %d->%d", from, to));
+        
+        op.getPreconditions().add(new Condition(thiefLocation, from));
+        op.getPreconditions().add(new Condition(obstacleLocation, levelState.rooms.length + 1));
+        
+        op.getEffects().add(new Condition(thiefLocation, to));
+    }
+    
+    private void addPickUpItemAction(PlanningProblem problem, StateVariable thiefLocation,
+            StateVariable itemLocation, int location){
+        Operator op = problem.newAction(String.format("pick: %d->%d", itemLocation.getName(), location));
+        
+        op.getPreconditions().add(new Condition(itemLocation, location));
+        
+        op.getPrevailConditions().add(new Condition(thiefLocation, location));
+        
+        op.getEffects().add(new Condition(itemLocation, levelState.rooms.length+1));
+    }
 }

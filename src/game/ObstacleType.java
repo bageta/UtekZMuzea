@@ -6,5 +6,5 @@ package game;
  */
 public enum ObstacleType {
     GLASS,
-    DOG    
+    DOG;
 }
