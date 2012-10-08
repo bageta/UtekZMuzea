@@ -9,10 +9,10 @@ import com.jme3.scene.Spatial;
  */
 public class Obstacle extends Node {
     
-    Room actualPosition;
+    public Room actualPosition;
     Spatial model;
     
-    ObstacleType type;
+    public ObstacleType type;
     
     public Obstacle(ObstacleType type){
         this.type = type;

@@ -15,7 +15,7 @@ import com.jme3.scene.shape.Box;
 public class Thief extends Node {
     
     Spatial model;
-    Room actualPosition;
+    public Room actualPosition;
     Level map;
     
     public Thief(AssetManager am, Level map){
@@ -31,7 +31,7 @@ public class Thief extends Node {
     }
     
     public void update(float tpf){
-        this.move(1*tpf, 0, 2*tpf);
+        //this.move(1*tpf, 0, 2*tpf);
     }
     
     public void setNewPlane(){

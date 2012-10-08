@@ -11,7 +11,7 @@ import com.jme3.renderer.RenderManager;
  */
 public class Main extends SimpleApplication {
     
-    static Thief  thief;
+    public static Thief  thief;
 
     public static void main(String[] args) {
         Main app = new Main();

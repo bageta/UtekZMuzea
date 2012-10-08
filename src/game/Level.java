@@ -14,11 +14,11 @@ import com.jme3.scene.Node;
 public class Level extends Node{
     
     Geometry floor;
-    Room[] rooms;
-    Room start, finish;
+    public Room[] rooms;
+    public Room start, finish;
     
-    ArrayList<Item> items = new ArrayList<Item>();
-    ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+    public ArrayList<Item> items = new ArrayList<Item>();
+    public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     
     public Level(AssetManager assetManager){
         
