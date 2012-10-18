@@ -4,6 +4,9 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 
+import planner.Planner;
+import planner.Planner2;
+
 /**
  * hlavni trida hry, dedi se SimpleApplication, dochazi ke spusteni hry,
  * obsahuje metodz pro inicializaci hry a auktualizaci herniho stavu
@@ -12,6 +15,9 @@ import com.jme3.renderer.RenderManager;
 public class Main extends SimpleApplication {
     
     public static Thief  thief;
+    
+    Planner planner;
+    Level actualLevel;
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -31,12 +37,21 @@ public class Main extends SimpleApplication {
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
         inputManager.removeListener(flyCam);
         
-        Level level1 = new Level(assetManager);
+        actualLevel = new Level(assetManager);
         
-        thief = new Thief(assetManager, level1);
+        thief = new Thief(assetManager, actualLevel);
         
-        rootNode.attachChild(level1);
+        rootNode.attachChild(actualLevel);
         rootNode.attachChild(thief);
+        
+        Planner planner1 = new Planner(actualLevel);
+        Planner2 planner2 = new Planner2(actualLevel);
+        
+        planner1.makeNewPlan();
+        planner2.makeNewPlan();
+        
+        planner = new Planner(actualLevel);
+        planner.makeNewPlan();
     }
 
     /**
@@ -49,5 +64,10 @@ public class Main extends SimpleApplication {
     }
 
     @Override public void simpleRender(RenderManager rm) {
+    }
+    
+    public void obstacleAddedAction(Obstacle obstacle, Room to){
+        actualLevel.addObstacle(obstacle, to);
+        planner.makeNewPlan();
     }
 }

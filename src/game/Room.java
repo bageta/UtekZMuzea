@@ -9,7 +9,7 @@ import com.jme3.asset.AssetManager;
 import java.util.ArrayList;
 
 /**
- *
+ * třída pro reprezentaci místnosti 
  * @author Pavel
  */
 public class Room {
@@ -91,6 +91,12 @@ public class Room {
         if(this.obstacle == null){
             this.obstacle = obstacle;
         }
+    }
+    
+    public void addNeighbour(Room newNeighbour){
+        neigbours.add(newNeighbour);
+        if(!newNeighbour.neigbours.contains(this))
+            newNeighbour.addNeighbour(this);
     }
     
     public boolean hasObstacle(){

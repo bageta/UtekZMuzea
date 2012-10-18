@@ -8,27 +8,45 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 
 /**
- *
+ * třída pro reprezentaci levelu hry
  * @author Pavel
  */
 public class Level extends Node{
     
+    //podlaha:
     Geometry floor;
+    
+    //pole místnostní tvořících level, defacto mapa levelu:
     public Room[] rooms;
+    //počátční a cílová místnost:
     public Room start, finish;
     
+    //list věcí umístěných v levelu
     public ArrayList<Item> items = new ArrayList<Item>();
+    //list překážek umístěných v levelu
     public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     
+    /**
+     * konstruktor levelu, tady budou určitě eště změny protože level se bude
+     * načítat ze souboru
+     * @param assetManager 
+     */
     public Level(AssetManager assetManager){
         
-        rooms = new Room[3];
-        rooms[0] = new Room(new Vector3f(0,0,0),10,8,0);
-        rooms[1] = new Room(new Vector3f(14,0,0),3,20,1);
-        rooms[2] = new Room(new Vector3f(0,0,17),8,8,2);
+        rooms = new Room[4];
+        rooms[0] = new Room(new Vector3f(0,0,0),10,10,0);
+        rooms[1] = new Room(new Vector3f(21,0,0),10,10,1);
+        rooms[2] = new Room(new Vector3f(0,0,21),10,10,2);
+        rooms[3] = new Room(new Vector3f(21,0,21),10,10,3);
+        
+        rooms[0].addNeighbour(rooms[1]);
+        //rooms[0].addNeighbour(rooms[2]);
+        
+        rooms[3].addNeighbour(rooms[1]);
+        rooms[3].addNeighbour(rooms[2]);
         
         start = rooms[0];
-        finish = rooms[2];
+        finish = rooms[3];
         
         for(Room r: rooms){
             r.setAssetManager(assetManager);
@@ -42,6 +60,17 @@ public class Level extends Node{
 //                this.attachChild(door);
 //            }
         }
+    }
+    
+    /**
+     * metoda pro přidání nové překážky do levelu v průběhu hry
+     * @param obstacle přidávaná překážka
+     * @param to umístění překážky
+     */
+    public void addObstacle(Obstacle obstacle, Room to){
+        obstacles.add(obstacle);
+        obstacle.placeObstacle(to);
+        to.setObstacle(obstacle);
     }
     
 }

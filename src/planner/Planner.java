@@ -40,6 +40,7 @@ public class Planner{
             Settings.getSettings().setTimeout(3);
             SasParallelPlan plan = planner.solve();
             
+            System.out.println("PLANOVAC - 1 - output: ");
             System.out.print(plan);
             
             PlanVerifier verifier = new PlanVerifier();
@@ -49,6 +50,9 @@ public class Planner{
             } else {
                 System.out.println("Plan in not valid");
             }
+            
+            System.out.println("PLANOVAC - 1 - output END -----------------------");
+            
         } catch(TimeoutException e){
             System.out.println("Vyprsel cas: " + e);
         } catch(ContradictionException e){
@@ -122,7 +126,7 @@ public class Planner{
         
         for(int i=0; i<levelState.obstacles.size(); ++i){
             problem.addInitialStateCondition(new Condition(obstaclesLocations[i],
-                    levelState.obstacles.get(i).actualPosition.index));
+                    levelState.obstacles.get(i).getPosition().index));
             problem.addInitialStateCondition(new Condition(obstacleActive[i],0));
         }
         
