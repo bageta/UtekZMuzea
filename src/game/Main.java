@@ -51,7 +51,7 @@ public class Main extends SimpleApplication {
         planner2.makeNewPlan();
         
         planner = new Planner(actualLevel);
-        planner.makeNewPlan();
+        thief.setNewPlane(planner.makeNewPlan());
     }
 
     /**
@@ -68,6 +68,6 @@ public class Main extends SimpleApplication {
     
     public void obstacleAddedAction(Obstacle obstacle, Room to){
         actualLevel.addObstacle(obstacle, to);
-        planner.makeNewPlan();
+        thief.setNewPlane(planner.makeNewPlan());
     }
 }
