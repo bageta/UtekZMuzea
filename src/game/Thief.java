@@ -23,8 +23,11 @@ public class Thief extends Node {
     private Action actualAction;
     private int actualActionIndex;
     private State actualState;
+    int iterations = 0;
     
     public Thief(AssetManager am, Level map){
+        this.map = map;
+        
         Box b = new Box(map.start.getPosition(), 1,1,1);
         actualPosition = map.start;
         Geometry geom = new Geometry("box", b);
@@ -34,7 +37,7 @@ public class Thief extends Node {
         geom.setMaterial(mat);
         
         actions = new String[1];
-        actualActionIndex = 2;
+        actualActionIndex = 1;
         actualState = State.WAIT;
         actualAction = new Action("init", 0, 0);
         
@@ -48,6 +51,8 @@ public class Thief extends Node {
                 System.out.println(actualActionIndex);
                 actualAction = getNextAction();
                 if(actualAction.name.equals("move")){
+                    System.out.println("Actual action to: " + actualAction.to);
+                    System.out.println("target: " + map.rooms[actualAction.to]);
                     target = map.rooms[actualAction.to].getPosition();
                 }
                 actualState = State.INPROGRESS;
@@ -55,23 +60,37 @@ public class Thief extends Node {
                 //NEMAM CO DELAT, ASI BY SE TO NEMELO STAVAT ;D
             }
         } else if(actualState == State.INPROGRESS){
-            this.move(target);
-            try{
-                wait(500);
-            } catch(Exception e){
-                System.err.println(e);
+            this.move(1*tpf,0,3*tpf);
+            ++iterations;
+            if(iterations>100){
+                iterations=0;
+                actualState = State.DONE;
             }
-            actualState = State.DONE;
         }
     }
     
     public void setNewPlane(String plane){
-        actualActionIndex = 2;
-        actions = plane.split(" ");
+        actualActionIndex = 1;
+        actions = plane.split("[ \n]+");
         System.out.println("ACTIONS: -------------------------------------------");
-        for(String s:actions){
-            System.out.println(s);
+        for(int i=0; i< actions.length; ++i){
+            if(actions[i].charAt(0) == '('){
+                actions[i] = actions[i].substring(1);
+            }
+            if(actions[i].charAt(actions[i].length()-1) == ')'){
+                actions[i] = actions[i].substring(0, actions[i].length()-1);
+            }
+            System.out.println(actions[i]);
         }
+//        for(String s:actions){
+//            if(s.charAt(0) == '('){
+//                s = s.substring(1);
+//            }
+//            if(s.charAt(s.length()-1) == ')'){
+//                s = s.substring(0, s.length()-1);
+//            }
+//            System.out.println(s);
+//        }
         System.out.println("----------------------------------------------------");
         actualState = State.DONE;
     }
@@ -87,9 +106,9 @@ public class Thief extends Node {
     
     private Action getNextAction(){
         Action result = new Action(actions[actualActionIndex],
-                Integer.getInteger(actions[actualActionIndex+1]),
-                Integer.getInteger(actions[actualActionIndex+2]));
-        actualActionIndex +=3;
+                Integer.parseInt(actions[actualActionIndex+1]),
+                Integer.parseInt(actions[actualActionIndex+2]));
+        actualActionIndex +=4;
         return result;
     }
     

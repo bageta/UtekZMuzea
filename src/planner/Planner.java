@@ -137,7 +137,7 @@ public class Planner{
     }
     
     private void addMoveThiefAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to){
-        Operator op = problem.newAction(String.format(" move %d %d ", from, to));
+        Operator op = problem.newAction(String.format("move %d %d", from, to));
         
         op.getPreconditions().add(new Condition(thiefLocation, from));
         
@@ -145,7 +145,7 @@ public class Planner{
     }
     
     private void addMoveThiefOverAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to, StateVariable obstacleActive){
-        Operator op = problem.newAction(String.format(" move %d %d ", from, to));
+        Operator op = problem.newAction(String.format("move %d %d", from, to));
         
         op.getPreconditions().add(new Condition(thiefLocation, from));
         
@@ -156,7 +156,7 @@ public class Planner{
     
     private void addPickUpItemAction(PlanningProblem problem, StateVariable thiefLocation,
             StateVariable itemLocation, int location){
-        Operator op = problem.newAction(String.format(" pick %d %d ", itemLocation.getName(), location));
+        Operator op = problem.newAction(String.format("pick %d %d", itemLocation.getName(), location));
         
         op.getPreconditions().add(new Condition(itemLocation, location));
         
@@ -168,7 +168,7 @@ public class Planner{
     private void addUseItemAction(PlanningProblem problem, StateVariable thiefLocation, 
             StateVariable itemLocation, StateVariable obstacleLocation, StateVariable obstacleActive,
             int from, int to){
-        Operator op = problem.newAction(String.format(" use %d %d ", itemLocation.getName(), to));
+        Operator op = problem.newAction(String.format("use %d %d", itemLocation.getName(), to));
         
         op.getPreconditions().add(new Condition(obstacleActive, 0));
         op.getPreconditions().add(new Condition(obstacleLocation, levelState.rooms.length + 1));
@@ -182,7 +182,7 @@ public class Planner{
     
     private void addPutDownItemAction(PlanningProblem problem, StateVariable thiefLocation,
             StateVariable itemLocation, int location){
-        Operator op = problem.newAction(String.format(" put %d %d", itemLocation.getName(), thiefLocation));
+        Operator op = problem.newAction(String.format("put %d %d", itemLocation.getName(), thiefLocation));
         
         op.getPreconditions().add(new Condition(itemLocation, levelState.rooms.length + 1));
         
