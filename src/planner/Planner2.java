@@ -4,19 +4,18 @@ import game.Level;
 import game.Main;
 import game.Room;
 
-import launcher.Settings;
-
-import org.sat4j.specs.ContradictionException;
-import org.sat4j.specs.TimeoutException;
-
-import plansat.optimizer.PlanVerifier;
-import plansat.sasToSat.PlanningProblem;
-import plansat.sasToSat.incremental.IncrementalSolver;
-import plansat.sasToSat.model.Condition;
-import plansat.sasToSat.model.Operator;
-import plansat.sasToSat.model.SasParallelPlan;
-import plansat.sasToSat.model.SasProblem;
-import plansat.sasToSat.model.StateVariable;
+import freeLunch.planning.NonexistentPlanException;
+import freeLunch.planning.TimeoutException;
+import freeLunch.planning.cmdline.Settings;
+import freeLunch.planning.model.Condition;
+import freeLunch.planning.model.SasAction;
+import freeLunch.planning.model.SasParallelPlan;
+import freeLunch.planning.model.SasProblem;
+import freeLunch.planning.model.StateVariable;
+//import freeLunch.planning.model.StringActionInfo;
+import freeLunch.planning.sase.optimizer.PlanVerifier;
+import freeLunch.planning.sase.sasToSat.PlanningProblem;
+import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;
 
 /**
  * modelovani problemu podle stavu lokaci
@@ -56,7 +55,7 @@ public class Planner2 {
             
         } catch(TimeoutException e){
             System.out.println("Vyprsel cas: " + e);
-        } catch(ContradictionException e){
+        } catch(NonexistentPlanException e){
             System.out.println("Problem nema reseni: " + e);
         }
     }
@@ -123,33 +122,36 @@ public class Planner2 {
     
     private void addMoveThiefAction(PlanningProblem problem, StateVariable from,
             StateVariable to, StateVariable thief, int thiefCarry){
-        Operator op = problem.newAction(String.format("move: %d->%d", from.getId(), to.getId()));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE,from.getId(), to.getId()));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("move: %d->%d", from.getId(), to.getId())));
         
         op.getPreconditions().add(new Condition(from, 1));
         op.getPreconditions().add(new Condition(to, 0));
         
-        op.getPrevailConditions().add(new Condition(thief, thiefCarry));
-        
         op.getEffects().add(new Condition(from, 0));
         op.getEffects().add(new Condition(to, 1));
+        
+        op.getPreconditions().add(new Condition(thief, thiefCarry));
     }
     
     private void addUseItemAction(PlanningProblem problem, StateVariable from,
             StateVariable to, StateVariable thief, int thiefCarry){
-        Operator op = problem.newAction(String.format("use: %d->%d", from.getId(), to.getId()));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.USE,from.getId(), to.getId()));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("use: %d->%d", from.getId(), to.getId())));
         
         op.getPreconditions().add(new Condition(to, thiefCarry + 2));
         op.getPreconditions().add(new Condition(thief, thiefCarry));
         
-        op.getPrevailConditions().add(new Condition(from, 1));
-        
         op.getEffects().add(new Condition(thief, 0));
         op.getEffects().add(new Condition(to, 0));
+        
+        op.getPreconditions().add(new Condition(from, 1));
     }
     
     private void addPickUpItemAction(PlanningProblem problem, StateVariable from,
             StateVariable to, StateVariable thief, int item){
-        Operator op = problem.newAction(String.format("pick: %d->%d", from.getId(), to.getId()));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.PICK,from.getId(), to.getId()));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("pick: %d->%d", from.getId(), to.getId())));
         
         op.getPreconditions().add(new Condition(to, item+2+levelState.obstacles.size()));
         op.getPreconditions().add(new Condition(from, 1));

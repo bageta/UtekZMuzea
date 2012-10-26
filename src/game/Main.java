@@ -6,6 +6,7 @@ import com.jme3.renderer.RenderManager;
 
 import planner.Planner;
 import planner.Planner2;
+import planner.ThiefAction;
 
 /**
  * hlavni trida hry, dedi se SimpleApplication, dochazi ke spusteni hry,

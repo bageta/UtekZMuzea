@@ -4,19 +4,21 @@ import game.Level;
 import game.Main;
 import game.Room;
 
-import launcher.Settings;
+import java.util.List;
+import java.util.ArrayList;
 
-import org.sat4j.specs.ContradictionException;
-import org.sat4j.specs.TimeoutException;
-
-import plansat.optimizer.PlanVerifier;
-import plansat.sasToSat.PlanningProblem;
-import plansat.sasToSat.incremental.IncrementalSolver;
-import plansat.sasToSat.model.Condition;
-import plansat.sasToSat.model.Operator;
-import plansat.sasToSat.model.SasParallelPlan;
-import plansat.sasToSat.model.SasProblem;
-import plansat.sasToSat.model.StateVariable;
+import freeLunch.planning.NonexistentPlanException;
+import freeLunch.planning.TimeoutException;
+import freeLunch.planning.cmdline.Settings;
+import freeLunch.planning.model.Condition;
+import freeLunch.planning.model.SasAction;
+import freeLunch.planning.model.SasParallelPlan;
+import freeLunch.planning.model.SasProblem;
+import freeLunch.planning.model.StateVariable;
+//import freeLunch.planning.model.StringActionInfo;
+import freeLunch.planning.sase.optimizer.PlanVerifier;
+import freeLunch.planning.sase.sasToSat.PlanningProblem;
+import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;
 
 /**
  *
@@ -30,7 +32,7 @@ public class Planner{
         this.levelState = levelState;
     }
     
-    public String makeNewPlan(){
+    public ThiefAction[] makeNewPlan(){
         PlanningProblem problem = generateProblem();
         SasProblem sasProblem = problem.getSasProblem();
         
@@ -46,8 +48,18 @@ public class Planner{
             PlanVerifier verifier = new PlanVerifier();
             boolean valid = verifier.verifyPlan(sasProblem, plan);
             if(valid){
+                ArrayList<SasAction> actions = new ArrayList<SasAction>();
                 System.out.println("Plan is valid");
-                return plan.toString();
+                for(List<SasAction> list: plan.getPlan()){
+                    for(SasAction action : list){
+                        actions.add(action);
+                    }
+                }
+                ThiefAction[] thiefActions = new ThiefAction[actions.size()];
+                for(int i = 0; i<thiefActions.length; ++i){
+                    thiefActions[i] = (ThiefAction)actions.get(i).getActionInfo();
+                }
+                return thiefActions;
             } else {
                 System.out.println("Plan in not valid");
             }
@@ -56,7 +68,7 @@ public class Planner{
             
         } catch(TimeoutException e){
             System.out.println("Vyprsel cas: " + e);
-        } catch(ContradictionException e){
+        } catch(NonexistentPlanException e){
             System.out.println("Problem nema reseni: " + e);
         }
         return null;
@@ -137,7 +149,8 @@ public class Planner{
     }
     
     private void addMoveThiefAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to){
-        Operator op = problem.newAction(String.format("move %d %d", from, to));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE, from, to));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("move %d %d", from, to)));
         
         op.getPreconditions().add(new Condition(thiefLocation, from));
         
@@ -145,49 +158,53 @@ public class Planner{
     }
     
     private void addMoveThiefOverAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to, StateVariable obstacleActive){
-        Operator op = problem.newAction(String.format("move %d %d", from, to));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE, from, to));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("move %d %d", from, to)));
         
         op.getPreconditions().add(new Condition(thiefLocation, from));
         
-        op.getPrevailConditions().add(new Condition(obstacleActive, 1));
-        
         op.getEffects().add(new Condition(thiefLocation, to));
+        
+        op.getPreconditions().add(new Condition(obstacleActive, 1));
     }
     
     private void addPickUpItemAction(PlanningProblem problem, StateVariable thiefLocation,
             StateVariable itemLocation, int location){
-        Operator op = problem.newAction(String.format("pick %d %d", itemLocation.getName(), location));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.PICK, itemLocation.getId(), location));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("pick %d %d", itemLocation.getName(), location)));
         
         op.getPreconditions().add(new Condition(itemLocation, location));
         
-        op.getPrevailConditions().add(new Condition(thiefLocation, location));
-        
         op.getEffects().add(new Condition(itemLocation, levelState.rooms.length+1));
+        
+        op.getPreconditions().add(new Condition(thiefLocation, location));
     }
     
     private void addUseItemAction(PlanningProblem problem, StateVariable thiefLocation, 
             StateVariable itemLocation, StateVariable obstacleLocation, StateVariable obstacleActive,
             int from, int to){
-        Operator op = problem.newAction(String.format("use %d %d", itemLocation.getName(), to));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.USE, itemLocation.getId(), to));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("use %d %d", itemLocation.getName(), to)));
         
         op.getPreconditions().add(new Condition(obstacleActive, 0));
         op.getPreconditions().add(new Condition(obstacleLocation, levelState.rooms.length + 1));
         
-        op.getPrevailConditions().add(new Condition(thiefLocation, from));
-        op.getPrevailConditions().add(new Condition(obstacleLocation, to));
-        
         op.getEffects().add(new Condition(obstacleActive, 1));
         op.getEffects().add(new Condition(obstacleLocation, to));
+        
+        op.getPreconditions().add(new Condition(thiefLocation, from));
+        op.getPreconditions().add(new Condition(obstacleLocation, to));
     }
     
     private void addPutDownItemAction(PlanningProblem problem, StateVariable thiefLocation,
             StateVariable itemLocation, int location){
-        Operator op = problem.newAction(String.format("put %d %d", itemLocation.getName(), thiefLocation));
+        SasAction op = problem.newAction(new ThiefAction(ActionType.PUT,itemLocation.getId(), thiefLocation.getId()));
+        //SasAction op = problem.newAction(new StringActionInfo(String.format("put %d %d", itemLocation.getName(), thiefLocation)));
         
         op.getPreconditions().add(new Condition(itemLocation, levelState.rooms.length + 1));
         
-        op.getPrevailConditions().add(new Condition(thiefLocation, location));
-        
         op.getEffects().add(new Condition(itemLocation, location));
+        
+        op.getPreconditions().add(new Condition(thiefLocation, location));
     }
 }

@@ -19,6 +19,7 @@ public class Room {
     public ArrayList<Room> neigbours = new ArrayList<Room>();
     public int index;
     public Obstacle obstacle;
+    public Item item;
     private AssetManager assetManager;
     
     
@@ -91,6 +92,11 @@ public class Room {
         if(this.obstacle == null){
             this.obstacle = obstacle;
         }
+    }
+    
+    public void setItem(Item item){
+        if(this.item == null)
+            this.item = item;
     }
     
     public void addNeighbour(Room newNeighbour){
