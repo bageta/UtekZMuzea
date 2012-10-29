@@ -5,6 +5,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.material.Material;
 import com.jme3.asset.AssetManager;
+import com.jme3.math.ColorRGBA;
 
 import java.util.ArrayList;
 
@@ -84,8 +85,17 @@ public class Room {
         return new Geometry[] {wall1, wall2, wall3, wall4};
     }
     
-    public Geometry[] generateDoors(){
-        return null;
+    public Geometry generateDoors(Room neighbour){
+        Box b1 = new Box(new Vector3f((position.x+neighbour.getPosition().x)/2,
+                position.y+2,
+                (position.z+neighbour.getPosition().z)/2), 2f, 3f, 2f);
+        Geometry door = new Geometry("door", b1);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Brown);
+        
+        door.setMaterial(mat);
+        
+        return door;
     }
     
     public void setObstacle(Obstacle obstacle){
@@ -101,8 +111,9 @@ public class Room {
     
     public void addNeighbour(Room newNeighbour){
         neigbours.add(newNeighbour);
-        if(!newNeighbour.neigbours.contains(this))
-            newNeighbour.addNeighbour(this);
+        if(!newNeighbour.neigbours.contains(this)){
+            newNeighbour.addNeighbour(this); 
+        }
     }
     
     public boolean hasObstacle(){

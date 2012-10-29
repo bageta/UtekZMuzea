@@ -27,6 +27,8 @@ public class Item extends Node{
     //model pro zobrazení překážky:
     Spatial model;
     
+    private Node parent;
+    
     /**
      * konstruktor, který vytvoří překážku daného typu v dané místnosti
      * @param startPossiotion místnost, kde má být překážka vytvořena
@@ -47,4 +49,9 @@ public class Item extends Node{
         this.setLocalTranslation(startPossiotion.getPosition());
         //TODO: load modelu podle typu
     }
+    
+//    public void setParentNode(Node parent){
+//        this.parent = parent;
+//        parent.attachChild(this);
+//    }
 }

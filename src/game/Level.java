@@ -43,11 +43,9 @@ public class Level extends Node{
         rooms[2] = new Room(new Vector3f(0,0,21),10,10,2);
         rooms[3] = new Room(new Vector3f(21,0,21),10,10,3);
         
-        rooms[0].addNeighbour(rooms[1]);
-        rooms[0].addNeighbour(rooms[2]);
         
-        rooms[3].addNeighbour(rooms[1]);
-        //rooms[3].addNeighbour(rooms[2]);
+        
+        
         
         addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[1]);
         addItem(ObstacleType.GLASS, rooms[2]);
@@ -67,6 +65,18 @@ public class Level extends Node{
 //                this.attachChild(door);
 //            }
         }
+        
+        rooms[0].addNeighbour(rooms[1]);
+        this.attachChild(rooms[0].generateDoors(rooms[1]));
+        
+        rooms[0].addNeighbour(rooms[2]);
+        this.attachChild(rooms[0].generateDoors(rooms[2]));
+        
+        rooms[3].addNeighbour(rooms[1]);
+        this.attachChild(rooms[3].generateDoors(rooms[1]));
+        
+        //rooms[3].addNeighbour(rooms[2]);
+        //this.attachChild(rooms[0].generateDoors(rooms[1]));
     }
     
     /**

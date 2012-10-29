@@ -61,15 +61,21 @@ public class Thief extends Node {
             if(hasNextAction()){
                 System.out.println(actualActionIndex);
                 actualAction = getNextAction();
-                if(actualAction.actionType == ActionType.MOVE){
-                    System.out.println("Actual action to: " + actualAction.to);
-                    System.out.println("target: " + map.rooms[actualAction.to]);
+                if(actualAction.actionType == ActionType.MOVE || actualAction.actionType == ActionType.PICK){
+//                    System.out.println("Actual action to: " + actualAction.to);
+//                    System.out.println("target: " + map.rooms[actualAction.to]);
                     target = map.rooms[actualAction.to].getPosition();
-                    System.out.println("target position: " + target);
+//                    System.out.println("target position: " + target);
                 }
-                if(actualAction.actionType == ActionType.PICK){
+                if(actualAction.actionType == ActionType.PUT){
+                    this.detachChild(carrying);
+                    carrying.actualPosition = map.rooms[actualAction.from];
+                    carrying.setLocalTranslation(map.rooms[actualAction.from].getPosition());
+                    carrying = null;
                     target = map.rooms[actualAction.to].getPosition();
-                    start = map.rooms[actualAction.from].getPosition();
+                }
+                if(actualAction.actionType == ActionType.USE){
+                    target = map.rooms[actualAction.to].getPosition();
                 }
                 actualState = State.INPROGRESS;
             } else{
@@ -77,17 +83,7 @@ public class Thief extends Node {
             }
         } else if(actualState == State.INPROGRESS){
             if(actualAction.actionType == ActionType.MOVE){
-                System.out.println(this.getLocalTranslation());
-                Vector3f direction = new Vector3f(target.x-this.getLocalTranslation().x,
-                        target.y - this.getLocalTranslation().y,
-                        target.z - this.getLocalTranslation().z);
-                System.out.println("target: " + target);
-                System.out.println("direction: " + direction);
-            
-                direction = direction.normalize();
-                this.move(direction.x*tpf*MOVEMENT_SPEED,
-                        direction.y*tpf*MOVEMENT_SPEED,
-                        direction.z*tpf*MOVEMENT_SPEED);
+                moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
                     this.setLocalTranslation(target);
                     this.actualPosition = map.rooms[actualAction.to];
@@ -95,30 +91,39 @@ public class Thief extends Node {
                 }
             }
             if(actualAction.actionType == ActionType.PICK){
-                Vector3f direction = new Vector3f(target.x-this.getLocalTranslation().x,
-                        target.y - this.getLocalTranslation().y,
-                        target.z - this.getLocalTranslation().z);
-                System.out.println("target: " + target);
-                System.out.println("direction: " + direction);
-            
-                direction = direction.normalize();
-                this.move(direction.x*tpf*MOVEMENT_SPEED,
-                        direction.y*tpf*MOVEMENT_SPEED,
-                        direction.z*tpf*MOVEMENT_SPEED);
+                moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
                     this.setLocalTranslation(target);
                     carrying = map.rooms[actualAction.to].item;
-                    map.rooms[actualAction.to].item.actualPosition = actualPosition;
-                    target = start;
-                }
-                if(Position.isClose(getLocalTranslation(), start, 0.1f) &&
-                        carrying != null){
-                    this.setLocalTranslation(start);
-                    this.actualPosition = map.rooms[actualAction.from];
+                    carrying.actualPosition = actualPosition;
+                    this.attachChild(carrying);
+                    Vector3f pos = this.getLocalTranslation();
+                    carrying.setLocalTranslation(0,0,0);
+                    //prehrat pick up animaci
                     actualState = State.DONE;
                 }
             }
-            
+            if(actualAction.actionType == ActionType.PUT){
+                moveThief(tpf);
+                if(Position.isClose(getLocalTranslation(), target, 0.1f)){
+                    this.setLocalTranslation(target);
+                    this.actualPosition = map.rooms[actualAction.to];
+                    actualState = State.DONE;
+                }
+            }
+            if(actualAction.actionType == ActionType.USE){
+                moveThief(tpf);
+                if(Position.isClose(getLocalTranslation(), target, 0.1f)){
+                    this.setLocalTranslation(target);
+                    this.actualPosition = map.rooms[actualAction.to];
+                    //animace pro pouyiti itemu
+                    map.detachChild(carrying);
+                    map.detachChild(map.rooms[actualAction.to].obstacle);
+                    this.detachChild(carrying);
+                    carrying = null;
+                    actualState = State.DONE;
+                }
+            }
         }
     }
     
@@ -149,5 +154,16 @@ public class Thief extends Node {
     
     private enum State{
         INPROGRESS, DONE, WAIT;
+    }
+    
+    public void moveThief(float tpf){
+        Vector3f direction = new Vector3f(target.x-this.getLocalTranslation().x,
+                target.y - this.getLocalTranslation().y,
+                target.z - this.getLocalTranslation().z);
+            
+        direction = direction.normalize();
+        this.move(direction.x*tpf*MOVEMENT_SPEED,
+            direction.y*tpf*MOVEMENT_SPEED,
+            direction.z*tpf*MOVEMENT_SPEED);
     }
 }
