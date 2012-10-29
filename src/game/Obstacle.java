@@ -1,7 +1,13 @@
 package game;
 
+import com.jme3.asset.AssetManager;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Sphere;
+import com.jme3.scene.Geometry;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 
 /**
  * třída pro reprezentaci překážek
@@ -21,8 +27,17 @@ public class Obstacle extends Node {
      * kostruktor pro vytvoření nové překážky daného typu
      * @param type typ překážky
      */
-    public Obstacle(ObstacleType type){
+    public Obstacle(AssetManager am, ObstacleType type){
         this.type = type;
+        
+        Sphere b = new Sphere(15, 15, 1);
+        Geometry geom = new Geometry("box", b);
+        
+        Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Yellow);
+        geom.setMaterial(mat);
+        
+        this.attachChild(geom);
         //load model
     }
     
@@ -32,6 +47,7 @@ public class Obstacle extends Node {
      */
     public void placeObstacle(Room position){
         actualPosition = position;
+        this.setLocalTranslation(position.getPosition());
     }
     
     /**

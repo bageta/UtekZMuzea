@@ -36,8 +36,11 @@ public class HelloJME3 extends SimpleApplication implements AnimEventListener {
         HelloJME3 app = new HelloJME3();
         app.start();
     }
-    
-    @Override public void simpleInitApp(){        
+
+    @Override public void simpleInitApp(){
+        mouseInput.setCursorVisible(true);
+        inputManager.setCursorVisible(true);
+        inputManager.removeListener(flyCam);
         viewPort.setBackgroundColor(ColorRGBA.LightGray);
         initKeys();
         DirectionalLight dl = new DirectionalLight();

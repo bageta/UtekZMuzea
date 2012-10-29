@@ -106,7 +106,7 @@ public class Planner{
             for(Room rr: r.neigbours)
                 for(int i=0; i<levelState.obstacles.size(); ++i)
                     addMoveThiefOverAction(problem, thiefLocation, r.index, rr.index,
-                            obstaclesLocations[i]);
+                            obstacleActive[i], obstaclesLocations[i]);
         }
         
         for(int item=0; item< levelState.items.size(); ++item){
@@ -154,18 +154,19 @@ public class Planner{
         
         op.getPreconditions().add(new Condition(thiefLocation, from));
         
-        op.getEffects().add(new Condition(thiefLocation, to));
+        op.getEffects().add(new Condition(thiefLocation, to)); 
     }
     
-    private void addMoveThiefOverAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to, StateVariable obstacleActive){
+    private void addMoveThiefOverAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to,
+            StateVariable obstacleActive, StateVariable obstacleLocation){
         SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE, from, to));
         //SasAction op = problem.newAction(new StringActionInfo(String.format("move %d %d", from, to)));
         
         op.getPreconditions().add(new Condition(thiefLocation, from));
+        op.getPreconditions().add(new Condition(obstacleActive, 1));
+        op.getPreconditions().add(new Condition(obstacleLocation,to));
         
         op.getEffects().add(new Condition(thiefLocation, to));
-        
-        op.getPreconditions().add(new Condition(obstacleActive, 1));
     }
     
     private void addPickUpItemAction(PlanningProblem problem, StateVariable thiefLocation,

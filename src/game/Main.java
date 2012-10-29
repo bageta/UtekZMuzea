@@ -1,6 +1,7 @@
 package game;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppState;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 
@@ -17,7 +18,9 @@ public class Main extends SimpleApplication {
     
     public static Thief  thief;
     
-    Planner planner;
+    private boolean cursor;
+    
+    Planner2 planner;
     Level actualLevel;
 
     public static void main(String[] args) {
@@ -37,6 +40,7 @@ public class Main extends SimpleApplication {
         
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
         inputManager.removeListener(flyCam);
+        //inputManager.setCursorVisible(true);
         
         actualLevel = new Level(assetManager);
         
@@ -45,14 +49,16 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(actualLevel);
         rootNode.attachChild(thief);
         
-        Planner planner1 = new Planner(actualLevel);
-        Planner2 planner2 = new Planner2(actualLevel);
+        //Planner planner1 = new Planner(actualLevel);
+        //Planner2 planner2 = new Planner2(actualLevel);
         
-        planner1.makeNewPlan();
-        planner2.makeNewPlan();
+        //planner1.makeNewPlan();
+        //planner2.makeNewPlan();
         
-        planner = new Planner(actualLevel);
+        planner = new Planner2(actualLevel);
         thief.setNewPlane(planner.makeNewPlan());
+        
+        cursor = false;
     }
 
     /**
@@ -61,6 +67,12 @@ public class Main extends SimpleApplication {
      * @param tpf doba za kterou byl vyrendrovan snimek
      */
     @Override public void simpleUpdate(float tpf) {
+        //TODO: resit pres appstate:
+        if(!cursor){
+            inputManager.setCursorVisible(true);
+            cursor = true;
+        }
+        //END TODO------------------
         thief.update(tpf);
     }
 

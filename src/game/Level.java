@@ -26,12 +26,16 @@ public class Level extends Node{
     //list překážek umístěných v levelu
     public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
     
+    AssetManager assetManager;
+    
     /**
      * konstruktor levelu, tady budou určitě eště změny protože level se bude
      * načítat ze souboru
      * @param assetManager 
      */
     public Level(AssetManager assetManager){
+        
+        this.assetManager = assetManager;
         
         rooms = new Room[4];
         rooms[0] = new Room(new Vector3f(0,0,0),10,10,0);
@@ -40,10 +44,13 @@ public class Level extends Node{
         rooms[3] = new Room(new Vector3f(21,0,21),10,10,3);
         
         rooms[0].addNeighbour(rooms[1]);
-        //rooms[0].addNeighbour(rooms[2]);
+        rooms[0].addNeighbour(rooms[2]);
         
         rooms[3].addNeighbour(rooms[1]);
-        rooms[3].addNeighbour(rooms[2]);
+        //rooms[3].addNeighbour(rooms[2]);
+        
+        addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[1]);
+        addItem(ObstacleType.GLASS, rooms[2]);
         
         start = rooms[0];
         finish = rooms[3];
@@ -71,6 +78,14 @@ public class Level extends Node{
         obstacles.add(obstacle);
         obstacle.placeObstacle(to);
         to.setObstacle(obstacle);
+        this.attachChild(obstacle);
+    }
+    
+    public void addItem(ObstacleType itemType, Room to){
+        Item item = new Item(to, itemType, assetManager);
+        items.add(item);
+        to.setItem(item);
+        this.attachChild(item);
     }
     
 }
