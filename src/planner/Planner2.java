@@ -25,11 +25,17 @@ import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;
  * TODO: TEORETICKY FUNKCNI VERZE, TREBA OTESTOVAT
  * @author Pavel
  */
-public class Planner2 {
+public class Planner2 implements PlannerInterface {
     
     Level levelState;
     
     public Planner2(Level actualLevel){
+        levelState = actualLevel;
+    }
+    
+    public Planner2(){}
+    
+    public void setLevel(Level actualLevel){
         levelState = actualLevel;
     }
     

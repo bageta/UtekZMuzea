@@ -28,6 +28,8 @@ public class Level extends Node{
     
     AssetManager assetManager;
     
+    public Level(){}
+    
     /**
      * konstruktor levelu, tady budou určitě eště změny protože level se bude
      * načítat ze souboru
@@ -42,9 +44,6 @@ public class Level extends Node{
         rooms[1] = new Room(new Vector3f(21,0,0),10,10,1);
         rooms[2] = new Room(new Vector3f(0,0,21),10,10,2);
         rooms[3] = new Room(new Vector3f(21,0,21),10,10,3);
-        
-        
-        
         
         
         addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[1]);

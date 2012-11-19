@@ -32,7 +32,7 @@ public class Thief extends Node {
     private Item carrying;
     
     private Vector3f target, start;
-    private final float MOVEMENT_SPEED = 3.0f;
+    private final float MOVEMENT_SPEED = 5.0f;
     
     public Thief(AssetManager am, Level map){
         this.map = map;

@@ -24,12 +24,18 @@ import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;
  *
  * @author Pavel
  */
-public class Planner{
+public class Planner implements PlannerInterface{
     
     Level levelState;
     
     public Planner(Level levelState){
         this.levelState = levelState;
+    }
+    
+    public void Planner(){}
+    
+    public void setLevel(Level actualLevel){
+        levelState = actualLevel;
     }
     
     public ThiefAction[] makeNewPlan(){
@@ -97,16 +103,18 @@ public class Planner{
         }
         
         for(Room r : levelState.rooms){
-            for(Room rr: r.neigbours)
+            for(Room rr: r.neigbours){
                 if(!rr.hasObstacle())
                     addMoveThiefAction(problem, thiefLocation, r.index, rr.index);
+            }
         }
         
         for(Room r : levelState.rooms){
             for(Room rr: r.neigbours)
-                for(int i=0; i<levelState.obstacles.size(); ++i)
+                for(int i=0; i<levelState.obstacles.size(); ++i){
                     addMoveThiefOverAction(problem, thiefLocation, r.index, rr.index,
                             obstacleActive[i], obstaclesLocations[i]);
+                }
         }
         
         for(int item=0; item< levelState.items.size(); ++item){
@@ -121,8 +129,9 @@ public class Planner{
                 if(levelState.items.get(item).type==levelState.obstacles.get(obstacle).type){
                     for(int location=0; location< levelState.rooms.length; ++location){
                         for(int location1=0; location1< levelState.rooms.length; ++location1){
-                            if(location == location1)
+                            if(location == location1){
                                 continue;
+                            }
                             addUseItemAction(problem, thiefLocation, itemsLocations[item], 
                                     obstaclesLocations[obstacle], obstacleActive[obstacle], location, location);
                         }
