@@ -28,7 +28,12 @@ public class Level extends Node{
     
     AssetManager assetManager;
     
-    public Level(){}
+    public Level(int roomsCount){
+        rooms = new Room[roomsCount];
+        for(int i=0; i<rooms.length; ++i){
+            rooms[i] = new Room(new Vector3f(0,0,0),0,0,0);
+        }
+    }
     
     /**
      * konstruktor levelu, tady budou určitě eště změny protože level se bude
@@ -97,4 +102,7 @@ public class Level extends Node{
         this.attachChild(item);
     }
     
+    public void makeNeighbours(Room r1, Room r2){
+        r1.addNeighbour(r2);
+    }
 }
