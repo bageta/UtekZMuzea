@@ -3,11 +3,13 @@ package game;
 import com.jme3.app.SimpleApplication;
 //import com.jme3.app.state.AppState;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
+import de.lessvoid.nifty.Nifty;
 
 import planner.Planner;
 import planner.Planner2;
-import planner.ThiefAction;
+//import planner.ThiefAction;
 
 /**
  * hlavni trida hry, dedi se SimpleApplication, dochazi ke spusteni hry,
@@ -37,6 +39,12 @@ public class Main extends SimpleApplication {
         final InGameCamera camera = new InGameCamera(cam, rootNode);
         camera.registerWithInput(inputManager);
         camera.setCenter(new Vector3f(20,20,20));
+        
+        /* inicializace gui*/
+        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
+        Nifty nifty = niftyDisplay.getNifty();
+        nifty.fromXml("Interface/screen.xml", "start");
+        guiViewPort.addProcessor(niftyDisplay);
         
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
         inputManager.removeListener(flyCam);
