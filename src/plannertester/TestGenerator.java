@@ -40,6 +40,8 @@ public class TestGenerator {
                 lvl.addObstacle(new Obstacle(null, ObstacleType.DOG), lvl.rooms[randomizer.nextInt(lvl.rooms.length)]);
                 lvl.addItem(ObstacleType.DOG, lvl.rooms[randomizer.nextInt(lvl.rooms.length)]);
             }
+            lvl.addObstacle(new Obstacle(null, ObstacleType.GLASS), lvl.rooms[randomizer.nextInt(lvl.rooms.length)]);
+            lvl.addItem(ObstacleType.GLASS, lvl.rooms[randomizer.nextInt(lvl.rooms.length)]);
         }
         return lvl;
     }
