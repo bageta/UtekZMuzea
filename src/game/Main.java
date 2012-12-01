@@ -43,7 +43,9 @@ public class Main extends SimpleApplication {
         /* inicializace gui*/
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/screen.xml", "start");
+        StartScreen startScreenControl= new StartScreen(null);
+        startScreenControl.initialize(stateManager, this);
+        nifty.fromXml("Interface/screen.xml", "start", startScreenControl);
         guiViewPort.addProcessor(niftyDisplay);
         
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
