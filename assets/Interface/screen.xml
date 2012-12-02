@@ -28,12 +28,12 @@
         </layer>
     </screen>
     <screen id="hud">
-        <layer id="background" backgroundColor="#000f">
+        <layer id="background" backgroundColor="#0000">
         </layer>
-        <layer id="foreground" backgroundColor="#0000" childLayout="horizontal">
-            <panel id="panel_top" height="80%" width="100%" align="center" childLayout="center" backgroundColor="#0f08">
+        <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
+            <panel id="panel_top" height="75%" width="100%" align="center" childLayout="center" backgroundColor="#0000">
             </panel>
-            <panel id="panel_bottom" height="20%" width="100%" aling="center" childLayout="horizontal" baclgroundColor="#00f8">    
+            <panel id="panel_bottom" height="25%" width="100%" align="center" valign="bottom" childLayout="horizontal" backgroundColor="#ffff">    
             </panel>
         </layer>
     </screen>

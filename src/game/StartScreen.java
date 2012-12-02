@@ -18,7 +18,9 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Screen screen;
     private SimpleApplication app;
     
-    public StartScreen(String data){}
+    public StartScreen(SimpleApplication app){
+        this.app = app;
+    }
     
     public void bind(Nifty nifty, Screen screen){
         this.nifty = nifty;
@@ -39,7 +41,6 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
     
     public void startGame(String nextScreen){
-        System.out.println("DOSTANE SE TO SEM !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         nifty.gotoScreen(nextScreen);
     }
     
