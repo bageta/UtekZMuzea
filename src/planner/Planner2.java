@@ -137,7 +137,7 @@ public class Planner2 implements PlannerInterface {
         
         for(int location=0; location< levelState.rooms.length; ++location){
             boolean wasAdded = false;
-            if(levelState.rooms[location]==Main.thief.actualPosition){
+            if(levelState.rooms[location]==game.InGameState.thief.actualPosition){
                 problem.addInitialStateCondition(new Condition(roomState[location], 1));
                 wasAdded = true;
             }

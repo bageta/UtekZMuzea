@@ -26,16 +26,14 @@ public class Main extends SimpleApplication {
      */
     @Override public void simpleInitApp() {
         inGameState = new InGameState(this);
-        startScreenState = new StartScreen(this);
+        startScreenState = new StartScreen(this, inGameState);
         
         stateManager.attach(startScreenState);
         
         /* inicializace gui*/
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        StartScreen startScreenControl= new StartScreen(null);
-        startScreenControl.initialize(stateManager, this);
-        nifty.fromXml("Interface/screen.xml", "start", startScreenControl);
+        nifty.fromXml("Interface/screen.xml", "start", startScreenState);
         guiViewPort.addProcessor(niftyDisplay);
         
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se

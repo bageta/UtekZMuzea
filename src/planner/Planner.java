@@ -1,7 +1,6 @@
 package planner;
 
 import game.Level;
-import game.Main;
 import game.Room;
 
 import java.util.List;
@@ -140,7 +139,7 @@ public class Planner implements PlannerInterface{
             }
         }
         
-        problem.addInitialStateCondition(new Condition(thiefLocation, Main.thief.actualPosition.index));
+        problem.addInitialStateCondition(new Condition(thiefLocation, game.InGameState.thief.actualPosition.index));
         
         for(int i=0; i<levelState.items.size(); ++i){
             problem.addInitialStateCondition(new Condition(itemsLocations[i],
