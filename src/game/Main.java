@@ -26,7 +26,7 @@ public class Main extends SimpleApplication {
      */
     @Override public void simpleInitApp() {
         inGameState = new InGameState(this);
-        startScreenState = new StartScreen(this, inGameState);
+        startScreenState = new StartScreen(this);
         
         stateManager.attach(startScreenState);
         
@@ -48,4 +48,9 @@ public class Main extends SimpleApplication {
     @Override public void simpleUpdate(float tpf) {}
 
     @Override public void simpleRender(RenderManager rm) {}
+    
+    public void fromMenuToGame(){
+        stateManager.detach(startScreenState);
+        stateManager.attach(inGameState);
+    }
 }

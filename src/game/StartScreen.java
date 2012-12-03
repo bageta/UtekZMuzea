@@ -21,7 +21,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Nifty nifty;
     private Screen screen;
     
-    private SimpleApplication app;
+    private Main app;
     private Node rootNode;
     private Node guiNode;
     private AssetManager asserManager;
@@ -30,13 +30,13 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Node localRootNode = new Node("rootNode StartScreen stavu");
     private Node localGuiNode = new Node("guiNode StartScreen stavu");
     
-    public StartScreen(SimpleApplication app, AbstractAppState nextState){
+    public StartScreen(Main app){
         this.app = app;
         this.rootNode = app.getRootNode();
         this.guiNode = app.getGuiNode();
         this.asserManager = app.getAssetManager();
         this.inputManager = app.getInputManager();
-        this.nextState = nextState;
+        //this.nextState = nextState;
     }
     
     public void bind(Nifty nifty, Screen screen){
@@ -70,8 +70,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     
     public void startGame(String nextScreen){
         nifty.gotoScreen(nextScreen);
-        app.getStateManager().detach(this);
-        app.getStateManager().attach(nextState);
+        app.fromMenuToGame();
     }
     
     public void quitGame(){
