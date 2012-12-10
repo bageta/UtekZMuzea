@@ -33,9 +33,8 @@ public class Main extends SimpleApplication {
         /* inicializace gui*/
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/screen.xml", "start", startScreenState);
-        guiViewPort.addProcessor(niftyDisplay);
-        
+        nifty.fromXml("Interface/screen.xml", "start", startScreenState, inGameState);
+        guiViewPort.addProcessor(niftyDisplay); 
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
         inputManager.removeListener(flyCam);
     }
@@ -52,5 +51,10 @@ public class Main extends SimpleApplication {
     public void fromMenuToGame(){
         stateManager.detach(startScreenState);
         stateManager.attach(inGameState);
+    }
+    
+    public void fromGameToMenu(){
+        stateManager.detach(inGameState);
+        stateManager.detach(startScreenState);
     }
 }

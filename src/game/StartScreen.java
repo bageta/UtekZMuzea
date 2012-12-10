@@ -30,8 +30,8 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Node localRootNode = new Node("rootNode StartScreen stavu");
     private Node localGuiNode = new Node("guiNode StartScreen stavu");
     
-    public StartScreen(Main app){
-        this.app = app;
+    public StartScreen(SimpleApplication app){
+        this.app = (Main)app;
         this.rootNode = app.getRootNode();
         this.guiNode = app.getGuiNode();
         this.asserManager = app.getAssetManager();

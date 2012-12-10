@@ -19,14 +19,17 @@ import de.lessvoid.nifty.screen.ScreenController;
  *
  * @author Pavel
  */
-public class InGameState extends AbstractAppState {
+public class InGameState extends AbstractAppState implements ScreenController {
     
     public static Thief thief;
     
     Level actualLevel;
     Planner2 planner;
     
-    private SimpleApplication app;
+    private Nifty nifty;
+    private Screen screen;
+    
+    private Main app;
     private Node rootNode;
     private Node guiNode;
     private AssetManager assetManager;
@@ -35,7 +38,7 @@ public class InGameState extends AbstractAppState {
     private Node localGuiNode = new Node("guiNode nalezici InGameState");
     
     public InGameState(SimpleApplication app){
-        this.app = app;
+        this.app = (Main)app;
         this.rootNode = app.getRootNode();
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
@@ -78,5 +81,28 @@ public class InGameState extends AbstractAppState {
     public void obstacleAddedAction(Obstacle obstacle, Room to){
         actualLevel.addObstacle(obstacle, to);
         thief.setNewPlane(planner.makeNewPlan());
+    }
+    
+    @Override public void onEndScreen(){}
+    
+    @Override public void onStartScreen(){}
+    
+    @Override public void bind(Nifty nifty, Screen screen){
+        this.nifty = nifty;
+        this.screen = screen;
+    }
+    
+    public void itemButtonPressed(String param){
+        int buttonNumber = Integer.parseInt(param);
+        System.out.println("Button of " + buttonNumber + ". item was pressed");
+    }
+    
+    public void pause(){
+        //pause
+    }
+    
+    public void exitToMenu(String target){
+        nifty.gotoScreen(target);
+        app.fromGameToMenu();
     }
 }
