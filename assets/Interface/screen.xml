@@ -28,24 +28,22 @@
         </layer>
     </screen>
     <screen id="hud" controller="game.InGameState">
-        <layer id="background" backgroundColor="#0000">
-        </layer>
         <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
-            <panel id="panel_top" height="75%" width="100%" align="center" childLayout="center" backgroundColor="#0000">
+            <panel id="panel_top" visibleToMouse="false" height="75%" width="100%" align="center" childLayout="center" backgroundColor="#0000">
             </panel>
             <panel id="panel_bottom" height="25%" width="100%" align="center" valign="bottom" childLayout="horizontal" backgroundColor="#ffff">
                 <panel id="bottom_left" height="100%" width="50%" aling="left" childLayout="horizontal" backgroundColor="#f008">
-                    <control name="button" label="1.item" width="25%" height="65%" valign="center">
-                        <interact onClick="itemButtonPressed(1)" />
+                    <control name="button" label="1.obstacle" width="25%" height="65%" valign="center">
+                        <interact onClick="obstacleButtonPressed(1)" />
                     </control>
-                    <control name="button" label="2.item" width="25%" height="65%" valign="center">
-                        <interact onClick="itemButtonPressed(2)" />
+                    <control name="button" label="2.obstacle" width="25%" height="65%" valign="center">
+                        <interact onClick="obstacleButtonPressed(2)" />
                     </control>
-                    <control name="button" label="3.item" width="25%" height="65%" valign="center">
-                        <interact onClick="itemButtonPressed(3)" />
+                    <control name="button" label="3.obstacle" width="25%" height="65%" valign="center">
+                        <interact onClick="obstacleButtonPressed(3)" />
                     </control>
-                    <control name="button" label="4.item" width="25%" height="65%" valign="center">
-                        <interact onClick="itemButtonPressed(4)" />
+                    <control name="button" label="4.obstacle" width="25%" height="65%" valign="center">
+                        <interact onClick="obstacleButtonPressed(4)" />
                     </control>
                 </panel>
                 <panel id="bottom_center" height="100%" width="40%" childLayout="horizontal" backgroundColor="#0f08">

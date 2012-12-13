@@ -3,6 +3,7 @@ package game;
 import java.util.ArrayList;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -120,5 +121,15 @@ public class Level extends Node{
     
     public void makeNeighbours(Room r1, Room r2){
         r1.addNeighbour(r2);
+    }
+    
+    public Room getRoom(Vector2f mouseCoordinates){
+        /* TODO: NAIMPLEMENTUJ ME!!!!
+         * implementace ziska mistnost tak ze vysle paprsek ze zadanych
+         * koordinant, kolize vrati podlahu mistnosti, zjisti se ktere mistnosti
+         * podlaha patri a vraci se mistonost, a nebo null, podle toho zda slo skutecne
+         * o podlahu
+         */
+        return null;
     }
 }

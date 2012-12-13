@@ -10,6 +10,9 @@ import com.jme3.scene.Node;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.input.InputManager;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.input.MouseInput;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
@@ -25,6 +28,8 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     Level actualLevel;
     Planner2 planner;
+    
+    private int addingObstacle = 0;
     
     private Nifty nifty;
     private Screen screen;
@@ -53,6 +58,8 @@ public class InGameState extends AbstractAppState implements ScreenController {
         camera.setCenter(new Vector3f(20,20,20));
         
         inputManager.setCursorVisible(true);
+        inputManager.addMapping("mouseClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addListener(actionListener, "Click");
         //inputManager.removeListener();
         actualLevel = new Level(assetManager);
         thief = new Thief(assetManager, actualLevel);
@@ -92,8 +99,9 @@ public class InGameState extends AbstractAppState implements ScreenController {
         this.screen = screen;
     }
     
-    public void itemButtonPressed(String param){
+    public void obstacleButtonPressed(String param){
         int buttonNumber = Integer.parseInt(param);
+        addingObstacle = buttonNumber;
         System.out.println("Button of " + buttonNumber + ". item was pressed");
     }
     
@@ -105,4 +113,27 @@ public class InGameState extends AbstractAppState implements ScreenController {
         nifty.gotoScreen(target);
         app.fromGameToMenu();
     }
+    
+    private ActionListener actionListener = new ActionListener(){
+        public void onAction(String name, boolean keyPressed, float tpf){
+            System.out.println("Aspon sem? :(");
+            if(name.equals("mouseClick") && !keyPressed && addingObstacle != 0){
+                System.out.println("DOSTANE SE TO SEM");
+                ObstacleType newObstacleType = ObstacleType.DOG;
+                switch(addingObstacle){
+                    case 1:
+                        newObstacleType = ObstacleType.DOG;
+                        break;
+                    case 2:
+                        newObstacleType = ObstacleType.GLASS;
+                        break;
+                    default:
+                        //asi hazet vyjimku a padat? stat by se to nemelo
+                        break;
+                }
+                actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
+                        actualLevel.getRoom(inputManager.getCursorPosition()));
+            }
+        }
+    };
 }
