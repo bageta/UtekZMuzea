@@ -44,18 +44,22 @@ public class Level extends Node{
         
         this.assetManager = assetManager;
         
-        rooms = new Room[4];
+        rooms = new Room[9];
         rooms[0] = new Room(new Vector3f(0,0,0),10,10,0);
         rooms[1] = new Room(new Vector3f(21,0,0),10,10,1);
-        rooms[2] = new Room(new Vector3f(0,0,21),10,10,2);
-        rooms[3] = new Room(new Vector3f(21,0,21),10,10,3);
+        rooms[2] = new Room(new Vector3f(42,0,0),10,10,2);
+        rooms[3] = new Room(new Vector3f(0,0,21),10,10,3);
+        rooms[4] = new Room(new Vector3f(21,0,21),10,10,4);
+        rooms[5] = new Room(new Vector3f(42,0,21),10,10,5);
+        rooms[6] = new Room(new Vector3f(0,0,42),10,10,6);
+        rooms[7] = new Room(new Vector3f(21,0,42),10,10,7);
+        rooms[8] = new Room(new Vector3f(42,0,42),10,10,8);
         
-        
-        addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[1]);
         addItem(ObstacleType.GLASS, rooms[2]);
+        //addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[7]);
         
         start = rooms[0];
-        finish = rooms[3];
+        finish = rooms[8];
         
         for(Room r: rooms){
             r.setAssetManager(assetManager);
@@ -73,14 +77,26 @@ public class Level extends Node{
         rooms[0].addNeighbour(rooms[1]);
         this.attachChild(rooms[0].generateDoors(rooms[1]));
         
-        rooms[0].addNeighbour(rooms[2]);
-        this.attachChild(rooms[0].generateDoors(rooms[2]));
+        rooms[0].addNeighbour(rooms[3]);
+        this.attachChild(rooms[0].generateDoors(rooms[3]));
         
-        rooms[3].addNeighbour(rooms[1]);
-        this.attachChild(rooms[3].generateDoors(rooms[1]));
+        rooms[2].addNeighbour(rooms[5]);
+        this.attachChild(rooms[2].generateDoors(rooms[5]));
         
-        //rooms[3].addNeighbour(rooms[2]);
-        //this.attachChild(rooms[0].generateDoors(rooms[1]));
+        rooms[3].addNeighbour(rooms[4]);
+        this.attachChild(rooms[3].generateDoors(rooms[4]));
+        
+        rooms[3].addNeighbour(rooms[6]);
+        this.attachChild(rooms[3].generateDoors(rooms[6]));
+        
+        rooms[4].addNeighbour(rooms[5]);
+        this.attachChild(rooms[4].generateDoors(rooms[5]));
+        
+        rooms[6].addNeighbour(rooms[7]);
+        this.attachChild(rooms[6].generateDoors(rooms[7]));
+        
+        rooms[7].addNeighbour(rooms[8]);
+        this.attachChild(rooms[7].generateDoors(rooms[8]));
     }
     
     /**
