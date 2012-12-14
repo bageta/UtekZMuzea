@@ -7,6 +7,9 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
+import com.jme3.math.Ray;
 
 /**
  * třída pro reprezentaci levelu hry
@@ -32,7 +35,7 @@ public class Level extends Node{
     public Level(int roomsCount){
         rooms = new Room[roomsCount];
         for(int i=0; i<rooms.length; ++i){
-            rooms[i] = new Room(new Vector3f(0,0,0),0,0,0);
+            rooms[i] = new Room(new Vector3f(0,0,0),0,0,0, assetManager);
         }
     }
     
@@ -46,15 +49,15 @@ public class Level extends Node{
         this.assetManager = assetManager;
         
         rooms = new Room[9];
-        rooms[0] = new Room(new Vector3f(0,0,0),10,10,0);
-        rooms[1] = new Room(new Vector3f(21,0,0),10,10,1);
-        rooms[2] = new Room(new Vector3f(42,0,0),10,10,2);
-        rooms[3] = new Room(new Vector3f(0,0,21),10,10,3);
-        rooms[4] = new Room(new Vector3f(21,0,21),10,10,4);
-        rooms[5] = new Room(new Vector3f(42,0,21),10,10,5);
-        rooms[6] = new Room(new Vector3f(0,0,42),10,10,6);
-        rooms[7] = new Room(new Vector3f(21,0,42),10,10,7);
-        rooms[8] = new Room(new Vector3f(42,0,42),10,10,8);
+        rooms[0] = new Room(new Vector3f(0,0,0),10,10,0, assetManager);
+        rooms[1] = new Room(new Vector3f(21,0,0),10,10,1, assetManager);
+        rooms[2] = new Room(new Vector3f(42,0,0),10,10,2, assetManager);
+        rooms[3] = new Room(new Vector3f(0,0,21),10,10,3, assetManager);
+        rooms[4] = new Room(new Vector3f(21,0,21),10,10,4, assetManager);
+        rooms[5] = new Room(new Vector3f(42,0,21),10,10,5, assetManager);
+        rooms[6] = new Room(new Vector3f(0,0,42),10,10,6, assetManager);
+        rooms[7] = new Room(new Vector3f(21,0,42),10,10,7, assetManager);
+        rooms[8] = new Room(new Vector3f(42,0,42),10,10,8, assetManager);
         
         addItem(ObstacleType.GLASS, rooms[2]);
         //addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[7]);
@@ -63,16 +66,7 @@ public class Level extends Node{
         finish = rooms[8];
         
         for(Room r: rooms){
-            r.setAssetManager(assetManager);
-            this.attachChild(r.generateFloor());
-            Geometry[] walls = r.generateWalls();
-            for(Geometry wall : walls){
-                this.attachChild(wall);
-            }
-//            Geometry[] doors = r.generateDoors();
-//            for(Geometry door : doors){
-//                this.attachChild(door);
-//            }
+            this.attachChild(r);
         }
         
         rooms[0].addNeighbour(rooms[1]);
@@ -123,13 +117,20 @@ public class Level extends Node{
         r1.addNeighbour(r2);
     }
     
-    public Room getRoom(Vector2f mouseCoordinates){
-        /* TODO: NAIMPLEMENTUJ ME!!!!
-         * implementace ziska mistnost tak ze vysle paprsek ze zadanych
-         * koordinant, kolize vrati podlahu mistnosti, zjisti se ktere mistnosti
-         * podlaha patri a vraci se mistonost, a nebo null, podle toho zda slo skutecne
-         * o podlahu
-         */
+    public Room getRoom(Vector2f mouseCoordinates, Vector3f cameraDirection){
+        CollisionResults results = new CollisionResults();
+        Ray ray = new Ray(new Vector3f(mouseCoordinates.x, 0, mouseCoordinates.y),
+                cameraDirection);
+        this.collideWith(ray, results);
+        if(results.size() > 0){
+            CollisionResult closest = results.getClosestCollision();
+            Geometry toCompare = closest.getGeometry();
+            for(Room r: rooms){
+                if(r.floor.equals(toCompare)){
+                    return r;
+                }
+            }
+        }
         return null;
     }
 }

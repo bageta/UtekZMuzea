@@ -132,7 +132,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
                         break;
                 }
                 actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
-                        actualLevel.getRoom(inputManager.getCursorPosition()));
+                        actualLevel.getRoom(inputManager.getCursorPosition(), Vector3f.ZERO));
             }
         }
     };

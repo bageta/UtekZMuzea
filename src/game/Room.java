@@ -1,5 +1,6 @@
 package game;
 
+import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
@@ -13,26 +14,26 @@ import java.util.ArrayList;
  * třída pro reprezentaci místnosti 
  * @author Pavel
  */
-public class Room {
+public class Room extends Node{
 
+    private AssetManager assetManager;
     private Vector3f position;
     private float width, height;
     public ArrayList<Room> neigbours = new ArrayList<Room>();
     public int index;
     public Obstacle obstacle;
     public Item item;
-    private AssetManager assetManager;
+    public Geometry floor;
     
     
-    public Room(Vector3f position, float width, float height, int index){
+    public Room(Vector3f position, float width, float height, int index, AssetManager assetManager){
         this.position = position;
         this.width = width;
         this.height = height;
         this.index = index;
-    }
-    
-    public void setAssetManager(AssetManager assetManager){
         this.assetManager = assetManager;
+        generateFloor();
+        generateWalls();
     }
     
     public Vector3f getPosition(){
@@ -47,18 +48,18 @@ public class Room {
         return height;
     }
     
-    public Geometry generateFloor(){
+    private void generateFloor(){
         Box b = new Box(position, width, 0.2f, height);
-        Geometry floor = new Geometry("floor", b);
+        floor = new Geometry("floor", b);
         
         Material floorMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         floorMaterial.setTexture("ColorMap", assetManager.loadTexture("Textures/floor.jpg"));
         floor.setMaterial(floorMaterial);
         
-        return floor;
+        this.attachChild(floor);
     }
     
-    public Geometry[] generateWalls(){
+    private void generateWalls(){
         Material wallMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         wallMaterial.setTexture("ColorMap", assetManager.loadTexture("Textures/wall.jpg"));
         
@@ -82,7 +83,10 @@ public class Room {
         wall4.setLocalTranslation(2*width, 0, 0);
         System.out.println("wall4: " + wall4.getLocalTranslation());
         
-        return new Geometry[] {wall1, wall2, wall3, wall4};
+        this.attachChild(wall1);
+        this.attachChild(wall2);
+        this.attachChild(wall3);
+        this.attachChild(wall4);
     }
     
     public Geometry generateDoors(Room neighbour){
