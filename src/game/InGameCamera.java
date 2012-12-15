@@ -294,4 +294,11 @@ public class InGameCamera implements Control, ActionListener {
         direction[deg.ordinal()] = press;
     }
     
+    public Vector3f getDirection(){
+        return cam.getDirection();
+    }
+    
+    public Vector3f getLocation(){
+        return cam.getLocation();
+    }
 }
