@@ -9,6 +9,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
+import com.jme3.math.Vector2f;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
@@ -25,6 +26,8 @@ import de.lessvoid.nifty.screen.ScreenController;
 public class InGameState extends AbstractAppState implements ScreenController {
     
     public static Thief thief;
+    
+    final InGameCamera camera;
     
     Level actualLevel;
     Planner2 planner;
@@ -48,12 +51,12 @@ public class InGameState extends AbstractAppState implements ScreenController {
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
         this.inputManager = app.getInputManager();
+        camera = new InGameCamera(app.getCamera(), this.rootNode);
     }
     
     @Override public void initialize(AppStateManager stateManager, Application app){
         super.initialize(stateManager, app);
         
-        final InGameCamera camera = new InGameCamera(app.getCamera(), rootNode);
         camera.registerWithInput(inputManager);
         camera.setCenter(new Vector3f(20,20,20));
         
@@ -131,8 +134,12 @@ public class InGameState extends AbstractAppState implements ScreenController {
                         //asi hazet vyjimku a padat? stat by se to nemelo
                         break;
                 }
+                //ziska pozici kamery
+                Vector2f mousePosition = inputManager.getCursorPosition();
                 actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
-                        actualLevel.getRoom(inputManager.getCursorPosition(), Vector3f.ZERO));
+                        actualLevel.getRoom(camera.getWorldCoordinates(mousePosition), 
+                        camera.getCoordinatedDirection(mousePosition)));
+                addingObstacle = 0;
             }
         }
     };

@@ -117,10 +117,9 @@ public class Level extends Node{
         r1.addNeighbour(r2);
     }
     
-    public Room getRoom(Vector2f mouseCoordinates, Vector3f cameraDirection){
+    public Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){
         CollisionResults results = new CollisionResults();
-        Ray ray = new Ray(new Vector3f(mouseCoordinates.x, 0, mouseCoordinates.y),
-                cameraDirection);
+        Ray ray = new Ray(cameraPosition, cameraDirection);
         this.collideWith(ray, results);
         if(results.size() > 0){
             CollisionResult closest = results.getClosestCollision();
