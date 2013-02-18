@@ -130,6 +130,9 @@ public class Thief extends Node {
     public void setNewPlane(ThiefAction[] plane){
         actualActionIndex = 0;
         actions = plane;
+        if(actions == null){
+            System.out.println("PRAZDNY PLAN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
         actualState = State.DONE;
     }
     

@@ -62,7 +62,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
         
         inputManager.setCursorVisible(true);
         inputManager.addMapping("mouseClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(actionListener, "Click");
+        inputManager.addListener(actionListener, "mouseClick");
         //inputManager.removeListener();
         actualLevel = new Level(assetManager);
         thief = new Thief(assetManager, actualLevel);
@@ -120,7 +120,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     private ActionListener actionListener = new ActionListener(){
         public void onAction(String name, boolean keyPressed, float tpf){
             System.out.println("Aspon sem? :(");
-            if(name.equals("mouseClick") && !keyPressed && addingObstacle != 0){
+            if(name.equals("mouseClick") /*&& !keyPressed && addingObstacle != 0*/){
                 System.out.println("DOSTANE SE TO SEM");
                 ObstacleType newObstacleType = ObstacleType.DOG;
                 switch(addingObstacle){
@@ -139,6 +139,8 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
                         actualLevel.getRoom(camera.getWorldCoordinates(mousePosition), 
                         camera.getCoordinatedDirection(mousePosition)));
+                //planner.setLevel(actualLevel);
+                //thief.setNewPlane(planner.makeNewPlan());
                 addingObstacle = 0;
             }
         }
