@@ -47,7 +47,7 @@
                     </control>
                 </panel>
                 <panel id="bottom_center" height="100%" width="40%" childLayout="horizontal" backgroundColor="#0f08">
-                    <control name="label" color="#000" text="Tady bude zbyvajici cas po ktery je zlodeje treba zadrzet" width="100%" height="100%" />
+                    <control id="timeLabel" name="label" color="#000" text="Tady bude zbyvajici cas po ktery je zlodeje treba zadrzet" width="100%" height="100%" />
                 </panel>
                 <panel id="bottom_right" height="100%" width="10%" childLayout="vertical" backgroundColor="#00f8">
                     <control name="button" label="Pauza" width="100%" height="50%">

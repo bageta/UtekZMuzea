@@ -31,7 +31,7 @@ public class Thief extends Node {
     int iterations = 0;
     private Item carrying;
     
-    private Vector3f target, start;
+    private Vector3f target;
     private final float MOVEMENT_SPEED = 5.0f;
     
     public Thief(AssetManager am, Level map){
@@ -51,7 +51,7 @@ public class Thief extends Node {
         actualState = State.WAIT;
         
         target = Vector3f.ZERO;
-        start = Vector3f.ZERO;
+        //start = Vector3f.ZERO;
         
         this.attachChild(geom);
     }
@@ -128,12 +128,14 @@ public class Thief extends Node {
     }
     
     public void setNewPlane(ThiefAction[] plane){
+        actualState = State.WAIT;
         actualActionIndex = 0;
         actions = plane;
-        if(actions == null){
-            System.out.println("PRAZDNY PLAN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        if(actions != null){
+            actualState = State.DONE;
+            //System.out.println("PRAZDNY PLAN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
-        actualState = State.DONE;
+        
     }
     
     private boolean hasNextAction(){

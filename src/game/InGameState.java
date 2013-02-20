@@ -2,6 +2,8 @@ package game;
 
 import planner.Planner2;
 
+import time.CountDown;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -16,6 +18,8 @@ import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.MouseInput;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -31,6 +35,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     Level actualLevel;
     Planner2 planner;
+    CountDown counter;
     
     private int addingObstacle = 0;
     
@@ -67,15 +72,25 @@ public class InGameState extends AbstractAppState implements ScreenController {
         //inputManager.removeListener();
         actualLevel = new Level(assetManager);
         thief = new Thief(assetManager, actualLevel);
+        counter = new CountDown(actualLevel.timeLimit);
         
         planner = new Planner2(actualLevel);
         thief.setNewPlane(planner.makeNewPlan());
+        counter.start();
         
         localRootNode.attachChild(actualLevel);
         localRootNode.attachChild(thief);
     }
     
     @Override public void update(float tpf){
+        Element niftyElement = nifty.getCurrentScreen().findElementByName("timeLabel");
+        niftyElement.getRenderer(TextRenderer.class).setText(counter.getRemainingMinutes());
+        if(counter.getRemainingMillis() == 0){
+            //win
+        }
+        if(thief.actualPosition.equals(actualLevel.finish)){
+            //fail
+        }
         thief.update(tpf);
     }
     

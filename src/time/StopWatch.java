@@ -25,6 +25,11 @@ public class StopWatch {
         isRunning = false;
     }
     
+    public void reset(){
+        startTime = 0;
+        stopTime = 0;
+    }
+    
     public long getElapsedMillis(){
         long elapsed;
         if(isRunning){

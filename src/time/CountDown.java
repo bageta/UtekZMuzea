@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package time;
 
 /**
@@ -18,7 +14,7 @@ public class CountDown {
     }
     
     public CountDown(long millies){
-        super();
+        this();
         timeToCount = millies;
     }
     
@@ -27,8 +23,14 @@ public class CountDown {
     }
     
     public long getRemainingMillis(){
-        long remain;
-        remain = timeToCount - stopWatch.getElapsedMillis();
+        long remain = timeToCount - stopWatch.getElapsedMillis();
+        if(remain < 0){
+            remain = 0;
+        }
         return remain;
+    }
+    
+    public String getRemainingMinutes(){
+        return Converter.millisToMinutes(getRemainingMillis());
     }
 }

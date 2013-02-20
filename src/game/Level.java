@@ -25,6 +25,9 @@ public class Level extends Node{
     //počátční a cílová místnost:
     public Room start, finish;
     
+    //casovy limit po ktery je zlodeje potereba udrzet v levelu v milisekundach:
+    public long timeLimit;
+    
     //list věcí umístěných v levelu
     public ArrayList<Item> items = new ArrayList<Item>();
     //list překážek umístěných v levelu
@@ -45,6 +48,8 @@ public class Level extends Node{
      * @param assetManager 
      */
     public Level(AssetManager assetManager){
+        
+        timeLimit = 100000;
         
         this.assetManager = assetManager;
         
