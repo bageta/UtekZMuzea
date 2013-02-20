@@ -62,7 +62,8 @@ public class InGameState extends AbstractAppState implements ScreenController {
         
         inputManager.setCursorVisible(true);
         inputManager.addMapping("mouseClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-        inputManager.addListener(actionListener, "mouseClick");
+        inputManager.addMapping("rightMouseClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
+        inputManager.addListener(actionListener, new String[]{"mouseClick", "rightMouseClick"});
         //inputManager.removeListener();
         actualLevel = new Level(assetManager);
         thief = new Thief(assetManager, actualLevel);
@@ -119,16 +120,16 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     private ActionListener actionListener = new ActionListener(){
         public void onAction(String name, boolean keyPressed, float tpf){
-            System.out.println("Aspon sem? :(");
-            if(name.equals("mouseClick") /*&& !keyPressed && addingObstacle != 0*/){
+            //System.out.println("Aspon sem? :(");
+            if(name.equals("mouseClick") && !keyPressed && addingObstacle != 0){
                 System.out.println("DOSTANE SE TO SEM");
                 ObstacleType newObstacleType = ObstacleType.DOG;
                 switch(addingObstacle){
                     case 1:
-                        newObstacleType = ObstacleType.DOG;
+                        newObstacleType = ObstacleType.GLASS;
                         break;
                     case 2:
-                        newObstacleType = ObstacleType.GLASS;
+                        newObstacleType = ObstacleType.DOG;
                         break;
                     default:
                         //asi hazet vyjimku a padat? stat by se to nemelo
@@ -136,11 +137,17 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 }
                 //ziska pozici kamery
                 Vector2f mousePosition = inputManager.getCursorPosition();
-                actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
-                        actualLevel.getRoom(camera.getWorldCoordinates(mousePosition), 
-                        camera.getCoordinatedDirection(mousePosition)));
-                //planner.setLevel(actualLevel);
-                //thief.setNewPlane(planner.makeNewPlan());
+                Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
+                        camera.getCoordinatedDirection(mousePosition));
+                if(selected != null){
+                    actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
+                            selected);
+                    planner.setLevel(actualLevel);
+                    thief.setNewPlane(planner.makeNewPlan());
+                    addingObstacle = 0;
+                }
+            }
+            if(name.equals("rightMouseClick") && !keyPressed){
                 addingObstacle = 0;
             }
         }
