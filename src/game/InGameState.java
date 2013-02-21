@@ -10,12 +10,13 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Node;
 import com.jme3.asset.AssetManager;
-import com.jme3.math.Vector3f;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.input.MouseInput;
+import com.jme3.light.DirectionalLight;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.elements.Element;
@@ -70,6 +71,10 @@ public class InGameState extends AbstractAppState implements ScreenController {
         inputManager.addMapping("rightMouseClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addListener(actionListener, new String[]{"mouseClick", "rightMouseClick"});
         //inputManager.removeListener();
+        
+        DirectionalLight dl = new DirectionalLight();
+        dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
+        
         actualLevel = new Level(assetManager);
         thief = new Thief(assetManager, actualLevel);
         counter = new CountDown(actualLevel.timeLimit);
@@ -78,6 +83,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
         thief.setNewPlane(planner.makeNewPlan());
         counter.start();
         
+        localRootNode.addLight(dl);
         localRootNode.attachChild(actualLevel);
         localRootNode.attachChild(thief);
     }

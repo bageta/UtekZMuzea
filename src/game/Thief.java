@@ -4,6 +4,7 @@ import planner.ThiefAction;
 
 import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
+import com.jme3.animation.LoopMode;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -33,29 +34,44 @@ public class Thief extends Node {
     int iterations = 0;
     private Item carrying;
     
+    private AnimControl control;
+    private AnimChannel channel;
+    
     private Vector3f target;
     private final float MOVEMENT_SPEED = 5.0f;
     
     public Thief(AssetManager am, Level map){
         this.map = map;
         
-        Box b = new Box(map.start.getPosition(), 1,1,1);
+        /*Box b = new Box(map.start.getPosition(), 1,1,1);
+        Geometry geom = new Geometry("box", b);*/
         actualPosition = map.start;
-        Geometry geom = new Geometry("box", b);
         
-        Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
+        
+        model = am.loadModel("Models/Oto/Oto.mesh.xml");
+        model.setLocalScale(0.4f);
+        model.setLocalTranslation(0.0f, 2.0f, 0.0f);
+        
+        /*Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Red);
-        geom.setMaterial(mat);
+        geom.setMaterial(mat);*/
         
         actualAction = new ThiefAction(ActionType.MOVE, 0, 0);
         actions = new ThiefAction[1];
         actualActionIndex = 0;
         actualState = State.WAIT;
         
+        control = model.getControl(AnimControl.class);
+        channel = control.createChannel();
+        channel.setLoopMode(LoopMode.Loop);
+        channel.setSpeed(1.0f);
+        channel.setAnim("Walk");
+        
         target = Vector3f.ZERO;
         //start = Vector3f.ZERO;
         
-        this.attachChild(geom);
+        this.attachChild(model);
+        //this.attachChild(geom);
     }
     
     public void update(float tpf){
