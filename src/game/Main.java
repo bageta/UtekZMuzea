@@ -32,6 +32,8 @@ public class Main extends SimpleApplication {
         
         stateManager.attach(startScreenState);
         
+        setDisplayStatView(false);
+        
         /* inicializace gui*/
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();

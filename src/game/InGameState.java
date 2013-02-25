@@ -4,6 +4,9 @@ import planner.Planner2;
 
 import time.CountDown;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -44,8 +47,13 @@ public class InGameState extends AbstractAppState implements ScreenController {
     Planner2 planner;
     CountDown counter;
     
-    private int addingObstacle = 0;
+    private boolean addingObstacle = false;    
     private boolean isRunning = true;
+    private int buttonNumber = 0;
+    
+    private ObstacleType newObstacle;
+    
+    private Map<Integer, ObstacleType> buttonMapping = new HashMap<Integer, ObstacleType>();
     
     private Nifty nifty;
     private Screen screen;
@@ -121,20 +129,18 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     public void initializeGui(){
-        Integer i = actualLevel.availableObst.get(ObstacleType.GLASS);
-        if(i != null){
-            nifty.getCurrentScreen().findControl("obstacle1", ButtonControl.class).setText("Sklo: " + i);
-        }
-        i = actualLevel.availableObst.get(ObstacleType.DOG);
-        if(i != null){
-            nifty.getCurrentScreen().findControl("obstacle2", ButtonControl.class).setText("Pes: " + i);
+        int i = 1;
+        for(ObstacleType o : actualLevel.availableObst.keySet()){
+            buttonMapping.put(i, o);
+            nifty.getCurrentScreen().findControl("obstacle" + i, ButtonControl.class).setText(o.toString() + ": " + i);
+            ++i;
         }
     }
     
-    public void obstacleAddedAction(Obstacle obstacle, Room to){
+    /*public void obstacleAddedAction(Obstacle obstacle, Room to){
         actualLevel.addObstacle(obstacle, to);
         thief.setNewPlane(planner.makeNewPlan());
-    }
+    }*/
     
     @Override public void onEndScreen(){}
     
@@ -146,26 +152,13 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     public void obstacleButtonPressed(String param){
-        int buttonNumber = Integer.parseInt(param);
-        ObstacleType newObstacleType = ObstacleType.GLASS;
-        switch(addingObstacle){
-                    case 1:
-                        newObstacleType = ObstacleType.GLASS;
-                        break;
-                    case 2:
-                        newObstacleType = ObstacleType.DOG;
-                        break;
-                    default:
-                        //asi hazet vyjimku a padat? stat by se to nemelo
-                        break;
-                }
-        int i = actualLevel.availableObst.get(newObstacleType);
+        buttonNumber = Integer.parseInt(param);
+        newObstacle = buttonMapping.get(buttonNumber);
+        int i = actualLevel.availableObst.get(newObstacle);
         if(i > 0){
-            addingObstacle = buttonNumber;
-            actualLevel.availableObst.put(newObstacleType, i-1);
-            nifty.getCurrentScreen().findControl("obstacle" + addingObstacle, ButtonControl.class).setText("Sklo: " + (i-1));
+            addingObstacle = true;
         } else {
-            addingObstacle = 0;
+            addingObstacle = false;
             //play warning sound
         }
         
@@ -198,34 +191,26 @@ public class InGameState extends AbstractAppState implements ScreenController {
     private ActionListener actionListener = new ActionListener(){
         public void onAction(String name, boolean keyPressed, float tpf){
             //System.out.println("Aspon sem? :(");
-            if(name.equals("mouseClick") && !keyPressed && addingObstacle != 0){
+            if(name.equals("mouseClick") && !keyPressed && addingObstacle == true){
                 System.out.println("DOSTANE SE TO SEM");
-                ObstacleType newObstacleType = ObstacleType.DOG;
-                switch(addingObstacle){
-                    case 1:
-                        newObstacleType = ObstacleType.GLASS;
-                        break;
-                    case 2:
-                        newObstacleType = ObstacleType.DOG;
-                        break;
-                    default:
-                        //asi hazet vyjimku a padat? stat by se to nemelo
-                        break;
-                }
                 //ziska pozici kamery
                 Vector2f mousePosition = inputManager.getCursorPosition();
                 Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
                         camera.getCoordinatedDirection(mousePosition));
                 if(selected != null){
-                    actualLevel.addObstacle(new Obstacle(assetManager, newObstacleType),
+                    actualLevel.addObstacle(new Obstacle(assetManager, newObstacle),
                             selected);
                     planner.setLevel(actualLevel);
                     thief.setNewPlane(planner.makeNewPlan());
-                    addingObstacle = 0;
+                    int i = actualLevel.availableObst.get(newObstacle);
+                    actualLevel.availableObst.put(newObstacle, i-1);
+                    nifty.getCurrentScreen().findControl("obstacle" + buttonNumber, ButtonControl.class)
+                    .setText(newObstacle.toString() + ": " + (i-1));
+                    addingObstacle = false;
                 }
             }
             if(name.equals("rightMouseClick") && !keyPressed){
-                addingObstacle = 0;
+                addingObstacle = false;
             }
         }
     };
