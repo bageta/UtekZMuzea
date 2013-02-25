@@ -58,6 +58,21 @@
                     </control>
                 </panel>        
             </panel>
+        </layer >
+    </screen>
+    <screen id="pause" controller="game.InGameState">
+        <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
+            <panel id="main" height="25%" width="100%" align="center" valign="center" childLayout="horizontal" backgroundColor="#ffff">
+                <control name="button" label="Pokracovat" width="30%" height="30%" valign="center">
+                    <interact onClick="unpause()" />
+                </control>
+                <control name="button" label="Restartovat" width="30%" height="30%" valign="center">
+                    <interact onClick="restart()" />
+                </control>
+                <control name="button" label="Ukoncit" width="30%" height="30%" valign="center">
+                    <interact onClick="exitToMenu(start)" />
+                </control>
+            </panel>
         </layer>
     </screen>
 </nifty>

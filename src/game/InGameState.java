@@ -39,6 +39,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     CountDown counter;
     
     private int addingObstacle = 0;
+    private boolean isRunning = true;
     
     private Nifty nifty;
     private Screen screen;
@@ -89,15 +90,17 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     @Override public void update(float tpf){
-        Element niftyElement = nifty.getCurrentScreen().findElementByName("timeLabel");
-        niftyElement.getRenderer(TextRenderer.class).setText(counter.getRemainingMinutes());
-        if(counter.getRemainingMillis() == 0){
-            //win
+        if(isRunning){
+            Element niftyElement = nifty.getCurrentScreen().findElementByName("timeLabel");
+            niftyElement.getRenderer(TextRenderer.class).setText(counter.getRemainingMinutes());
+            if(counter.getRemainingMillis() == 0){
+                //win
+            }
+            if(thief.actualPosition.equals(actualLevel.finish)){
+                //fail
+            }
+            thief.update(tpf);
         }
-        if(thief.actualPosition.equals(actualLevel.finish)){
-            //fail
-        }
-        thief.update(tpf);
     }
     
     @Override public void stateAttached(AppStateManager stateManager){
@@ -131,7 +134,17 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     public void pause(){
-        //pause
+        isRunning = false;
+        nifty.gotoScreen("pause");
+    }
+    
+    public void unpause(){
+        isRunning = true;
+        nifty.gotoScreen("hud");
+    }
+    
+    public void restart(){
+        //restartovat level
     }
     
     public void exitToMenu(String target){
