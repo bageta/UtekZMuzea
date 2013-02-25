@@ -8,6 +8,7 @@ import com.jme3.animation.LoopMode;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -183,11 +184,15 @@ public class Thief extends Node {
         Vector3f direction = new Vector3f(target.x-this.getLocalTranslation().x,
                 target.y - this.getLocalTranslation().y,
                 target.z - this.getLocalTranslation().z);
-            
+        
         direction = direction.normalize();
         this.move(direction.x*tpf*MOVEMENT_SPEED,
             direction.y*tpf*MOVEMENT_SPEED,
             direction.z*tpf*MOVEMENT_SPEED);
+        
+        Vector3f start = new Vector3f(0.0f, 0.0f, 1.0f);
+        
+        this.getLocalRotation().fromAngleAxis(direction.angleBetween(start), Vector3f.UNIT_Y);
     }
     
     public void setAnimation(String name){
