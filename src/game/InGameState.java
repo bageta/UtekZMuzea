@@ -19,10 +19,16 @@ import com.jme3.input.MouseInput;
 import com.jme3.light.DirectionalLight;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.button.ButtonControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+
+/*
+ * TODO: udelat lepe pridavani prekazek, asi zjistit jake jsou dostupne, a podle toho
+ * udelat namapovani na tlacitka a ne napevno jako ted!!!
+ */
 
 /**
  *
@@ -77,6 +83,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
         dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
         
         actualLevel = new Level(assetManager);
+        initializeGui();
         thief = new Thief(assetManager, actualLevel);
         counter = new CountDown(actualLevel.timeLimit);
         
@@ -113,6 +120,17 @@ public class InGameState extends AbstractAppState implements ScreenController {
         guiNode.detachChild(localGuiNode);
     }
     
+    public void initializeGui(){
+        Integer i = actualLevel.availableObst.get(ObstacleType.GLASS);
+        if(i != null){
+            nifty.getCurrentScreen().findControl("obstacle1", ButtonControl.class).setText("Sklo: " + i);
+        }
+        i = actualLevel.availableObst.get(ObstacleType.DOG);
+        if(i != null){
+            nifty.getCurrentScreen().findControl("obstacle2", ButtonControl.class).setText("Pes: " + i);
+        }
+    }
+    
     public void obstacleAddedAction(Obstacle obstacle, Room to){
         actualLevel.addObstacle(obstacle, to);
         thief.setNewPlane(planner.makeNewPlan());
@@ -129,7 +147,28 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     public void obstacleButtonPressed(String param){
         int buttonNumber = Integer.parseInt(param);
-        addingObstacle = buttonNumber;
+        ObstacleType newObstacleType = ObstacleType.GLASS;
+        switch(addingObstacle){
+                    case 1:
+                        newObstacleType = ObstacleType.GLASS;
+                        break;
+                    case 2:
+                        newObstacleType = ObstacleType.DOG;
+                        break;
+                    default:
+                        //asi hazet vyjimku a padat? stat by se to nemelo
+                        break;
+                }
+        int i = actualLevel.availableObst.get(newObstacleType);
+        if(i > 0){
+            addingObstacle = buttonNumber;
+            actualLevel.availableObst.put(newObstacleType, i-1);
+            nifty.getCurrentScreen().findControl("obstacle" + addingObstacle, ButtonControl.class).setText("Sklo: " + (i-1));
+        } else {
+            addingObstacle = 0;
+            //play warning sound
+        }
+        
         System.out.println("Button of " + buttonNumber + ". item was pressed");
     }
     

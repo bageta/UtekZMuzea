@@ -33,16 +33,16 @@
             </panel>
             <panel id="panel_bottom" height="25%" width="100%" align="center" valign="bottom" childLayout="horizontal" backgroundColor="#ffff">
                 <panel id="bottom_left" height="100%" width="50%" aling="left" childLayout="horizontal" backgroundColor="#f008">
-                    <control name="button" label="1.obstacle" width="25%" height="65%" valign="center">
+                    <control name="button" id="obstacle1" label="empty" width="25%" height="65%" valign="center">
                         <interact onClick="obstacleButtonPressed(1)" />
                     </control>
-                    <control name="button" label="2.obstacle" width="25%" height="65%" valign="center">
+                    <control name="button" id="obstacle2" label="empty" width="25%" height="65%" valign="center">
                         <interact onClick="obstacleButtonPressed(2)" />
                     </control>
-                    <control name="button" label="3.obstacle" width="25%" height="65%" valign="center">
+                    <control name="button" id="obstacle3" label="empty" width="25%" height="65%" valign="center">
                         <interact onClick="obstacleButtonPressed(3)" />
                     </control>
-                    <control name="button" label="4.obstacle" width="25%" height="65%" valign="center">
+                    <control name="button" id="obstacle4" label="empty" width="25%" height="65%" valign="center">
                         <interact onClick="obstacleButtonPressed(4)" />
                     </control>
                 </panel>

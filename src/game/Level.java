@@ -1,9 +1,11 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.math.Vector2f;
+//import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -32,6 +34,9 @@ public class Level extends Node{
     public ArrayList<Item> items = new ArrayList<Item>();
     //list překážek umístěných v levelu
     public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+    
+    //mapa, odpovida poctu dostupnych veci pro vyreseni levelu:
+    public Map<ObstacleType, Integer> availableObst = new HashMap<ObstacleType, Integer>();
     
     AssetManager assetManager;
     
@@ -66,6 +71,8 @@ public class Level extends Node{
         
         addItem(ObstacleType.GLASS, rooms[2]);
         //addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[7]);
+        
+        availableObst.put(ObstacleType.GLASS, 1);
         
         start = rooms[0];
         finish = rooms[8];
