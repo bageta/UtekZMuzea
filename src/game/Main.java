@@ -36,6 +36,7 @@ public class Main extends SimpleApplication {
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
         nifty.fromXml("Interface/screen.xml", "start", startScreenState, inGameState);
+        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
         Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
         guiViewPort.addProcessor(niftyDisplay); 
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se

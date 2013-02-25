@@ -135,11 +135,15 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     public void pause(){
         isRunning = false;
+        counter.pause();
+        thief.setAnimation("stand");
         nifty.gotoScreen("pause");
     }
     
     public void unpause(){
         isRunning = true;
+        thief.setAnimation("Walk");
+        counter.unpause();
         nifty.gotoScreen("hud");
     }
     

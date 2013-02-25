@@ -22,6 +22,14 @@ public class CountDown {
         stopWatch.start();
     }
     
+    public void pause(){
+        stopWatch.stop();
+    }
+    
+    public void unpause(){
+        stopWatch.restart();
+    }
+    
     public long getRemainingMillis(){
         long remain = timeToCount - stopWatch.getElapsedMillis();
         if(remain < 0){

@@ -189,4 +189,8 @@ public class Thief extends Node {
             direction.y*tpf*MOVEMENT_SPEED,
             direction.z*tpf*MOVEMENT_SPEED);
     }
+    
+    public void setAnimation(String name){
+        channel.setAnim(name);
+    }
 }
