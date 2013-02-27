@@ -24,6 +24,8 @@ public class Room extends Node{
     public Obstacle obstacle;
     public Item item;
     public Geometry floor;
+    //nastaveni priznaku zda jde do mistnosti umistit prekazka(ve smyslu default)
+    public boolean isAloved;
     
     
     public Room(Vector3f position, float width, float height, int index, AssetManager assetManager){
@@ -122,5 +124,9 @@ public class Room extends Node{
     
     public boolean hasObstacle(){
         return !(obstacle==null);
+    }
+    
+    public boolean isEmpty(){
+        return (obstacle==null && item==null && isAloved);
     }
 }

@@ -1,5 +1,9 @@
 package game;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -12,12 +16,17 @@ import com.jme3.scene.Node;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 /**
  * třída pro reprezentaci levelu hry
  * @author Pavel
  */
-public class Level extends Node{
+public class Level extends Node implements Serializable{
+    
+    public String name;
     
     //podlaha:
     Geometry floor;
@@ -52,8 +61,12 @@ public class Level extends Node{
      * načítat ze souboru
      * @param assetManager 
      */
-    public Level(AssetManager assetManager){
+    public Level(AssetManager assetManager, String name){
         
+        this.name = name;
+        /*
+         * prepsat tak, aby to vsechno nacteny pridalo na AM
+         */
         timeLimit = 100000;
         
         this.assetManager = assetManager;
@@ -143,5 +156,25 @@ public class Level extends Node{
             }
         }
         return null;
+    }
+    
+    public void save(){
+        try{
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(name));
+            out.writeObject(this);
+        } catch (IOException e){
+            System.out.println("Nelze ulozit level: " + e.getMessage());
+        }
+    }
+    
+    public void load() throws FileNotFoundException, IOException, ClassNotFoundException{
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(name));
+        Level data = (Level)in.readObject();
+        this.rooms = data.rooms;
+        this.start = data.start;
+        this.finish = data.finish;
+        this.timeLimit = data.timeLimit;
+        this.items = data.items;
+        this.availableObst = data.availableObst;
     }
 }
