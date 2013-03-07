@@ -28,11 +28,6 @@ import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
-/*
- * TODO: udelat lepe pridavani prekazek, asi zjistit jake jsou dostupne, a podle toho
- * udelat namapovani na tlacitka a ne napevno jako ted!!!
- */
-
 /**
  *
  * @author Pavel
@@ -90,7 +85,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
         
-        actualLevel = new Level(assetManager);
+        actualLevel = new Level(assetManager, "level1");
         initializeGui();
         thief = new Thief(assetManager, actualLevel);
         counter = new CountDown(actualLevel.timeLimit);
