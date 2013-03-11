@@ -25,7 +25,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Main app;
     private Node rootNode;
     private Node guiNode;
-    private AssetManager asserManager;
+    private AssetManager assetManager;
     private InputManager inputManager;
     private AbstractAppState nextState;
     private Node localRootNode = new Node("rootNode StartScreen stavu");
@@ -35,7 +35,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
         this.app = (Main)app;
         this.rootNode = app.getRootNode();
         this.guiNode = app.getGuiNode();
-        this.asserManager = app.getAssetManager();
+        this.assetManager = app.getAssetManager();
         this.inputManager = app.getInputManager();
         //this.nextState = nextState;
     }

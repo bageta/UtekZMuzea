@@ -19,7 +19,7 @@ public class Editor extends SimpleApplication {
     }
     
     @Override public void simpleInitApp(){
-        mainScreen = new MainScreen();
+        mainScreen = new MainScreen(this);
         
         stateManager.attach(mainScreen);
         
@@ -29,6 +29,8 @@ public class Editor extends SimpleApplication {
         Nifty nifty = niftyDisplay.getNifty();
         nifty.fromXml("Interface/editor_screen.xml", "start", mainScreen);
         guiViewPort.addProcessor(niftyDisplay);
+        
+        inputManager.removeListener(flyCam);
     }
     
 }
