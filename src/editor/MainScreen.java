@@ -25,7 +25,7 @@ public class MainScreen extends AbstractAppState implements ScreenController {
     private Node guiNode;
     private AssetManager assetManager;
     private InputManager inputManager;
-    private AbstractAppState nextState;
+    private AppStateManager stateManager;
     private Node localRootNode = new Node("rootNode MainScreen stavu");
     private Node localGuiNode = new Node("guiNode MainScreen stavu");
     
@@ -35,6 +35,7 @@ public class MainScreen extends AbstractAppState implements ScreenController {
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
         this.inputManager = app.getInputManager();
+        this.stateManager = app.getStateManager();
     }
     
     @Override public void initialize(AppStateManager stateManager, Application app){
@@ -60,6 +61,23 @@ public class MainScreen extends AbstractAppState implements ScreenController {
     @Override public void stateDetached(AppStateManager stateManager){
         rootNode.detachChild(localRootNode);
         guiNode.detachChild(localGuiNode);
+    }
+    
+    public void newLevel(String screen){
+        nifty.gotoScreen(screen);
+        stateManager.detach(this);
+        EditingScreen nextState = new EditingScreen(app);
+        nifty.registerScreenController(nextState);
+        stateManager.attach(nextState);
+        nextState.setNextState(this);
+    }
+    
+    public void editLevel(String screen){
+        nifty.gotoScreen(screen);
+    }
+    
+    public void quitEditor(){
+        app.stop();
     }
     
 }

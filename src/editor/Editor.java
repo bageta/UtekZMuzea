@@ -12,6 +12,7 @@ import de.lessvoid.nifty.Nifty;
 public class Editor extends SimpleApplication {
     
     private MainScreen mainScreen;
+    private EditingScreen editingScreen;
     
     public static void main(String[] args){
         Editor edit = new Editor();
@@ -20,6 +21,7 @@ public class Editor extends SimpleApplication {
     
     @Override public void simpleInitApp(){
         mainScreen = new MainScreen(this);
+        editingScreen = new EditingScreen(this);
         
         stateManager.attach(mainScreen);
         
@@ -27,7 +29,7 @@ public class Editor extends SimpleApplication {
         
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
         Nifty nifty = niftyDisplay.getNifty();
-        nifty.fromXml("Interface/editor_screen.xml", "start", mainScreen);
+        nifty.fromXml("Interface/editor_screen.xml", "start", mainScreen, editingScreen);
         guiViewPort.addProcessor(niftyDisplay);
         
         inputManager.removeListener(flyCam);

@@ -64,6 +64,13 @@ public class Level extends Node implements Serializable{
     public Level(AssetManager assetManager, String name){
         
         this.name = name;
+        try{
+            load();
+        } catch ( IOException e){
+            System.err.println("Doslo k vyjimce pri nacitani levelu: " + e.getMessage());
+        } catch( ClassNotFoundException e){
+            System.err.println("Doslo k vyjimce pri nacitani levelu: " + e.getMessage());
+        }
         /*
          * prepsat tak, aby to vsechno nacteny pridalo na AM
          */
@@ -119,6 +126,10 @@ public class Level extends Node implements Serializable{
         this.attachChild(rooms[7].generateDoors(rooms[8]));
     }
     
+    public Level(AssetManager assetManager){
+        this.assetManager = assetManager;
+    }
+    
     /**
      * metoda pro přidání nové překážky do levelu v průběhu hry
      * @param obstacle přidávaná překážka
@@ -167,7 +178,7 @@ public class Level extends Node implements Serializable{
         }
     }
     
-    public void load() throws FileNotFoundException, IOException, ClassNotFoundException{
+    public final void load() throws FileNotFoundException, IOException, ClassNotFoundException{
         ObjectInputStream in = new ObjectInputStream(new FileInputStream(name));
         Level data = (Level)in.readObject();
         this.rooms = data.rooms;
