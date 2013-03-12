@@ -17,7 +17,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 
 /**
- * Kamera, ktera se chova jako bezna kamera v RTS hra, tedy pohled je mirne
+ * Kamera, ktera se chova jako bezna kamera v RTS hrach, tedy pohled je mirne
  * zesikma shora a hrac muze s kamerou hybat 4 smery, rotovat, priblizova a 
  * oddalovat a take menit sklon kamery
  * @author Pavel

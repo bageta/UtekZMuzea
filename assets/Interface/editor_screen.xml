@@ -1,14 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+    <useControls filename="nifty-default-controls.xml" />
+    <useStyles filename="nifty-default-styles.xml" />
     <screen id="start" controller="editor.MainScreen">
-        <layer id="layer" backgroundColor="#003f" childLayout="center">
-            <panel id="panel" height="25%" width="35%" align="center" valign="center" backgroundColor="#f60f" childLayout="center" visibleToMouse="true">
-                <interact onClick="quit()"/>
-                <effect>
-                    <onStartScreen name="move" mode="in" direction="top" length="300" startDelay="0" inherit="true"/>
-                    <onEndScreen name="move" mode="out" direction="bottom" length="300" startDelay="0" inherit="true"/>
-                    <onHover name="pulsate" scaleFactor="0.008" startColor="#f600" endColor="#ffff" post="true"/>
-                </effect>
+        <layer id="background" backgroundColor="#003f" childLayout="center">
+            <image filename="Interface/images/background.png" width="100%" height="100%"></image>
+        </layer>
+        <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
+            <panel id="panel_top" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#f008">
+                <text text="Utek Z Muzea" font="Interface/Fonts/Default.fnt" height="100%" width="100%" color='#000f' />
+            </panel>
+            <panel id="panel_mid" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#0f08">
+                <text text="editor levelu, vytvorte novy level, nebo upravte stavajici" font="Interface/Fonts/Default.fnt" wrap="true" color="#000f" />
+            </panel>
+            <panel id="panel_bottom" height="50%" width="75%" align="center" childLayout="vertical" backgroundColor="#00f8">
+                <panel id="panel_bottom_upper" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#44f8">
+                    <control name="button" label="Vytvorit level" id="newLevelButton" align="center" valign="center" visibleToMouse="true">
+                        <interact onClick="newLevel(hud)"/>
+                    </control>
+                </panel>
+                <panel id="panel_bottom_center" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#88f8">
+                    <control name="button" label="Upravit level" id="editLevelButton" align="center" valign="center" visibleToMouse="false">
+                        <interact onClick="editLevel(loadScreen)"/>
+                    </control>
+                </panel>
+                <panel id="panel_bottom_lower" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#88f8">
+                    <control name="button" label="Ukoncit" id="exitGameButton" align="center" valign="center" visibleToMouse="true">
+                        <interact onClick="quitEditor()"/>
+                    </control>
+                </panel>
             </panel>
         </layer>
     </screen>
