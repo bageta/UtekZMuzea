@@ -5,9 +5,19 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.InputManager;
+import com.jme3.input.MouseInput;
+import com.jme3.input.controls.MouseButtonTrigger;
+import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
+import com.jme3.material.Material;
+import com.jme3.math.Ray;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.shape.Box;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
@@ -15,6 +25,8 @@ import de.lessvoid.nifty.screen.ScreenController;
 
 import game.InGameCamera;
 import game.Level;
+import game.Room;
+import java.util.ArrayList;
 
 /**
  *
@@ -39,6 +51,10 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     private Level editedLevel;
     
+    private ActionType actionType;
+    private int index;
+    private ArrayList<Room> newRooms = new ArrayList<Room>();
+    
     public EditingScreen(SimpleApplication app){
         this.rootNode = app.getRootNode();
         this.guiNode = app.getGuiNode();
@@ -47,11 +63,16 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         this.assetManager = app.getAssetManager();
         camera = new InGameCamera(app.getCamera(), rootNode);
         editedLevel = new Level(assetManager);
+        actionType=ActionType.NONE;
+        index=0;
     }
     
     public EditingScreen(SimpleApplication app, String levelPath){
         this(app);
         editedLevel = new Level(assetManager, levelPath);
+        //nakopirovat z array do array listu
+        //newRooms = editedLevel.rooms.clone();
+        index = editedLevel.rooms.length;
     }
     
     @Override public void onEndScreen(){}
@@ -67,7 +88,13 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         super.initialize(stateManager, app);
         
         camera.registerWithInput(inputManager);
-        camera.setCenter(Vector3f.ZERO);
+        camera.setCenter(new Vector3f(20, 20, 20));
+        
+        inputManager.setCursorVisible(true);
+        inputManager.addMapping("mouseClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        inputManager.addListener(actionListener, new String[]{"mouseClick"});
+        
+        localRootNode.attachChild(editedLevel);
     }
     
     @Override public void stateAttached(AppStateManager stateManager){
@@ -91,6 +118,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void save(){
+        editedLevel.rooms = (Room[])newRooms.toArray();
         if(editedLevel.name != null){
             editedLevel.save();
         } else {
@@ -100,5 +128,39 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     public void saveAs(){
         //vyvolat dialog s vyberem mista ulozeni
+    }
+    
+    public void addRoom(){
+        actionType = ActionType.ADD_ROOM;
+        System.out.println("Dostane se to sem?");
+    }
+    
+    private ActionListener actionListener = new ActionListener() {
+
+        public void onAction(String name, boolean keyPressed, float tpf) {
+            System.out.println("ASPON SEM?");
+            if(name.equals("mouseClick") && !keyPressed){
+                System.out.println("A SEM?");
+                //switch(actionType){
+                    /*case ADD_ROOM:
+                    {*/
+                        System.out.println("A KONECNE SEM?");
+                        Vector2f mousePosition = inputManager.getCursorPosition();
+                        Room newRoom = new Room(camera.getWorldCoordinates(mousePosition),
+                                10,10, index, assetManager);
+                        newRooms.add(newRoom);
+                        editedLevel.attachChild(newRoom);
+                        actionType = ActionType.NONE;
+                        //break;
+                    //}
+                        
+                //}
+            }
+        }
+        
+    };
+    
+    enum ActionType{
+        ADD_ROOM, ADD_ITEM, DELETE, NONE;
     }
 }

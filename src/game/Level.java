@@ -156,6 +156,7 @@ public class Level extends Node implements Serializable{
     public Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){
         CollisionResults results = new CollisionResults();
         Ray ray = new Ray(cameraPosition, cameraDirection);
+        //ray.collideWith(new Plane(), results);
         this.collideWith(ray, results);
         if(results.size() > 0){
             CollisionResult closest = results.getClosestCollision();
