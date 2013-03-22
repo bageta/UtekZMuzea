@@ -24,7 +24,9 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
 import game.InGameCamera;
+import game.Item;
 import game.Level;
+import game.ObstacleType;
 import game.Room;
 import java.util.ArrayList;
 
@@ -51,7 +53,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     private Level editedLevel;
     
-    private ActionType actionType;
+    private ActionType actionType= ActionType.NONE;
     private int index;
     private ArrayList<Room> newRooms = new ArrayList<Room>();
     
@@ -63,7 +65,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         this.assetManager = app.getAssetManager();
         camera = new InGameCamera(app.getCamera(), rootNode);
         editedLevel = new Level(assetManager);
-        actionType=ActionType.NONE;
         index=0;
     }
     
@@ -132,7 +133,12 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     public void addRoom(){
         actionType = ActionType.ADD_ROOM;
+        System.out.println(actionType);
         System.out.println("Dostane se to sem?");
+    }
+    
+    public void addItem(){
+        actionType = ActionType.ADD_ITEM;
     }
     
     private ActionListener actionListener = new ActionListener() {
@@ -141,17 +147,17 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             System.out.println("ASPON SEM?");
             if(name.equals("mouseClick") && !keyPressed){
                 System.out.println("A SEM?");
-                //switch(actionType){
-                    /*case ADD_ROOM:
-                    {*/
+                Vector2f mousePosition = inputManager.getCursorPosition();
+                System.out.println(actionType);
+                if(actionType==ActionType.ADD_ROOM){                    
                         System.out.println("A KONECNE SEM?");
-                        Vector2f mousePosition = inputManager.getCursorPosition();
                         Box b = new Box(10000.0f, 0.1f, 10000.0f);
                         Material m = new Material();
                         Geometry floor = new Geometry("floor", b);
                         floor.setMaterial(m);
                         CollisionResults results = new CollisionResults();
-                        Ray ray = new Ray(camera.getWorldCoordinates(mousePosition), camera.getCoordinatedDirection(mousePosition));
+                        Ray ray = new Ray(camera.getWorldCoordinates(mousePosition),
+                               camera.getCoordinatedDirection(mousePosition));
                         floor.collideWith(ray, results);
                         CollisionResult result = results.getClosestCollision();
                         Room newRoom = new Room(result.getContactPoint(),
@@ -159,10 +165,18 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         newRooms.add(newRoom);
                         editedLevel.attachChild(newRoom);
                         actionType = ActionType.NONE;
-                        //break;
-                    //}
-                        
-                //}
+                }                    
+                if(actionType==ActionType.ADD_ITEM){
+                        Room selected = getRoom(camera.getWorldCoordinates(mousePosition),
+                               camera.getCoordinatedDirection(mousePosition));
+                        if(selected!=null){
+                            Item newItem = new Item(selected, ObstacleType.DOG,
+                                    assetManager);
+                            editedLevel.attachChild(newItem);
+                            editedLevel.addItem(ObstacleType.DOG, selected);
+                            actionType = ActionType.NONE;
+                        }
+                }
             }
         }
         
@@ -170,5 +184,26 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     enum ActionType{
         ADD_ROOM, ADD_ITEM, DELETE, NONE;
+    }
+    
+    private Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){
+        CollisionResults results = new CollisionResults();
+        Ray ray = new Ray(cameraPosition, cameraDirection);
+        //ray.collideWith(new Plane(), results);
+        editedLevel.collideWith(ray, results);
+        if(results.size() > 0){
+            CollisionResult closest = results.getClosestCollision();
+            Geometry toCompare = closest.getGeometry();
+            for(Room r: newRooms){
+                if(r.floor.equals(toCompare)){
+                    return r;
+                }
+            }
+        }
+        return null;
+    }
+    
+    @Override public void update(float tpf){
+        
     }
 }
