@@ -146,7 +146,15 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                     {*/
                         System.out.println("A KONECNE SEM?");
                         Vector2f mousePosition = inputManager.getCursorPosition();
-                        Room newRoom = new Room(camera.getWorldCoordinates(mousePosition),
+                        Box b = new Box(10000.0f, 0.1f, 10000.0f);
+                        Material m = new Material();
+                        Geometry floor = new Geometry("floor", b);
+                        floor.setMaterial(m);
+                        CollisionResults results = new CollisionResults();
+                        Ray ray = new Ray(camera.getWorldCoordinates(mousePosition), camera.getCoordinatedDirection(mousePosition));
+                        floor.collideWith(ray, results);
+                        CollisionResult result = results.getClosestCollision();
+                        Room newRoom = new Room(result.getContactPoint(),
                                 10,10, index, assetManager);
                         newRooms.add(newRoom);
                         editedLevel.attachChild(newRoom);
