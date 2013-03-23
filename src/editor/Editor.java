@@ -11,8 +11,8 @@ import de.lessvoid.nifty.Nifty;
  */
 public class Editor extends SimpleApplication {
     
-    private MainScreen mainScreen;
-    private EditingScreen editingScreen;
+    public MainScreen mainScreen;
+    public EditingScreen editingScreen;
     
     public static void main(String[] args){
         Editor edit = new Editor();

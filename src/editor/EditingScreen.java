@@ -38,6 +38,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     private final InGameCamera camera;
     
+    private Editor app;
     private Node guiNode;
     private Node rootNode;
     private Node localGuiNode = new Node();
@@ -45,8 +46,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private AssetManager assetManager;
     private InputManager inputManager;
     private AppStateManager stateManager;
-    
-    private AbstractAppState nextState;
     
     private Nifty nifty;
     private Screen screen;
@@ -58,21 +57,22 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private ArrayList<Room> newRooms = new ArrayList<Room>();
     
     public EditingScreen(SimpleApplication app){
+        this.app = (Editor)app;
         this.rootNode = app.getRootNode();
         this.guiNode = app.getGuiNode();
         this.inputManager = app.getInputManager();
         this.stateManager = app.getStateManager();
         this.assetManager = app.getAssetManager();
         camera = new InGameCamera(app.getCamera(), rootNode);
-        editedLevel = new Level(assetManager);
-        index=0;
     }
     
-    public EditingScreen(SimpleApplication app, String levelPath){
-        this(app);
+    public void setEditedLevel(){
+        editedLevel = new Level(assetManager);
+        index = 0;
+    }
+    
+    public void setEditedLevel(String levelPath){
         editedLevel = new Level(assetManager, levelPath);
-        //nakopirovat z array do array listu
-        //newRooms = editedLevel.rooms.clone();
         index = editedLevel.rooms.length;
     }
     
@@ -83,6 +83,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     @Override public void bind(Nifty nifty, Screen screen){
         this.nifty = nifty;
         this.screen = screen;
+        nifty.registerScreenController(this);
     }
     
     @Override public void initialize(AppStateManager stateManager, Application app){
@@ -108,14 +109,10 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         guiNode.detachChild(localGuiNode);
     }
     
-    public void setNextState(AbstractAppState nextState){
-        this.nextState = nextState;
-    }
-    
     public void exitToMenu(String screen){
         nifty.gotoScreen(screen);
         stateManager.detach(this);
-        stateManager.attach(nextState);
+        stateManager.attach(app.mainScreen);
     }
     
     public void save(){
@@ -135,6 +132,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         actionType = ActionType.ADD_ROOM;
         System.out.println(actionType);
         System.out.println("Dostane se to sem?");
+        System.out.println(this.hashCode());
     }
     
     public void addItem(){
@@ -149,7 +147,9 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                 System.out.println("A SEM?");
                 Vector2f mousePosition = inputManager.getCursorPosition();
                 System.out.println(actionType);
-                if(actionType==ActionType.ADD_ROOM){                    
+                System.out.println(this.hashCode());
+                switch(actionType){
+                    case ADD_ROOM:
                         System.out.println("A KONECNE SEM?");
                         Box b = new Box(10000.0f, 0.1f, 10000.0f);
                         Material m = new Material();
@@ -165,8 +165,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         newRooms.add(newRoom);
                         editedLevel.attachChild(newRoom);
                         actionType = ActionType.NONE;
-                }                    
-                if(actionType==ActionType.ADD_ITEM){
+                        break;
+                    case ADD_ITEM:
                         Room selected = getRoom(camera.getWorldCoordinates(mousePosition),
                                camera.getCoordinatedDirection(mousePosition));
                         if(selected!=null){
@@ -176,6 +176,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                             editedLevel.addItem(ObstacleType.DOG, selected);
                             actionType = ActionType.NONE;
                         }
+                        break;
                 }
             }
         }
