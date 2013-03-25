@@ -139,6 +139,10 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         actionType = ActionType.ADD_ITEM;
     }
     
+    public void delete(){
+        actionType = ActionType.DELETE;
+    }
+    
     private ActionListener actionListener = new ActionListener() {
 
         public void onAction(String name, boolean keyPressed, float tpf) {
@@ -177,6 +181,18 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                             actionType = ActionType.NONE;
                         }
                         break;
+                    case DELETE:
+                        CollisionResults del_results = new CollisionResults();
+                        Ray ray2 = new Ray(camera.getCoordinatedDirection(mousePosition),
+                                camera.getWorldCoordinates(mousePosition));
+                        editedLevel.collideWith(ray2, del_results);
+                        CollisionResult closest = del_results.getClosestCollision();
+                        if(closest != null){
+                            editedLevel.detachChild(closest.getGeometry());
+                            /*potreba upravit tak, aby to jeste po smazani odstranilo
+                             * z mistnosti nebo veci atd...
+                            */
+                        }
                 }
             }
         }
