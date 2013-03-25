@@ -22,11 +22,15 @@ import com.jme3.input.MouseInput;
 import com.jme3.light.DirectionalLight;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Menu;
 import de.lessvoid.nifty.controls.button.ButtonControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.tools.SizeValue;
+import de.lessvoid.nifty.controls.MenuItemActivatedEvent;
+import org.bushe.swing.event.EventTopicSubscriber;
 
 /**
  *
@@ -52,6 +56,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     private Nifty nifty;
     private Screen screen;
+    private Element popup;
     
     private Main app;
     private Node rootNode;
@@ -100,14 +105,18 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     @Override public void update(float tpf){
-        if(isRunning){
+        if(isRunning && initialized){
             Element niftyElement = nifty.getCurrentScreen().findElementByName("timeLabel");
             niftyElement.getRenderer(TextRenderer.class).setText(counter.getRemainingMinutes());
             if(counter.getRemainingMillis() == 0){
-                //win
+                isRunning = false;
+                thief.setAnimation("stand");
+                nifty.gotoScreen("win");
             }
             if(thief.actualPosition.equals(actualLevel.finish)){
-                //fail
+                isRunning = false;
+                thief.setAnimation("stand");
+                nifty.gotoScreen("fail");
             }
             thief.update(tpf);
         }
@@ -175,10 +184,12 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     public void restart(){
-        //restartovat level
-    }
+        //localRootNode.detachAllChildren();
+        //initialize(null, app);
+    }    
     
     public void exitToMenu(String target){
+        localRootNode.detachAllChildren();
         nifty.gotoScreen(target);
         app.fromGameToMenu();
     }
@@ -209,4 +220,5 @@ public class InGameState extends AbstractAppState implements ScreenController {
             }
         }
     };
+
 }

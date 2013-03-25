@@ -74,7 +74,7 @@ public class Level extends Node implements Serializable{
         /*
          * prepsat tak, aby to vsechno nacteny pridalo na AM
          */
-        timeLimit = 100000;
+        timeLimit = 45000;
         
         this.assetManager = assetManager;
         
