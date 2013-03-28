@@ -26,6 +26,7 @@ public class Room extends Node{
     public Geometry floor;
     //nastaveni priznaku zda jde do mistnosti umistit prekazka(ve smyslu default)
     public boolean isAloved;
+    private ArrayList<Door> doors = new ArrayList<Door>();
     
     
     public Room(Vector3f position, float width, float height, int index, AssetManager assetManager){
@@ -91,17 +92,26 @@ public class Room extends Node{
         this.attachChild(wall4);
     }
     
-    public Geometry generateDoors(Room neighbour){
-        Box b1 = new Box(new Vector3f((position.x+neighbour.getPosition().x)/2,
-                position.y+2,
-                (position.z+neighbour.getPosition().z)/2), 2f, 3f, 2f);
-        Geometry door = new Geometry("door", b1);
-        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Brown);
-        
-        door.setMaterial(mat);
-        
-        return door;
+    private void generateDoors(Room neighbour){
+        Door door = neighbour.getDoor(this);
+        if(door==null){
+            doors.add(new Door(new Vector3f(position.x+neighbour.position.x/2,
+                    position.y+neighbour.position.y/2,
+                    position.z+neighbour.position.z/2), assetManager));
+        } else {
+            doors.add(door);
+        }
+    }
+    
+    public Door getDoor(Room neighbour){
+        for(Door d:doors){
+            for(Door dd:neighbour.doors){
+                if(d.equals(dd)){
+                    return d;
+                }
+            }
+        }
+        return null;
     }
     
     public void setObstacle(Obstacle obstacle){
@@ -111,12 +121,14 @@ public class Room extends Node{
     }
     
     public void setItem(Item item){
-        if(this.item == null)
+        if(this.item == null){
             this.item = item;
+        }    
     }
     
     public void addNeighbour(Room newNeighbour){
         neigbours.add(newNeighbour);
+        generateDoors(newNeighbour);
         if(!newNeighbour.neigbours.contains(this)){
             newNeighbour.addNeighbour(this); 
         }

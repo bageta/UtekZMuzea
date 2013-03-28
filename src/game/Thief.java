@@ -83,7 +83,7 @@ public class Thief extends Node {
                 if(actualAction.actionType == ActionType.MOVE || actualAction.actionType == ActionType.PICK){
 //                    System.out.println("Actual action to: " + actualAction.to);
 //                    System.out.println("target: " + map.rooms[actualAction.to]);
-                    target = map.rooms[actualAction.to].getPosition();
+                    target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
 //                    System.out.println("target position: " + target);
                 }
                 if(actualAction.actionType == ActionType.PUT){
@@ -91,10 +91,10 @@ public class Thief extends Node {
                     carrying.actualPosition = map.rooms[actualAction.from];
                     carrying.setLocalTranslation(map.rooms[actualAction.from].getPosition());
                     carrying = null;
-                    target = map.rooms[actualAction.to].getPosition();
+                    target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
                 }
                 if(actualAction.actionType == ActionType.USE){
-                    target = map.rooms[actualAction.to].getPosition();
+                    target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
                 }
                 actualState = State.INPROGRESS;
             } else{

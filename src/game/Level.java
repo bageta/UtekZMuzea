@@ -102,28 +102,20 @@ public class Level extends Node implements Serializable{
         }
         
         rooms[0].addNeighbour(rooms[1]);
-        this.attachChild(rooms[0].generateDoors(rooms[1]));
         
         rooms[0].addNeighbour(rooms[3]);
-        this.attachChild(rooms[0].generateDoors(rooms[3]));
         
         rooms[2].addNeighbour(rooms[5]);
-        this.attachChild(rooms[2].generateDoors(rooms[5]));
         
         rooms[3].addNeighbour(rooms[4]);
-        this.attachChild(rooms[3].generateDoors(rooms[4]));
         
         rooms[3].addNeighbour(rooms[6]);
-        this.attachChild(rooms[3].generateDoors(rooms[6]));
         
         rooms[4].addNeighbour(rooms[5]);
-        this.attachChild(rooms[4].generateDoors(rooms[5]));
         
         rooms[6].addNeighbour(rooms[7]);
-        this.attachChild(rooms[6].generateDoors(rooms[7]));
         
         rooms[7].addNeighbour(rooms[8]);
-        this.attachChild(rooms[7].generateDoors(rooms[8]));
     }
     
     public Level(AssetManager assetManager){
