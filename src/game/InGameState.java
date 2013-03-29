@@ -203,7 +203,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 Vector2f mousePosition = inputManager.getCursorPosition();
                 Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
                         camera.getCoordinatedDirection(mousePosition));
-                if(selected != null){
+                if(selected != null && !thief.actualPosition.equals(selected)){
                     actualLevel.addObstacle(new Obstacle(assetManager, newObstacle),
                             selected);
                     planner.setLevel(actualLevel);

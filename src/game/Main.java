@@ -5,6 +5,7 @@ import menu.StartScreen;
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
+import com.jme3.system.AppSettings;
 
 import de.lessvoid.nifty.Nifty;
 
@@ -22,7 +23,10 @@ public class Main extends SimpleApplication {
     private InGameState inGameState;
 
     public static void main(String[] args) {
+        AppSettings settings = new AppSettings(true);
+        settings.setFrameRate(60);
         Main app = new Main();
+        app.setSettings(settings);
         app.start();
     }
 
@@ -31,6 +35,7 @@ public class Main extends SimpleApplication {
      * modelu, nastaveni vychozich pozic a nacteni zvoleneho levelu
      */
     @Override public void simpleInitApp() {
+        
         inGameState = new InGameState(this);
         startScreenState = new StartScreen(this);
         
@@ -44,7 +49,8 @@ public class Main extends SimpleApplication {
         nifty.fromXml("Interface/screen.xml", "start", startScreenState, inGameState);
         Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
         Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
-        guiViewPort.addProcessor(niftyDisplay); 
+        guiViewPort.addProcessor(niftyDisplay);
+        
         //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
         inputManager.removeListener(flyCam);
     }
@@ -54,7 +60,8 @@ public class Main extends SimpleApplication {
      * k auktualizaci stavu hernich objektu
      * @param tpf doba za kterou byl vyrendrovan snimek
      */
-    @Override public void simpleUpdate(float tpf) {}
+    @Override public void simpleUpdate(float tpf) {
+    }
 
     @Override public void simpleRender(RenderManager rm) {}
     
