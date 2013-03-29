@@ -9,6 +9,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * třída pro reprezentaci místnosti 
@@ -26,7 +27,7 @@ public class Room extends Node{
     public Geometry floor;
     //nastaveni priznaku zda jde do mistnosti umistit prekazka(ve smyslu default)
     public boolean isAloved;
-    private ArrayList<Door> doors = new ArrayList<Door>();
+    private HashMap<Room, Door> doors = new HashMap<Room, Door>();
     
     
     public Room(Vector3f position, float width, float height, int index, AssetManager assetManager){
@@ -95,23 +96,18 @@ public class Room extends Node{
     private void generateDoors(Room neighbour){
         Door door = neighbour.getDoor(this);
         if(door==null){
-            doors.add(new Door(new Vector3f(position.x+neighbour.position.x/2,
-                    position.y+neighbour.position.y/2,
-                    position.z+neighbour.position.z/2), assetManager));
+            door = new Door(new Vector3f((position.x+neighbour.getPosition().x)/2,
+                    position.y+2,
+                    ((position.z+neighbour.getPosition().z)/2)), assetManager);
+            doors.put(neighbour, door);
         } else {
-            doors.add(door);
+            doors.put(neighbour,door);
         }
+        this.attachChild(door);
     }
     
     public Door getDoor(Room neighbour){
-        for(Door d:doors){
-            for(Door dd:neighbour.doors){
-                if(d.equals(dd)){
-                    return d;
-                }
-            }
-        }
-        return null;
+        return doors.get(neighbour);
     }
     
     public void setObstacle(Obstacle obstacle){

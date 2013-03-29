@@ -24,6 +24,8 @@ public class Door extends Node {
         mat.setColor("Color", ColorRGBA.Brown);
         
         door.setMaterial(mat);
+        
+        this.attachChild(door);
     }
     
 }
