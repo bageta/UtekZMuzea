@@ -56,6 +56,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private int index;
     private ArrayList<Room> newRooms = new ArrayList<Room>();
     
+    private Room selectedRoom;
+    
     public EditingScreen(SimpleApplication app){
         this.app = (Editor)app;
         this.rootNode = app.getRootNode();
@@ -139,6 +141,10 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         actionType = ActionType.ADD_ITEM;
     }
     
+    public void addDoor(){
+        actionType = ActionType.ADD_DOOR_ROOM_1;
+    }
+    
     public void delete(){
         actionType = ActionType.DELETE;
     }
@@ -183,8 +189,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         break;
                     case DELETE:
                         CollisionResults del_results = new CollisionResults();
-                        Ray ray2 = new Ray(camera.getCoordinatedDirection(mousePosition),
-                                camera.getWorldCoordinates(mousePosition));
+                        Ray ray2 = new Ray(camera.getWorldCoordinates(mousePosition),
+                                camera.getCoordinatedDirection(mousePosition));
                         editedLevel.collideWith(ray2, del_results);
                         CollisionResult closest = del_results.getClosestCollision();
                         if(closest != null){
@@ -193,6 +199,22 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                              * z mistnosti nebo veci atd...
                             */
                         }
+                        break;
+                    case ADD_DOOR_ROOM_1:
+                        selectedRoom = getRoom(camera.getWorldCoordinates(mousePosition),
+                                camera.getCoordinatedDirection(mousePosition));
+                        if(selectedRoom != null){
+                            actionType = ActionType.ADD_DOOR_ROOM_2;
+                        }
+                        break;
+                    case ADD_DOOR_ROOM_2:
+                        Room neighbour = getRoom(camera.getWorldCoordinates(mousePosition),
+                                camera.getWorldCoordinates(mousePosition));
+                        if(neighbour != null){
+                            selectedRoom.addNeighbour(neighbour);
+                            actionType = ActionType.NONE;
+                        }
+                        break;
                 }
             }
         }
@@ -200,7 +222,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     };
     
     enum ActionType{
-        ADD_ROOM, ADD_ITEM, DELETE, NONE;
+        ADD_ROOM, ADD_ITEM, DELETE, NONE, ADD_DOOR_ROOM_1, ADD_DOOR_ROOM_2;
     }
     
     private Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){

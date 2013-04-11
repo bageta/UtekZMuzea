@@ -47,6 +47,9 @@
                     <control name="button" id="delete" label="odstranit" width="25%" height="65%" valign="center">
                         <interact onClick="delete()" />
                     </control>
+                    <control name="button" id="doorsButton" label="pridat dvere" width="25%" height="65%" valign="center"> 
+                        <interact onClick="addDoor()" />
+                    </control>
                 </panel>
                 <panel id="bottom_right" height="100%" width="10%" childLayout="vertical" backgroundColor="#00f8">
                     <control name="button" label="Ulozit" width="100%" height="33%">
