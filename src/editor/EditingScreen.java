@@ -57,6 +57,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private ArrayList<Room> newRooms = new ArrayList<Room>();
     
     private Room selectedRoom;
+    private Room tempRoom;
     
     public EditingScreen(SimpleApplication app){
         this.app = (Editor)app;
@@ -131,10 +132,14 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void addRoom(){
-        actionType = ActionType.ADD_ROOM;
+        Vector2f mousePosition = inputManager.getCursorPosition();
+        tempRoom = new Room(getFloorContactPosition(camera.getWorldCoordinates(mousePosition),
+                camera.getCoordinatedDirection(mousePosition)), 10,10, index, assetManager);
+        editedLevel.attachChild(tempRoom);
         System.out.println(actionType);
         System.out.println("Dostane se to sem?");
         System.out.println(this.hashCode());
+        actionType = ActionType.ADD_ROOM;
     }
     
     public void addItem(){
@@ -161,19 +166,11 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                 switch(actionType){
                     case ADD_ROOM:
                         System.out.println("A KONECNE SEM?");
-                        Box b = new Box(10000.0f, 0.1f, 10000.0f);
-                        Material m = new Material();
-                        Geometry floor = new Geometry("floor", b);
-                        floor.setMaterial(m);
-                        CollisionResults results = new CollisionResults();
-                        Ray ray = new Ray(camera.getWorldCoordinates(mousePosition),
-                               camera.getCoordinatedDirection(mousePosition));
-                        floor.collideWith(ray, results);
-                        CollisionResult result = results.getClosestCollision();
-                        Room newRoom = new Room(result.getContactPoint(),
-                                10,10, index, assetManager);
+                        Room newRoom = new Room(tempRoom.getLocalTranslation(), tempRoom.getWidth(),
+                                tempRoom.getHeight(), index, assetManager);
                         newRooms.add(newRoom);
                         editedLevel.attachChild(newRoom);
+                        editedLevel.detachChild(tempRoom);
                         actionType = ActionType.NONE;
                         break;
                     case ADD_ITEM:
@@ -194,6 +191,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         editedLevel.collideWith(ray2, del_results);
                         CollisionResult closest = del_results.getClosestCollision();
                         if(closest != null){
+                            System.out.println("Neco se vybere...");
                             editedLevel.detachChild(closest.getGeometry());
                             /*potreba upravit tak, aby to jeste po smazani odstranilo
                              * z mistnosti nebo veci atd...
@@ -204,15 +202,19 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         selectedRoom = getRoom(camera.getWorldCoordinates(mousePosition),
                                 camera.getCoordinatedDirection(mousePosition));
                         if(selectedRoom != null){
+                            System.out.println("mistnost 1 - prepinam");
                             actionType = ActionType.ADD_DOOR_ROOM_2;
                         }
                         break;
                     case ADD_DOOR_ROOM_2:
                         Room neighbour = getRoom(camera.getWorldCoordinates(mousePosition),
-                                camera.getWorldCoordinates(mousePosition));
+                                camera.getCoordinatedDirection(mousePosition));
                         if(neighbour != null){
+                            System.out.println("mistnosts 2");
                             selectedRoom.addNeighbour(neighbour);
                             actionType = ActionType.NONE;
+                        } else {
+                            System.out.println("Sakra proc?");
                         }
                         break;
                 }
@@ -228,12 +230,12 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){
         CollisionResults results = new CollisionResults();
         Ray ray = new Ray(cameraPosition, cameraDirection);
-        //ray.collideWith(new Plane(), results);
         editedLevel.collideWith(ray, results);
         if(results.size() > 0){
             CollisionResult closest = results.getClosestCollision();
             Geometry toCompare = closest.getGeometry();
             for(Room r: newRooms){
+                System.out.println(r);
                 if(r.floor.equals(toCompare)){
                     return r;
                 }
@@ -242,7 +244,31 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         return null;
     }
     
+    private Vector3f getFloorContactPosition(Vector3f cameraPosition, Vector3f cameraDirection){
+        Box b = new Box(10000.0f, 0.1f, 10000.0f);
+                        Material m = new Material();
+        Geometry floor = new Geometry("floor", b);
+                        floor.setMaterial(m);
+                        CollisionResults results = new CollisionResults();
+                        Ray ray = new Ray(cameraPosition, cameraDirection);
+                        floor.collideWith(ray, results);
+                        CollisionResult result = results.getClosestCollision();
+        if(result != null){
+            return result.getContactPoint();
+        } else {
+            return Vector3f.ZERO;
+        }
+    }
+    
     @Override public void update(float tpf){
-        
+        if(actionType == ActionType.ADD_ROOM){
+            Vector2f mousePosition = inputManager.getCursorPosition();
+            /*tempRoom.move(getFloorContactPosition(
+                    camera.getWorldCoordinates(mousePosition),
+                    camera.getCoordinatedDirection(mousePosition)).subtract(tempRoom.getPosition()));*/
+            tempRoom.setLocalTranslation(getFloorContactPosition(
+                    camera.getWorldCoordinates(mousePosition),
+                    camera.getCoordinatedDirection(mousePosition)));
+        }
     }
 }
