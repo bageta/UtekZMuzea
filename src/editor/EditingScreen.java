@@ -133,8 +133,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     public void addRoom(){
         Vector2f mousePosition = inputManager.getCursorPosition();
-        tempRoom = new Room(getFloorContactPosition(camera.getWorldCoordinates(mousePosition),
-                camera.getCoordinatedDirection(mousePosition)), 10,10, index, assetManager);
+        tempRoom = new Room(Vector3f.ZERO, 10,10, index, assetManager);
         editedLevel.attachChild(tempRoom);
         System.out.println(actionType);
         System.out.println("Dostane se to sem?");
