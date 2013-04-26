@@ -22,10 +22,10 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class LevelSaver {
 
-    private Level levelRefernce;
+    private Level levelReference;
     
     public LevelSaver(Level levelReference){
-        this.levelRefernce = levelReference;
+        this.levelReference = levelReference;
     }
     
     public void save(){
@@ -47,7 +47,7 @@ public class LevelSaver {
             writer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
             
             writer.transform(new DOMSource(doc),
-                    new StreamResult(new File(levelRefernce.name + ".xml")));
+                    new StreamResult(new File(levelReference.name + ".xml")));
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -55,11 +55,11 @@ public class LevelSaver {
     
     private void makeSave(Document doc){
         Element root = doc.createElement("level");
-        root.appendChild(doc.createElement("name")).setTextContent(levelRefernce.name);
+        root.appendChild(doc.createElement("name")).setTextContent(levelReference.name);
         root.appendChild(doc.createElement("timeLimit"))
-                .setTextContent(levelRefernce.timeLimit+"");
+                .setTextContent(levelReference.timeLimit+"");
         Element rooms = doc.createElement("rooms");
-        for(Room r : levelRefernce.rooms){
+        for(Room r : levelReference.rooms){
             Element room = doc.createElement("room");
             room.appendChild(doc.createElement("index"))
                     .setTextContent(r.index+"");
@@ -86,19 +86,19 @@ public class LevelSaver {
         root.appendChild(rooms);
         
         root.appendChild(doc.createElement("start"))
-                .setTextContent(levelRefernce.start.index+"");
+                .setTextContent(levelReference.start.index+"");
         
         root.appendChild(doc.createElement("finish"))
-                .setTextContent(levelRefernce.finish.index+"");
+                .setTextContent(levelReference.finish.index+"");
         
         Element obstacles = doc.createElement("avalibleObst");
         
-        for(ObstacleType t: levelRefernce.availableObst.keySet()){
+        for(ObstacleType t: levelReference.availableObst.keySet()){
             Element obstacle = doc.createElement("obstacle");
             obstacle.appendChild(doc.createElement("type"))
                     .setTextContent(t.toString());
             obstacle.appendChild(doc.createElement("count"))
-                    .setTextContent(levelRefernce.availableObst.get(t).toString());
+                    .setTextContent(levelReference.availableObst.get(t).toString());
             obstacles.appendChild(obstacle);
         }
         

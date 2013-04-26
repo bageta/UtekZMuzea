@@ -2,8 +2,6 @@ package game;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -18,8 +16,9 @@ import com.jme3.collision.CollisionResults;
 import com.jme3.math.Ray;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+
 import xml_support.LevelSaver;
+import xml_support.LevelLoader;
 
 /**
  * třída pro reprezentaci levelu hry
@@ -48,7 +47,7 @@ public class Level extends Node{
     //mapa, odpovida poctu dostupnych veci pro vyreseni levelu:
     public Map<ObstacleType, Integer> availableObst = new HashMap<ObstacleType, Integer>();
     
-    AssetManager assetManager;
+    public AssetManager assetManager;
     
     public Level(int roomsCount){
         rooms = new Room[roomsCount];

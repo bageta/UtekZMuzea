@@ -26,16 +26,18 @@ public class Room extends Node{
     public Item item;
     public Geometry floor;
     //nastaveni priznaku zda jde do mistnosti umistit prekazka(ve smyslu default)
-    public boolean isAloved = true;
+    public boolean isAloved;
     private HashMap<Room, Door> doors = new HashMap<Room, Door>();
     
     
-    public Room(Vector3f position, float width, float height, int index, AssetManager assetManager){
+    public Room(Vector3f position, float width, float height, int index,
+            boolean isAloved,AssetManager assetManager){
         this.position = position;
         this.width = width;
         this.height = height;
         this.index = index;
         this.assetManager = assetManager;
+        this.isAloved = isAloved;
         generateFloor();
         generateWalls();
     }
