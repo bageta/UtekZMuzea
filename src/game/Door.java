@@ -7,12 +7,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
+import java.io.Serializable;
 
 /**
  *
  * @author Pavel
  */
-public class Door extends Node {
+public class Door extends Node{
     
     Vector3f position;
     

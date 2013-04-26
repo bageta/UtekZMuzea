@@ -19,12 +19,13 @@ import com.jme3.math.Ray;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import xml_support.LevelSaver;
 
 /**
  * třída pro reprezentaci levelu hry
  * @author Pavel
  */
-public class Level extends Node implements Serializable{
+public class Level extends Node{
     
     public String name;
     
@@ -163,12 +164,14 @@ public class Level extends Node implements Serializable{
     }
     
     public void save(){
-        try{
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(name));
-            out.writeObject(this);
-        } catch (IOException e){
-            System.out.println("Nelze ulozit level: " + e.getMessage());
+        if(start == null){
+            start = rooms[0];
         }
+        if(finish == null){
+            finish = rooms[rooms.length-1];
+        }
+        LevelSaver ls = new LevelSaver(this);
+        ls.save();
     }
     
     public final void load() throws FileNotFoundException, IOException, ClassNotFoundException{

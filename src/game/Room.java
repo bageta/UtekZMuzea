@@ -6,7 +6,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.material.Material;
 import com.jme3.asset.AssetManager;
-import com.jme3.math.ColorRGBA;
+//import com.jme3.math.ColorRGBA;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class Room extends Node{
     public Item item;
     public Geometry floor;
     //nastaveni priznaku zda jde do mistnosti umistit prekazka(ve smyslu default)
-    public boolean isAloved;
+    public boolean isAloved = true;
     private HashMap<Room, Door> doors = new HashMap<Room, Door>();
     
     

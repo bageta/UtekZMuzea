@@ -8,6 +8,7 @@ import com.jme3.material.Material;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import java.io.Serializable;
 
 /**
  * třída pro reprezentaci věcí, které může zloděj použít k odstranění překážek

@@ -119,7 +119,11 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void save(){
-        editedLevel.rooms = (Room[])newRooms.toArray();
+        editedLevel.rooms = newRooms.toArray(new Room[0]);
+        for(int i=0; i<editedLevel.rooms.length; ++i){
+            editedLevel.rooms[i].index = i;
+        }
+        editedLevel.name = "level";
         if(editedLevel.name != null){
             editedLevel.save();
         } else {
