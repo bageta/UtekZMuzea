@@ -137,7 +137,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     public void addRoom(){
         Vector2f mousePosition = inputManager.getCursorPosition();
-        tempRoom = new Room(Vector3f.ZERO, 10,10, index, assetManager);
+        tempRoom = new Room(Vector3f.ZERO, 10,10, index, true, assetManager);
         editedLevel.attachChild(tempRoom);
         System.out.println(actionType);
         System.out.println("Dostane se to sem?");
@@ -170,7 +170,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                     case ADD_ROOM:
                         System.out.println("A KONECNE SEM?");
                         Room newRoom = new Room(tempRoom.getLocalTranslation(), tempRoom.getWidth(),
-                                tempRoom.getHeight(), index, assetManager);
+                                tempRoom.getHeight(), index,true, assetManager);
                         newRooms.add(newRoom);
                         editedLevel.attachChild(newRoom);
                         editedLevel.detachChild(tempRoom);

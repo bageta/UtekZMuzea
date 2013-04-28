@@ -90,7 +90,8 @@ public class InGameState extends AbstractAppState implements ScreenController {
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
         
-        actualLevel = new Level(assetManager, "level1");
+        actualLevel = new Level(assetManager, "level");
+        
         initializeGui();
         thief = new Thief(assetManager, actualLevel);
         counter = new CountDown(actualLevel.timeLimit);

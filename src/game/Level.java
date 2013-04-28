@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 import com.jme3.asset.AssetManager;
-//import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -52,7 +51,7 @@ public class Level extends Node{
     public Level(int roomsCount){
         rooms = new Room[roomsCount];
         for(int i=0; i<rooms.length; ++i){
-            rooms[i] = new Room(new Vector3f(0,0,0),0,0,0, assetManager);
+            rooms[i] = new Room(new Vector3f(0,0,0),0.0f,0.0f,0,true, assetManager);
         }
     }
     
@@ -64,58 +63,51 @@ public class Level extends Node{
     public Level(AssetManager assetManager, String name){
         
         this.name = name;
-        try{
-            load();
-        } catch ( IOException e){
-            System.err.println("Doslo k vyjimce pri nacitani levelu: " + e.getMessage());
-        } catch( ClassNotFoundException e){
-            System.err.println("Doslo k vyjimce pri nacitani levelu: " + e.getMessage());
-        }
+        this.assetManager = assetManager;
+        
+        load();
+        
         /*
          * prepsat tak, aby to vsechno nacteny pridalo na AM
          */
-        timeLimit = 45000;
+//        rooms = new Room[9];
+//        rooms[0] = new Room(new Vector3f(0,0,0),10,10,0,true, assetManager);
+//        rooms[1] = new Room(new Vector3f(21,0,0),10,10,1,true, assetManager);
+//        rooms[2] = new Room(new Vector3f(42,0,0),10,10,2,true, assetManager);
+//        rooms[3] = new Room(new Vector3f(0,0,21),10,10,3,true, assetManager);
+//        rooms[4] = new Room(new Vector3f(21,0,21),10,10,4,true, assetManager);
+//        rooms[5] = new Room(new Vector3f(42,0,21),10,10,5,true, assetManager);
+//        rooms[6] = new Room(new Vector3f(0,0,42),10,10,6,true, assetManager);
+//        rooms[7] = new Room(new Vector3f(21,0,42),10,10,7,true, assetManager);
+//        rooms[8] = new Room(new Vector3f(42,0,42),10,10,8,true, assetManager);
         
-        this.assetManager = assetManager;
+//        addItem(ObstacleType.GLASS, rooms[2]);
+//        addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[7]);
         
-        rooms = new Room[9];
-        rooms[0] = new Room(new Vector3f(0,0,0),10,10,0, assetManager);
-        rooms[1] = new Room(new Vector3f(21,0,0),10,10,1, assetManager);
-        rooms[2] = new Room(new Vector3f(42,0,0),10,10,2, assetManager);
-        rooms[3] = new Room(new Vector3f(0,0,21),10,10,3, assetManager);
-        rooms[4] = new Room(new Vector3f(21,0,21),10,10,4, assetManager);
-        rooms[5] = new Room(new Vector3f(42,0,21),10,10,5, assetManager);
-        rooms[6] = new Room(new Vector3f(0,0,42),10,10,6, assetManager);
-        rooms[7] = new Room(new Vector3f(21,0,42),10,10,7, assetManager);
-        rooms[8] = new Room(new Vector3f(42,0,42),10,10,8, assetManager);
+//        availableObst.put(ObstacleType.GLASS, 1);
         
-        addItem(ObstacleType.GLASS, rooms[2]);
-        //addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[7]);
-        
-        availableObst.put(ObstacleType.GLASS, 1);
-        
-        start = rooms[0];
-        finish = rooms[8];
+//        start = rooms[0];
+//        finish = rooms[8];
         
         for(Room r: rooms){
             this.attachChild(r);
         }
         
-        rooms[0].addNeighbour(rooms[1]);
-        
-        rooms[0].addNeighbour(rooms[3]);
-        
-        rooms[2].addNeighbour(rooms[5]);
-        
-        rooms[3].addNeighbour(rooms[4]);
-        
-        rooms[3].addNeighbour(rooms[6]);
-        
-        rooms[4].addNeighbour(rooms[5]);
-        
-        rooms[6].addNeighbour(rooms[7]);
-        
-        rooms[7].addNeighbour(rooms[8]);
+//        rooms[0].addNeighbour(rooms[1]);
+//        
+//        rooms[0].addNeighbour(rooms[3]);
+//        
+//        rooms[2].addNeighbour(rooms[5]);
+//        
+//        rooms[3].addNeighbour(rooms[4]);
+//        
+//        rooms[3].addNeighbour(rooms[6]);
+//        
+//        rooms[4].addNeighbour(rooms[5]);
+//        
+//        rooms[6].addNeighbour(rooms[7]);
+//        
+//        rooms[7].addNeighbour(rooms[8]);
     }
     
     public Level(AssetManager assetManager){
@@ -173,14 +165,8 @@ public class Level extends Node{
         ls.save();
     }
     
-    public final void load() throws FileNotFoundException, IOException, ClassNotFoundException{
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(name));
-        Level data = (Level)in.readObject();
-        this.rooms = data.rooms;
-        this.start = data.start;
-        this.finish = data.finish;
-        this.timeLimit = data.timeLimit;
-        this.items = data.items;
-        this.availableObst = data.availableObst;
+    public final void load(){
+        LevelLoader ll = new LevelLoader(this, name);
+        ll.load();
     }
 }

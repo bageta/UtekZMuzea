@@ -48,7 +48,7 @@ public class Thief extends Node {
         Geometry geom = new Geometry("box", b);*/
         actualPosition = map.start;
         
-        
+        this.setLocalTranslation(map.start.getPosition());
         model = am.loadModel("Models/Oto/Oto.mesh.xml");
         model.setLocalScale(0.4f);
         model.setLocalTranslation(0.0f, 2.0f, 0.0f);
@@ -84,6 +84,7 @@ public class Thief extends Node {
 //                    System.out.println("Actual action to: " + actualAction.to);
 //                    System.out.println("target: " + map.rooms[actualAction.to]);
                     target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
+                    //target = map.rooms[actualAction.to].getPosition();
 //                    System.out.println("target position: " + target);
                 }
                 if(actualAction.actionType == ActionType.PUT){

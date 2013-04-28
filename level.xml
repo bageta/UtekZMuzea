@@ -1,1 +1,39 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?><level><name>level</name><timeLimit>0</timeLimit><rooms><room><index>0</index><width>10.0</width><height>10.0</height><position>(12.668871, 0.10000229, -4.1823006)</position><isAloved>true</isAloved><neighbours><neighbour>2</neighbour></neighbours></room><room><index>1</index><width>10.0</width><height>10.0</height><position>(32.99598, 0.09999466, -4.1290474)</position><item>DOG</item><isAloved>true</isAloved><neighbours/></room><room><index>2</index><width>10.0</width><height>10.0</height><position>(12.460462, 0.099998474, 16.06202)</position><isAloved>true</isAloved><neighbours><neighbour>0</neighbour></neighbours></room></rooms><start>0</start><finish>2</finish><avalibleObst/></level>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<level>
+	<name>level</name>
+	<timeLimit>40000</timeLimit>
+	<rooms>
+		<room>
+			<index>0</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(12.668871, 0.10000229, -4.1823006)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>2</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>1</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(32.99598, 0.09999466, -4.1290474)</position>
+			<item>DOG</item>
+			<isAloved>true</isAloved>
+			<neighbours/>
+		</room>
+		<room>
+			<index>2</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(12.460462, 0.099998474, 16.06202)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>0</neighbour>
+			</neighbours>
+		</room>
+	</rooms>
+	<start>0</start>
+	<finish>2</finish>
+	<avalibleObst/>
+</level>
