@@ -42,9 +42,12 @@
                         <control name="button" id="roomButton" label="pridat mistnost" width="25%" height="100%" valign="center">
                             <interact onClick="addRoom()" />
                         </control>
-                        <control name="button" id="itemButton" label="pridat vec" width="25%" height="100%" valign="center">
-                            <interact onClick="addItem()" />
-                        </control>
+                        <panel id="item_panel" height="100%" width="25%" childLayout="vertical">
+                            <control name="dropDown" id="item_drop_down" width="100%" height="50%" displatItems="3"/>
+                            <control name="button" id="itemButton" label="pridat vec" width="100%" height="50%" valign="center">
+                                <interact onClick="addItem()" />
+                            </control>    
+                        </panel>
                         <control name="button" id="delete" label="odstranit" width="25%" height="100%" valign="center">
                             <interact onClick="delete()" />
                         </control>

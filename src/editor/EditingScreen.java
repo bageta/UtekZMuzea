@@ -20,6 +20,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -91,6 +92,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     @Override public void initialize(AppStateManager stateManager, Application app){
         super.initialize(stateManager, app);
+        
+        initializeGui();
         
         camera.registerWithInput(inputManager);
         camera.setCenter(new Vector3f(20, 20, 20));
@@ -335,6 +338,13 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             editedLevel.detachChild(editedLevel.items.get(toDelete));
             editedLevel.items.get(toDelete).actualPosition.deleteItem();
             editedLevel.items.remove(toDelete);
+        }
+    }
+    
+    private void initializeGui(){
+        DropDown typeSelector = nifty.getCurrentScreen().findNiftyControl("item_drop_down", DropDown.class);
+        for(ObstacleType o : ObstacleType.values()){
+            typeSelector.addItem(o.toString());
         }
     }
     
