@@ -223,24 +223,24 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                     case SELECT_START:
                         Room selectedStart = getRoom(camera.getWorldCoordinates(mousePosition),
                                 camera.getCoordinatedDirection(mousePosition));
-                        if(selectedStart != null){
+                        if(selectedStart != null && editedLevel.finish!=selectedStart){
                             if(editedLevel.start != null){
-                                //odznacit start
+                                editedLevel.start.unsetStart();
                             }
                             editedLevel.start = selectedStart;
-                            //oznacit novy start
+                            editedLevel.start.setStart();
                             actionType = ActionType.NONE;
                         }
                         break;
                     case SELECT_FINISH:
                         Room selectedFinish = getRoom(camera.getWorldCoordinates(mousePosition),
                               camera.getCoordinatedDirection(mousePosition));
-                        if(selectedFinish != null){
+                        if(selectedFinish != null && editedLevel.start!=selectedFinish){
                             if(editedLevel.finish != null){
-                                //odznacit finish
+                                editedLevel.finish.unsetFinish();
                             }
                             editedLevel.finish = selectedFinish;
-                            //oznacit novy finish
+                            editedLevel.finish.setFinish();
                             actionType = ActionType.NONE;
                         }
                         break;
@@ -248,7 +248,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         Room toggled = getRoom(camera.getWorldCoordinates(mousePosition),
                                 camera.getCoordinatedDirection(mousePosition));
                         if(toggled != null){
-                            //toggled.toggleAloved();
+                            toggled.toggleAloved();
                             actionType = ActionType.NONE;
                         }
                         break;

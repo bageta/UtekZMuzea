@@ -6,6 +6,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 import com.jme3.material.Material;
 import com.jme3.asset.AssetManager;
+import com.jme3.math.ColorRGBA;
 //import com.jme3.math.ColorRGBA;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class Room extends Node{
         
         Material floorMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         floorMaterial.setTexture("ColorMap", assetManager.loadTexture("Textures/floor.jpg"));
+        floorMaterial.setColor("Color", ColorRGBA.White);
         floor.setMaterial(floorMaterial);
         
         this.attachChild(floor);
@@ -138,5 +140,31 @@ public class Room extends Node{
     
     public boolean isEmpty(){
         return (obstacle==null && item==null && isAloved);
+    }
+    
+    public void unsetStart(){
+        floor.getMaterial().setColor("Color", ColorRGBA.White);
+    }
+    
+    public void setStart(){
+        floor.getMaterial().setColor("Color", ColorRGBA.Green);
+    }
+    
+    public void unsetFinish(){
+        floor.getMaterial().setColor("Color", ColorRGBA.White);
+    }
+    
+    public void setFinish(){
+        floor.getMaterial().setColor("Color", ColorRGBA.Red);
+    }
+    
+    public void toggleAloved(){
+        if(isAloved){
+            isAloved = false;
+            floor.getMaterial().setColor("Color", ColorRGBA.DarkGray);
+        } else {
+            isAloved = true;
+            floor.getMaterial().setColor("Color", ColorRGBA.White);
+        }
     }
 }

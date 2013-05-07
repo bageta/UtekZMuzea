@@ -60,7 +60,7 @@
                             <interact onClick="selectFinish()"/>
                         </control>
                         <control name="button" id="toggle_aloved" label="Uzamknout/Odemknout" width="25%" height="100%">
-                            <interact onClick="selectFinish()"/>
+                            <interact onClick="toggleAloved()"/>
                         </control>
                     </panel>
                 </panel>
