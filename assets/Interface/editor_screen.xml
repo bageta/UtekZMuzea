@@ -37,21 +37,34 @@
             <panel id="panel_top" visibleToMouse="false" height="75%" width="100%" align="center" childLayout="center" backgroundColor="#0000">
             </panel>
             <panel id="panel_bottom" height="25%" width="100%" align="center" valign="bottom" childLayout="horizontal" backgroundColor="#ffff">
-                <panel id="bottom_left" height="100%" width="90%" aling="left" childLayout="horizontal" backgroundColor="#f008">
-                    <control name="button" id="roomButton" label="pridat mistnost" width="25%" height="65%" valign="center">
-                        <interact onClick="addRoom()" />
-                    </control>
-                    <control name="button" id="itemButton" label="pridat vec" width="25%" height="65%" valign="center">
-                        <interact onClick="addItem()" />
-                    </control>
-                    <control name="button" id="delete" label="odstranit" width="25%" height="65%" valign="center">
-                        <interact onClick="delete()" />
-                    </control>
-                    <control name="button" id="doorsButton" label="pridat dvere" width="25%" height="65%" valign="center"> 
-                        <interact onClick="addDoor()" />
-                    </control>
+                <panel id="bottom_left" height="100%" width="85%" aling="left" childLayout="vertical" backgroundColor="#f008">
+                    <panel id="upper_controls" height="50%" width="100%" childLayout="horizontal">
+                        <control name="button" id="roomButton" label="pridat mistnost" width="25%" height="100%" valign="center">
+                            <interact onClick="addRoom()" />
+                        </control>
+                        <control name="button" id="itemButton" label="pridat vec" width="25%" height="100%" valign="center">
+                            <interact onClick="addItem()" />
+                        </control>
+                        <control name="button" id="delete" label="odstranit" width="25%" height="100%" valign="center">
+                            <interact onClick="delete()" />
+                        </control>
+                        <control name="button" id="doorsButton" label="pridat dvere" width="25%" height="100%" valign="center"> 
+                            <interact onClick="addDoor()" />
+                        </control>
+                    </panel>
+                    <panel id="lower_controls" height="50%" width="100%" childLayout="horizontal">
+                        <control name="button" id="select_start_button" label="Zvolit Start" width="25%" height="100%">
+                            <interact onClick="selectStart()"/>
+                        </control>
+                        <control name="button" id="select_finish_button" label="Zvolit Cil" width="25%" height="100%">
+                            <interact onClick="selectFinish()"/>
+                        </control>
+                        <control name="button" id="toggle_aloved" label="Uzamknout/Odemknout" width="25%" height="100%">
+                            <interact onClick="selectFinish()"/>
+                        </control>
+                    </panel>
                 </panel>
-                <panel id="bottom_right" height="100%" width="10%" childLayout="vertical" backgroundColor="#00f8">
+                <panel id="bottom_right" height="100%" width="15%" childLayout="vertical" backgroundColor="#00f8">
                     <control name="button" label="Ulozit" width="100%" height="33%">
                         <interact onClick="save()" />
                     </control>

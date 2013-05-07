@@ -11,6 +11,7 @@ import com.jme3.input.InputManager;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import game.Level;
 import game.Main;
 
 /**
@@ -27,7 +28,6 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Node guiNode;
     private AssetManager assetManager;
     private InputManager inputManager;
-    private AbstractAppState nextState;
     private Node localRootNode = new Node("rootNode StartScreen stavu");
     private Node localGuiNode = new Node("guiNode StartScreen stavu");
     
@@ -37,7 +37,6 @@ public class StartScreen extends AbstractAppState implements ScreenController {
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
         this.inputManager = app.getInputManager();
-        //this.nextState = nextState;
     }
     
     public void bind(Nifty nifty, Screen screen){
@@ -73,7 +72,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
         //TODO: udelat nacitani levelu podel predaneho level name...
         app.getStateManager().detach(this);
         nifty.gotoScreen("hud");
-        app.inGameState.setLevel(levelName);
+        app.inGameState.setLevel(new Level(assetManager, levelName));
         app.getStateManager().attach(app.inGameState);
     }
     
