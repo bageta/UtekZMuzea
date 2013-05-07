@@ -1,7 +1,7 @@
 package game;
 
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
+//import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Cylinder;
 import com.jme3.scene.Geometry;
 import com.jme3.material.Material;
@@ -26,7 +26,7 @@ public class Item extends Node{
     public Room actualPosition;
     
     //model pro zobrazení překážky:
-    Spatial model;
+    public Geometry model;
     
     private Node parent;
     
@@ -40,13 +40,13 @@ public class Item extends Node{
         actualPosition = startPossiotion;
         
         Cylinder b = new Cylinder(10, 10, 1, 3);
-        Geometry geom = new Geometry("box", b);
+        model = new Geometry("cylinder", b);
         
         Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Yellow);
-        geom.setMaterial(mat);
+        model.setMaterial(mat);
         
-        this.attachChild(geom);
+        this.attachChild(model);
         this.setLocalTranslation(startPossiotion.getPosition());
         //TODO: load modelu podle typu
     }

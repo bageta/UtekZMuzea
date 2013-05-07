@@ -126,6 +126,10 @@ public class Room extends Node{
         }    
     }
     
+    public void deleteItem(){
+        item = null;
+    }
+    
     public void addNeighbour(Room newNeighbour){
         neigbours.add(newNeighbour);
         generateDoors(newNeighbour);

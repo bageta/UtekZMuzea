@@ -182,7 +182,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         if(selected!=null){
                             Item newItem = new Item(selected, ObstacleType.DOG,
                                     assetManager);
-                            editedLevel.attachChild(newItem);
+                            //editedLevel.attachChild(newItem);
                             editedLevel.addItem(ObstacleType.DOG, selected);
                             actionType = ActionType.NONE;
                         }
@@ -196,9 +196,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         if(closest != null){
                             System.out.println("Neco se vybere...");
                             editedLevel.detachChild(closest.getGeometry());
-                            /*potreba upravit tak, aby to jeste po smazani odstranilo
-                             * z mistnosti nebo veci atd...
-                            */
+                            deleteRoom(closest.getGeometry());
+                            deleteItem(closest.getGeometry());
                         }
                         break;
                     case ADD_DOOR_ROOM_1:
@@ -308,6 +307,37 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         actionType = ActionType.TOGGLE_ALOVED;
     }
     
+    private void deleteRoom(Geometry toCompare){
+        int toDelete = -1;
+        for(int i=0; i<newRooms.size(); ++i){
+            if(toCompare.equals(newRooms.get(i).floor)){
+                toDelete = i;
+                break;
+            }
+        }
+        if(toDelete != -1){
+            if(newRooms.get(toDelete).item == null){
+                editedLevel.detachChild(newRooms.get(toDelete));
+                newRooms.remove(toDelete);
+            }
+        }
+    }
+    
+    private void deleteItem(Geometry toCompare){
+        int toDelete = -1;
+        for(int i=0; i<editedLevel.items.size(); ++i){
+            if(toCompare.equals(editedLevel.items.get(i).model)){
+                toDelete = i;
+                break;
+            }
+        }
+        if(toDelete != -1){
+            editedLevel.detachChild(editedLevel.items.get(toDelete));
+            editedLevel.items.get(toDelete).actualPosition.deleteItem();
+            editedLevel.items.remove(toDelete);
+        }
+    }
+    
     @Override public void update(float tpf){
         if(actionType == ActionType.ADD_ROOM){
             Vector2f mousePosition = inputManager.getCursorPosition();
@@ -319,4 +349,5 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                     camera.getCoordinatedDirection(mousePosition)));
         }
     }
+   
 }
