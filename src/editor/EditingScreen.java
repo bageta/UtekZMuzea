@@ -220,6 +220,38 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                             System.out.println("Sakra proc?");
                         }
                         break;
+                    case SELECT_START:
+                        Room selectedStart = getRoom(camera.getWorldCoordinates(mousePosition),
+                                camera.getCoordinatedDirection(mousePosition));
+                        if(selectedStart != null){
+                            if(editedLevel.start != null){
+                                //odznacit start
+                            }
+                            editedLevel.start = selectedStart;
+                            //oznacit novy start
+                            actionType = ActionType.NONE;
+                        }
+                        break;
+                    case SELECT_FINISH:
+                        Room selectedFinish = getRoom(camera.getWorldCoordinates(mousePosition),
+                              camera.getCoordinatedDirection(mousePosition));
+                        if(selectedFinish != null){
+                            if(editedLevel.finish != null){
+                                //odznacit finish
+                            }
+                            editedLevel.finish = selectedFinish;
+                            //oznacit novy finish
+                            actionType = ActionType.NONE;
+                        }
+                        break;
+                    case TOGGLE_ALOVED:
+                        Room toggled = getRoom(camera.getWorldCoordinates(mousePosition),
+                                camera.getCoordinatedDirection(mousePosition));
+                        if(toggled != null){
+                            //toggled.toggleAloved();
+                            actionType = ActionType.NONE;
+                        }
+                        break;
                 }
             }
         }
@@ -227,7 +259,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     };
     
     enum ActionType{
-        ADD_ROOM, ADD_ITEM, DELETE, NONE, ADD_DOOR_ROOM_1, ADD_DOOR_ROOM_2;
+        ADD_ROOM, ADD_ITEM, DELETE, NONE, ADD_DOOR_ROOM_1, ADD_DOOR_ROOM_2,
+        SELECT_START, SELECT_FINISH, TOGGLE_ALOVED;
     }
     
     private Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){
@@ -238,7 +271,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             CollisionResult closest = results.getClosestCollision();
             Geometry toCompare = closest.getGeometry();
             for(Room r: newRooms){
-                System.out.println(r);
+                //System.out.println(r);
                 if(r.floor.equals(toCompare)){
                     return r;
                 }
@@ -261,6 +294,18 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         } else {
             return Vector3f.ZERO;
         }
+    }
+    
+    public void selectStart(){
+        actionType = ActionType.SELECT_START;
+    }
+    
+    public void selectFinish(){
+        actionType = ActionType.SELECT_FINISH;
+    }
+    
+    public void toggleAloved(){
+        actionType = ActionType.TOGGLE_ALOVED;
     }
     
     @Override public void update(float tpf){
