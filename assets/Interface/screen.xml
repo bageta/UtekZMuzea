@@ -115,7 +115,7 @@
                         <interact onClick="pause()" />
                     </control>
                     <control name="button" label="Konec" width="100%" height="50%">
-                        <interact onClick="exitToMenu(start)" />
+                        <interact onClick="exitToMenu(level_select)" />
                     </control>
                 </panel>        
             </panel>
@@ -131,7 +131,7 @@
                     <interact onClick="restart()" />
                 </control>
                 <control name="button" label="Ukoncit" width="30%" height="30%" valign="center">
-                    <interact onClick="exitToMenu(start)" />
+                    <interact onClick="exitToMenu(level_select)" />
                 </control>
             </panel>
         </layer>
@@ -147,7 +147,7 @@
                     <interact onClick="restart()" />
                 </control>
                 <control name="button" label="Ukoncit" width="30%" height="30%" valign="center">
-                    <interact onClick="exitToMenu(start)" />
+                    <interact onClick="exitToMenu(level_select)" />
                 </control>
             </panel>
         </layer>
@@ -160,7 +160,7 @@
                     <interact onClick="restart()" />
                 </control>
                 <control name="button" label="Ukoncit" width="30%" height="30%" valign="center">
-                    <interact onClick="exitToMenu(start)" />
+                    <interact onClick="exitToMenu(level_select)" />
                 </control>
             </panel>
         </layer>

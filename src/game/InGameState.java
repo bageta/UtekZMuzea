@@ -105,6 +105,10 @@ public class InGameState extends AbstractAppState implements ScreenController {
         localRootNode.attachChild(thief);
     }
     
+    public void setLevel(Level level){
+        actualLevel = level;
+    }
+    
     @Override public void update(float tpf){
         if(isRunning && initialized){
             Element niftyElement = nifty.getCurrentScreen().findElementByName("timeLabel");
@@ -191,8 +195,9 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     public void exitToMenu(String target){
         localRootNode.detachAllChildren();
+        app.getStateManager().detach(this);
         nifty.gotoScreen(target);
-        app.fromGameToMenu();
+        app.getStateManager().attach(app.startScreenState);
     }
     
     private ActionListener actionListener = new ActionListener(){

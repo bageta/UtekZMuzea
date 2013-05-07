@@ -19,8 +19,8 @@ import java.util.logging.Level;
  */
 public class Main extends SimpleApplication {
     
-    private StartScreen startScreenState;
-    private InGameState inGameState;
+    public StartScreen startScreenState;
+    public InGameState inGameState;
 
     public static void main(String[] args) {
         AppSettings settings = new AppSettings(true);
@@ -64,14 +64,4 @@ public class Main extends SimpleApplication {
     }
 
     @Override public void simpleRender(RenderManager rm) {}
-    
-    public void fromMenuToGame(){
-        stateManager.detach(startScreenState);
-        stateManager.attach(inGameState);
-    }
-    
-    public void fromGameToMenu(){
-        stateManager.detach(inGameState);
-        stateManager.detach(startScreenState);
-    }
 }
