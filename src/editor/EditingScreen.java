@@ -60,6 +60,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private Room selectedRoom;
     private Room tempRoom;
     
+    private DropDown typeSelector;
+    
     public EditingScreen(SimpleApplication app){
         this.app = (Editor)app;
         this.rootNode = app.getRootNode();
@@ -183,10 +185,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         Room selected = getRoom(camera.getWorldCoordinates(mousePosition),
                                camera.getCoordinatedDirection(mousePosition));
                         if(selected!=null){
-                            Item newItem = new Item(selected, ObstacleType.DOG,
-                                    assetManager);
-                            //editedLevel.attachChild(newItem);
-                            editedLevel.addItem(ObstacleType.DOG, selected);
+                            ObstacleType newItemType = ObstacleType.valueOf((String)typeSelector.getSelection());
+                            editedLevel.addItem(newItemType, selected);
                             actionType = ActionType.NONE;
                         }
                         break;
@@ -342,7 +342,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     private void initializeGui(){
-        DropDown typeSelector = nifty.getCurrentScreen().findNiftyControl("item_drop_down", DropDown.class);
+        typeSelector = nifty.getCurrentScreen().findNiftyControl("item_drop_down", DropDown.class);
         for(ObstacleType o : ObstacleType.values()){
             typeSelector.addItem(o.toString());
         }
