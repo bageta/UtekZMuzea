@@ -311,7 +311,17 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void setObstacles(){
+        //TODO: inicializovat kontrol obsahujici prekazky a jejich pocty
         nifty.gotoScreen("obstacle_select");
+    }
+    
+    public void saveObstacles(){
+        //TODO: ulozit navolene prekazky do editovaneho levelu(vycucnuti z kontrolu)
+        nifty.gotoScreen("editing");
+    }
+    
+    public void cancelObstacleAction(){
+        nifty.gotoScreen("editing");
     }
     
     private void deleteRoom(Geometry toCompare){

@@ -84,4 +84,23 @@
             </panel>
         </layer>
     </screen>
+    <screen id="obstacle_select" controller="editor.EditingScreen">
+        <layer id="foreground" childLayout="vertical">
+            <panel id="upper" width="100%" height="80%">
+                <!-- TODO: sem hodit nejaky kotrol pro navoleni prekazek -->
+            </panel>
+            <panel id="lower" width="100%" height="20%" childLayout="horizontal">
+                <panel id="sub_left" width="50%" height="100%">
+                    <control name="ok_button" label="Ok">
+                        <interact onClick="saveObstacles()" />
+                    </control>
+                </panel>
+                <panel id="sub_right" width="50%" height="100%">
+                    <control name="cancel_button" label="Zrusit">
+                        <interact onClick="cancelObstacleSetup()" />
+                    </control>
+                </panel>
+            </panel>
+        </layer>
+    </screen>
 </nifty>
