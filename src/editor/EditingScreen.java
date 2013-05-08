@@ -25,6 +25,7 @@ import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
+import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
@@ -316,12 +317,21 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void setObstacles(){
-        //TODO: inicializovat kontrol obsahujici prekazky a jejich pocty
+        for(ObstacleType o : editedLevel.availableObst.keySet()){
+            nifty.getScreen("obstacle_select").findNiftyControl(o.toString().toLowerCase() + "_field",
+                    TextField.class).setText(editedLevel.availableObst.get(o).toString());
+        }
         nifty.gotoScreen("obstacle_select");
     }
     
     public void saveObstacles(){
-        //TODO: ulozit navolene prekazky do editovaneho levelu(vycucnuti z kontrolu)
+        for(ObstacleType o : ObstacleType.values()){
+            TextField t = nifty.getScreen("obstacle_select").findNiftyControl(o.toString().
+                    toLowerCase()+"_field",TextField.class);
+            if(t != null){
+                editedLevel.availableObst.put(o, Integer.parseInt(t.getText()));
+            }
+        }
         nifty.gotoScreen("editing");
     }
     
@@ -391,9 +401,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     @Override public void update(float tpf){
         if(actionType == ActionType.ADD_ROOM){
             Vector2f mousePosition = inputManager.getCursorPosition();
-            /*tempRoom.move(getFloorContactPosition(
-                    camera.getWorldCoordinates(mousePosition),
-                    camera.getCoordinatedDirection(mousePosition)).subtract(tempRoom.getPosition()));*/
             tempRoom.setLocalTranslation(getFloorContactPosition(
                     camera.getWorldCoordinates(mousePosition),
                     camera.getCoordinatedDirection(mousePosition)));

@@ -90,7 +90,6 @@
                 <control id="scroll_panel" name="scrollPanel" width="100%" height="100%" horizontal="false">
                     <panel id="scroll_inside" width="100%" height="100%" childLayout="vertical" />
                 </control>
-                <!-- TODO: sem hodit nejaky kotrol pro navoleni prekazek -->
             </panel>
             <panel id="lower" width="100%" height="20%" childLayout="horizontal">
                 <panel id="sub_left" width="50%" height="100%" childLayout="vertical">
