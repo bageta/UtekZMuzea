@@ -20,7 +20,12 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.DropDown;
+import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
+import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
+import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -320,7 +325,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         nifty.gotoScreen("editing");
     }
     
-    public void cancelObstacleAction(){
+    public void cancelObstacleSetup(){
         nifty.gotoScreen("editing");
     }
     
@@ -359,6 +364,27 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         typeSelector = nifty.getCurrentScreen().findNiftyControl("item_drop_down", DropDown.class);
         for(ObstacleType o : ObstacleType.values()){
             typeSelector.addItem(o.toString());
+        }
+        Element e = nifty.getScreen("obstacle_select").findElementByName("scroll_inside");
+        System.out.println(e);
+        for(final ObstacleType o : ObstacleType.values()){
+            PanelBuilder builder = new PanelBuilder(o.toString()+"_panel"){{
+                childLayoutHorizontal();
+                height("10%");
+                width("100%");
+
+                control(new LabelBuilder(o.toString() + "_text", o.toString()+": "){{
+                    height("100%");
+                    width("50%");
+                }});
+
+                control(new TextFieldBuilder(o.toString().toLowerCase() + "_field", "0"){{
+                    height("100%");
+                    width("50%");
+                }});
+
+            }};
+            builder.build(nifty, nifty.getScreen("obstacle_select"), e);
         }
     }
     
