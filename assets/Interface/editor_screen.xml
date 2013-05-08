@@ -65,6 +65,9 @@
                         <control name="button" id="toggle_aloved" label="Uzamknout/Odemknout" width="25%" height="100%">
                             <interact onClick="toggleAloved()"/>
                         </control>
+                        <control name="button" id="obstacle_button" label="Nastavit prekazky" width="28%" height="100%">
+                            <interact onClick="setObstacles()"/>
+                        </control>
                     </panel>
                 </panel>
                 <panel id="bottom_right" height="100%" width="15%" childLayout="vertical" backgroundColor="#00f8">

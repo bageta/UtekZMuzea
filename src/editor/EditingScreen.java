@@ -310,6 +310,10 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         actionType = ActionType.TOGGLE_ALOVED;
     }
     
+    public void setObstacles(){
+        nifty.gotoScreen("obstacle_select");
+    }
+    
     private void deleteRoom(Geometry toCompare){
         int toDelete = -1;
         for(int i=0; i<newRooms.size(); ++i){
