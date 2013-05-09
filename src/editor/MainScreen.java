@@ -63,16 +63,15 @@ public class MainScreen extends AbstractAppState implements ScreenController {
         guiNode.detachChild(localGuiNode);
     }
     
-    public void newLevel(String screen){
-        nifty.gotoScreen(screen);
+    public void newLevel(){
+        nifty.gotoScreen("editing");
         stateManager.detach(this);
         app.editingScreen.setEditedLevel();
         stateManager.attach(app.editingScreen);
     }
     
-    public void editLevel(String screen){
-        nifty.gotoScreen(screen);
-        //volani dialogu vyberu levelu ze souboru
+    public void editLevel(){
+        nifty.gotoScreen("load");
     }
     
     public void quitEditor(){

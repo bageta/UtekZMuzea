@@ -16,17 +16,36 @@
             <panel id="panel_bottom" height="50%" width="75%" align="center" childLayout="vertical" backgroundColor="#00f8">
                 <panel id="panel_bottom_upper" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#44f8">
                     <control name="button" label="Vytvorit level" id="newLevelButton" align="center" valign="center" visibleToMouse="true">
-                        <interact onClick="newLevel(editing)"/>
+                        <interact onClick="newLevel()"/>
                     </control>
                 </panel>
                 <panel id="panel_bottom_center" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#88f8">
                     <control name="button" label="Upravit level" id="editLevelButton" align="center" valign="center" visibleToMouse="false">
-                        <interact onClick="editLevel(loadScreen)"/>
+                        <interact onClick="editLevel()"/>
                     </control>
                 </panel>
                 <panel id="panel_bottom_lower" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#88f8">
                     <control name="button" label="Ukoncit" id="exitGameButton" align="center" valign="center" visibleToMouse="true">
                         <interact onClick="quitEditor()"/>
+                    </control>
+                </panel>
+            </panel>
+        </layer>
+    </screen>
+    <screen id="load" controller="editor.MainScreen">
+        <layer id="foreground" childLayout="vertical">
+            <panel id="top" childLayout="vertical">
+                <control name="listBox" id="file_list" selection = "single" width="100%" height="100%" vertical="optional" horizontal="optional" displayItems="10" />
+            </panel>
+            <panel id="bottom" childLayout="horizontal">
+                <panel id="left" width="50%" height="100%" childLayout="center">
+                    <control name="button" label="Upravit">
+                        <interact onClick="editLevel()" />
+                    </control>
+                </panel>
+                <panel id="right" width="50%" height="100%" childLayout="center">
+                    <control name="button" label="Zrusit">
+                        <interact onClick="cancel()" />
                     </control>
                 </panel>
             </panel>
@@ -109,7 +128,7 @@
         <layer id="foreground" childLayout="vertical">
             <panel id="top" width="100%" height="80%" childLayout="vertical">
                 <panel id="upper" width="100%" height="80%" childLayout="vertical">
-                    <control name="listBox" id="file_list" selection = "single" width="100%" height="100%" vertical="optional" horizontal="optional" displayItems="10"/>
+                    <control name="listBox" id="file_list" selection = "single" width="100%" vertical="optional" horizontal="optional" displayItems="10"/>
                 </panel>
                 <panel id="lower" width="100%" height="20%" childLayout="horizontal">
                     <control name="textfield" id="file_name"/>
