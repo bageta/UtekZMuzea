@@ -40,7 +40,7 @@
             <panel id="bottom" childLayout="horizontal">
                 <panel id="left" width="50%" height="100%" childLayout="center">
                     <control name="button" label="Upravit">
-                        <interact onClick="editLevel()" />
+                        <interact onClick="editLevelLoad()" />
                     </control>
                 </panel>
                 <panel id="right" width="50%" height="100%" childLayout="center">
@@ -131,7 +131,7 @@
                     <control name="listBox" id="file_list" selection = "single" width="100%" vertical="optional" horizontal="optional" displayItems="10"/>
                 </panel>
                 <panel id="lower" width="100%" height="20%" childLayout="horizontal">
-                    <control name="textfield" id="file_name"/>
+                    <control name="textfield" id="file_name" text="novy level"/>
                 </panel>
             </panel>
             <panel id="bottom" width="100%" height="20%" childLayout="horizontal">

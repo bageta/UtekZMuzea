@@ -9,7 +9,10 @@ import com.jme3.input.InputManager;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.screen.ScreenController;
+
+import java.io.File;
 
 /**
  *
@@ -71,7 +74,34 @@ public class MainScreen extends AbstractAppState implements ScreenController {
     }
     
     public void editLevel(){
+        ListBox fileList = nifty.getScreen("load").findNiftyControl("file_list", ListBox.class);
+        fileList.clear();
+        
+        File dir = new File("levels/custom/");
+        File[] files = dir.listFiles();
+        
+        for(File f: files){
+            if(f.isFile() && f.getName().endsWith(".xml")){
+                String name = f.getName();
+                name = name.substring(0, name.length()-4);
+                fileList.addItem(name);
+            }
+        }
+
         nifty.gotoScreen("load");
+    }
+    
+    public void editLevelLoad(){
+        String levelName = (String)nifty.getCurrentScreen().findNiftyControl("file_list",
+                ListBox.class).getSelection().get(0);
+        nifty.gotoScreen("editing");
+        stateManager.detach(this);
+        app.editingScreen.setEditedLevel("levels/custom/" + levelName);
+        stateManager.attach(app.editingScreen);
+    }
+    
+    public void cancel(){
+        nifty.gotoScreen("start");
     }
     
     public void quitEditor(){

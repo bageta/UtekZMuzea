@@ -153,6 +153,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         File[] files = dir.listFiles();
         
         ListBox fileList = nifty.getScreen("save_as").findNiftyControl("file_list", ListBox.class);
+        fileList.clear();
         
         for(File f : files){
             System.out.println("necykli to tady?");
@@ -163,10 +164,13 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             }
         }
         
-        if(editedLevel.name != null){
-            nifty.getScreen("save_as").findNiftyControl("file_name", TextField.class).
-                    setText(editedLevel.name);
-        }
+        //BUGOVALO TO PRI EDITACI EXISTUJICIHO LEVELU
+//        if(editedLevel.name != null){
+//            System.out.println(editedLevel.name);
+//            TextField t = nifty.getScreen("save_as").findNiftyControl("file_name", TextField.class);
+//            System.out.println(t);
+//            t.setText(editedLevel.name);
+//        }
         
         nifty.gotoScreen("save_as");
     }
