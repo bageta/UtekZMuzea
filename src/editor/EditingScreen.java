@@ -350,6 +350,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             nifty.getScreen("obstacle_select").findNiftyControl(o.toString().toLowerCase() + "_field",
                     TextField.class).setText(editedLevel.availableObst.get(o).toString());
         }
+        //nifty.getScreen("obstacle_select").findNiftyControl("time_limit", TextField.class)
+        //        .setText(editedLevel.timeLimit+"");
         nifty.gotoScreen("obstacle_select");
     }
     
@@ -361,6 +363,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                 editedLevel.availableObst.put(o, Integer.parseInt(t.getText()));
             }
         }
+        editedLevel.timeLimit = Integer.parseInt(nifty.getCurrentScreen()
+                .findNiftyControl("time_limit", TextField.class).getText());
         nifty.gotoScreen("editing");
     }
     
