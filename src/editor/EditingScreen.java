@@ -22,7 +22,6 @@ import com.jme3.scene.shape.Box;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.DropDown;
-import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
 import de.lessvoid.nifty.controls.TextField;
@@ -31,10 +30,10 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
 import game.InGameCamera;
-import game.Item;
 import game.Level;
 import game.ObstacleType;
 import game.Room;
+
 import java.util.ArrayList;
 
 /**
@@ -143,7 +142,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void saveAs(){
-        //vyvolat dialog s vyberem mista ulozeni
+        nifty.gotoScreen("save_as");
     }
     
     public void addRoom(){
@@ -335,7 +334,12 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         nifty.gotoScreen("editing");
     }
     
-    public void cancelObstacleSetup(){
+    public void cancel(){
+        nifty.gotoScreen("editing");
+    }
+    
+    public void saveAsConfirm(){
+        //nacist jmeno z textfieldu a ulozit
         nifty.gotoScreen("editing");
     }
     
