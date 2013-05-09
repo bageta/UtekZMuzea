@@ -20,8 +20,11 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.DropDown;
+import de.lessvoid.nifty.controls.ListBox;
+import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
 import de.lessvoid.nifty.controls.TextField;
@@ -33,6 +36,7 @@ import game.InGameCamera;
 import game.Level;
 import game.ObstacleType;
 import game.Room;
+import java.io.File;
 
 import java.util.ArrayList;
 
@@ -133,7 +137,8 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         for(int i=0; i<editedLevel.rooms.length; ++i){
             editedLevel.rooms[i].index = i;
         }
-        editedLevel.name = "level";
+        //editedLevel.name = "level";
+        System.out.println(editedLevel.name);
         if(editedLevel.name != null){
             editedLevel.save();
         } else {
@@ -142,6 +147,27 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void saveAs(){
+        System.out.println("Dostane se to sem");
+        File dir = new File("levels/custom/");
+        System.out.println("sem to projde?");
+        File[] files = dir.listFiles();
+        
+        ListBox fileList = nifty.getScreen("save_as").findNiftyControl("file_list", ListBox.class);
+        
+        for(File f : files){
+            System.out.println("necykli to tady?");
+            if(f.isFile() && f.getName().endsWith(".xml")){
+                String name = f.getName();
+                name = name.substring(0, name.length()-4);
+                fileList.addItem(name);
+            }
+        }
+        
+        if(editedLevel.name != null){
+            nifty.getScreen("save_as").findNiftyControl("file_name", TextField.class).
+                    setText(editedLevel.name);
+        }
+        
         nifty.gotoScreen("save_as");
     }
     
@@ -339,7 +365,9 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void saveAsConfirm(){
-        //nacist jmeno z textfieldu a ulozit
+        String levelName = nifty.getCurrentScreen().findNiftyControl("file_name", TextField.class).getText();
+        editedLevel.name = levelName;
+        editedLevel.save();
         nifty.gotoScreen("editing");
     }
     
@@ -409,6 +437,13 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                     camera.getWorldCoordinates(mousePosition),
                     camera.getCoordinatedDirection(mousePosition)));
         }
+    }
+    
+    @NiftyEventSubscriber(id="file_list")
+    public void onMyListSelectionChange(final String id, final ListBoxSelectionChangedEvent<String> event){
+        String selectedItem = event.getSelection().get(0);
+        nifty.getScreen("save_as").findNiftyControl("file_name", TextField.class)
+                .setText(selectedItem);
     }
    
 }
