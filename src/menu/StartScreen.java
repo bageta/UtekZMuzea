@@ -9,10 +9,13 @@ import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.ListBox;
+import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import game.Level;
 import game.Main;
+import java.io.File;
 
 /**
  *
@@ -68,6 +71,12 @@ public class StartScreen extends AbstractAppState implements ScreenController {
         guiNode.detachChild(localGuiNode);
     }
     
+    public void startSelectedLevel(){
+        String selected = (String)nifty.getCurrentScreen().findNiftyControl("custom_levels",
+                ListBox.class).getSelection().get(0);
+        startGame("levels/custom/" + selected);
+    }
+    
     public void startGame(String levelName){
         app.inGameState.setLevel(new Level(assetManager, levelName));
         System.out.println("Probehne to?");
@@ -79,6 +88,26 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     
     public void changeScreen(String screenName){
         nifty.gotoScreen(screenName);
+    }
+    
+    public void  gotoLevelSelect(){
+        ListBox customLevels = nifty.getScreen("level_select")
+                .findNiftyControl("custom_levels", ListBox.class);
+        
+        customLevels.clear();
+        
+        File dir = new File("levels/custom/");
+        File[] levels = dir.listFiles();
+        
+        for(File f : levels){
+            if(f.isFile() && f.getName().endsWith(".xml")){
+                String name = f.getName();
+                name = name.substring(0, name.length()-4);
+                customLevels.addItem(name);
+            }
+        }
+        
+        nifty.gotoScreen("level_select");
     }
     
     public void quitGame(){

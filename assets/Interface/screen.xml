@@ -16,7 +16,7 @@
             <panel id="panel_bottom" height="25%" width="75%" align="center" childLayout="horizontal" backgroundColor="#00f8">
                 <panel id="panel_bottom_left" height="50%" width="50%" valign="center" childLayout="center" backgroundColor="#44f8">
                     <control name="button" label="Zacit hru" id="startButton" align="center" valign="center" visibleToMouse="true">
-                        <interact onClick="changeScreen(level_select)"/>
+                        <interact onClick="gotoLevelSelect()"/>
                     </control>
                 </panel>
                 <panel id="panel_bottom_right" height="50%" width="50%" valign="center" childLayout="center" backgroundColor="#88f8">
@@ -81,7 +81,7 @@
                         <panel id="tab_panel_2" childLayout="vertical">
                             <control name="listBox" id="custom_levels" selection = "single" width="100%" vertical="optional" horizontal="optional" displayItems="10"/>
                             <control name="button" id="confirm" label="Hrat">
-                                <interact onClick="playCustomLevel()" />
+                                <interact onClick="startSelectedLevel()" />
                             </control>  
                         </panel>
                     </control>
