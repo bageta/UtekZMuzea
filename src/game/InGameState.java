@@ -22,15 +22,11 @@ import com.jme3.input.MouseInput;
 import com.jme3.light.DirectionalLight;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Menu;
 import de.lessvoid.nifty.controls.button.ButtonControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import de.lessvoid.nifty.tools.SizeValue;
-import de.lessvoid.nifty.controls.MenuItemActivatedEvent;
-import org.bushe.swing.event.EventTopicSubscriber;
 
 /**
  *
@@ -90,23 +86,30 @@ public class InGameState extends AbstractAppState implements ScreenController {
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
         
-        actualLevel = new Level(assetManager, "level");
+        localRootNode.addLight(dl);
+    }
+    
+    public void initializeLevel(){
+        
+        localRootNode.detachAllChildren();
         
         initializeGui();
+        
         thief = new Thief(assetManager, actualLevel);
         counter = new CountDown(actualLevel.timeLimit);
-        
+
         planner = new Planner2(actualLevel);
         thief.setNewPlane(planner.makeNewPlan());
         counter.start();
-        
-        localRootNode.addLight(dl);
+
+        //localRootNode.addLight(dl);
         localRootNode.attachChild(actualLevel);
         localRootNode.attachChild(thief);
     }
     
     public void setLevel(Level level){
         actualLevel = level;
+        initializeLevel();
     }
     
     @Override public void update(float tpf){

@@ -69,7 +69,8 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
     
     public void startGame(String levelName){
-        //TODO: udelat nacitani levelu podel predaneho level name...
+        app.inGameState.setLevel(new Level(assetManager, levelName));
+        System.out.println("Probehne to?");
         app.getStateManager().detach(this);
         nifty.gotoScreen("hud");
         app.inGameState.setLevel(new Level(assetManager, levelName));

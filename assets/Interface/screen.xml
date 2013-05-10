@@ -35,7 +35,7 @@
                         <panel id="tab_panel_1" childLayout="vertical">
                             <panel id="tabbed_upper" childLayout="horizontal" width="100%" height="30%">
                                 <control name="button" label="Level 1" id="butt_1" width="25%" height="100%">
-                                    <interact onClick="startGame(level1)" />
+                                    <interact onClick="startGame(levels/level1)" />
                                 </control>
                                 <control name="button" label="Level 2" id="butt_2" width="25%" height="100%">
                                     <interact onClick="startGame(level2)" />
@@ -78,6 +78,12 @@
                         </panel>
                     </control>
                     <control name="nifty-tab" caption="Vlastni levely" id="tab_2">
+                        <panel id="tab_panel_2" childLayout="vertical">
+                            <control name="listBox" id="custom_levels" selection = "single" width="100%" vertical="optional" horizontal="optional" displayItems="10"/>
+                            <control name="button" id="confirm" label="Hrat">
+                                <interact onClick="playCustomLevel()" />
+                            </control>  
+                        </panel>
                     </control>
                 </control>
             </panel>

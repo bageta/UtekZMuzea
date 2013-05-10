@@ -31,6 +31,7 @@ public class LevelLoader {
             
             DocumentBuilder builder = dbf.newDocumentBuilder();
             
+            System.out.println(path + ".xml");
             Document doc = builder.parse(path+".xml");
             
             makeLoad(doc);
