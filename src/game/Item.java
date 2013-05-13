@@ -43,7 +43,20 @@ public class Item extends Node{
         model = new Geometry("cylinder", b);
         
         Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Yellow);
+        switch(type){
+            case DOG:
+                mat.setColor("Color", ColorRGBA.Brown);
+                break;
+            case GLASS:
+                mat.setColor("Color", ColorRGBA.White);
+                break;
+            case FIRE:
+                mat.setColor("Color", ColorRGBA.Red);
+                break;
+            case FLASH:
+                mat.setColor("Color", ColorRGBA.Yellow);
+                break;
+        }
         model.setMaterial(mat);
         
         this.attachChild(model);

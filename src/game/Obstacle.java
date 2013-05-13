@@ -33,8 +33,22 @@ public class Obstacle extends Node {
         Sphere b = new Sphere(15, 15, 1);
         Geometry geom = new Geometry("box", b);
         
+        
         Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Yellow);
+        switch(type){
+            case DOG:
+                mat.setColor("Color", ColorRGBA.Brown);
+                break;
+            case GLASS:
+                mat.setColor("Color", ColorRGBA.White);
+                break;
+            case FIRE:
+                mat.setColor("Color", ColorRGBA.Red);
+                break;
+            case FLASH:
+                mat.setColor("Color", ColorRGBA.Yellow);
+                break;
+        }
         geom.setMaterial(mat);
         
         this.attachChild(geom);
