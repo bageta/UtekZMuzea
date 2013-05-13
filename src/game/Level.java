@@ -12,6 +12,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -169,5 +170,7 @@ public class Level extends Node{
     public final void load(){
         LevelLoader ll = new LevelLoader(this, name);
         ll.load();
+        start.floor.getMaterial().setColor("Color", ColorRGBA.Green);
+        finish.floor.getMaterial().setColor("Color", ColorRGBA.Red);
     }
 }

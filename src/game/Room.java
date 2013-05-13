@@ -61,7 +61,11 @@ public class Room extends Node{
         
         Material floorMaterial = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         floorMaterial.setTexture("ColorMap", assetManager.loadTexture("Textures/floor.jpg"));
-        floorMaterial.setColor("Color", ColorRGBA.White);
+        if(isAloved){
+            floorMaterial.setColor("Color", ColorRGBA.White);
+        } else {
+            floorMaterial.setColor("Color", ColorRGBA.DarkGray);
+        }
         floor.setMaterial(floorMaterial);
         
         this.attachChild(floor);
