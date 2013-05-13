@@ -84,11 +84,19 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     public void setEditedLevel(){
         editedLevel = new Level(assetManager);
         index = 0;
+        initializeLevel();
+    }
+    
+    private void initializeLevel(){
+        localRootNode.detachAllChildren();
+        localRootNode.attachChild(editedLevel);
     }
     
     public void setEditedLevel(String levelPath){
         editedLevel = new Level(assetManager, levelPath);
+        editedLevel.load();
         index = editedLevel.rooms.length;
+        initializeLevel();
     }
     
     @Override public void onEndScreen(){}
@@ -113,7 +121,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         inputManager.addMapping("mouseClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addListener(actionListener, new String[]{"mouseClick"});
         
-        localRootNode.attachChild(editedLevel);
+        //localRootNode.attachChild(editedLevel);
     }
     
     @Override public void stateAttached(AppStateManager stateManager){
