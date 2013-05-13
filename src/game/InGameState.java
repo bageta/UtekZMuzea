@@ -22,7 +22,7 @@ import com.jme3.input.MouseInput;
 import com.jme3.light.DirectionalLight;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.button.ButtonControl;
+import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
@@ -93,7 +93,11 @@ public class InGameState extends AbstractAppState implements ScreenController {
         
         localRootNode.detachAllChildren();
         
-        initializeGui();
+        if(nifty!= null){
+            initializeGui();
+        }
+        
+        System.out.println("Nebo projde?");
         
         thief = new Thief(assetManager, actualLevel);
         counter = new CountDown(actualLevel.timeLimit);
@@ -141,10 +145,13 @@ public class InGameState extends AbstractAppState implements ScreenController {
     }
     
     public void initializeGui(){
+        System.out.println(actualLevel.availableObst.keySet());
         int i = 1;
+        buttonMapping.clear();
         for(ObstacleType o : actualLevel.availableObst.keySet()){
             buttonMapping.put(i, o);
-            nifty.getCurrentScreen().findControl("obstacle" + i, ButtonControl.class).setText(o.toString() + ": " + i);
+            nifty.getScreen("hud").findNiftyControl("obstacle" + i, Button.class)
+                    .setText(o.toString() + ": " + actualLevel.availableObst.get(o));
             ++i;
         }
     }
@@ -156,7 +163,9 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     @Override public void onEndScreen(){}
     
-    @Override public void onStartScreen(){}
+    @Override public void onStartScreen(){
+        initializeGui();
+    }
     
     @Override public void bind(Nifty nifty, Screen screen){
         this.nifty = nifty;
@@ -225,13 +234,14 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
                         camera.getCoordinatedDirection(mousePosition));
                 if(selected != null && !thief.actualPosition.equals(selected)){
+                    System.out.print("A SEM?");
                     actualLevel.addObstacle(new Obstacle(assetManager, newObstacle),
                             selected);
                     planner.setLevel(actualLevel);
                     thief.setNewPlane(planner.makeNewPlan());
                     int i = actualLevel.availableObst.get(newObstacle);
                     actualLevel.availableObst.put(newObstacle, i-1);
-                    nifty.getCurrentScreen().findControl("obstacle" + buttonNumber, ButtonControl.class)
+                    nifty.getCurrentScreen().findNiftyControl("obstacle" + buttonNumber, Button.class)
                     .setText(newObstacle.toString() + ": " + (i-1));
                     addingObstacle = false;
                 }

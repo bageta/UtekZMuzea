@@ -47,7 +47,7 @@ public class LevelSaver {
             writer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
             
             writer.transform(new DOMSource(doc),
-                    new StreamResult(new File("levels/custom/" + levelReference.name + ".xml")));
+                    new StreamResult(new File("levels/" + levelReference.name + ".xml")));
         } catch (Exception e){
             e.printStackTrace();
         }

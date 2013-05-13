@@ -32,7 +32,7 @@ public class LevelLoader {
             DocumentBuilder builder = dbf.newDocumentBuilder();
             
             System.out.println(path + ".xml");
-            Document doc = builder.parse(path+".xml");
+            Document doc = builder.parse("levels/" + path+ ".xml");
             
             makeLoad(doc);
         } catch (Exception e){
@@ -85,7 +85,7 @@ public class LevelLoader {
             }
             childs = room.getElementsByTagName("isAloved");
             if(childs.getLength() > 0){
-                isAloved = Boolean.getBoolean(childs.item(0).getTextContent());
+                isAloved = Boolean.valueOf(childs.item(0).getTextContent());
             }
             levelReference.rooms[i] = new Room(new Vector3f(x, y, z), width,
                     height, index, isAloved, levelReference.assetManager);
@@ -96,7 +96,7 @@ public class LevelLoader {
             Element room = (Element)list.item(i);
             NodeList childs = room.getElementsByTagName("neighbour");
             for(int j=0; j<childs.getLength(); ++j){
-                System.out.println("DOSTANU SE SEM?");
+                //System.out.println("DOSTANU SE SEM?");
                 int neighbourIndex = Integer.parseInt(childs.item(j).getTextContent());
                 levelReference.rooms[i].addNeighbour(levelReference.rooms[neighbourIndex]);
             }
@@ -117,10 +117,16 @@ public class LevelLoader {
         
         list = doc.getElementsByTagName("obstacle");
         for(int i = 0; i<list.getLength(); ++i){
-            NodeList childs = list.item(i).getChildNodes();
-            ObstacleType type = ObstacleType.valueOf(childs.item(0).getTextContent());
-            levelReference.availableObst.put(type,
-                    Integer.parseInt(childs.item(1).getTextContent()));
+            Element item = (Element)list.item(i);
+            NodeList childs = item.getElementsByTagName("type");
+            if(childs.getLength() > 0){
+                ObstacleType type = ObstacleType.valueOf(childs.item(0).getTextContent());
+                childs = item.getElementsByTagName("count");
+                if(childs.getLength() > 0){
+                    levelReference.availableObst.put(type,
+                    Integer.parseInt(childs.item(0).getTextContent()));
+                }
+            }
         }
     }
 }

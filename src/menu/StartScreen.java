@@ -74,7 +74,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void startSelectedLevel(){
         String selected = (String)nifty.getCurrentScreen().findNiftyControl("custom_levels",
                 ListBox.class).getSelection().get(0);
-        startGame("levels/custom/" + selected);
+        startGame("custom/" + selected);
     }
     
     public void startGame(String levelName){
@@ -82,8 +82,8 @@ public class StartScreen extends AbstractAppState implements ScreenController {
         System.out.println("Probehne to?");
         app.getStateManager().detach(this);
         nifty.gotoScreen("hud");
-        app.inGameState.setLevel(new Level(assetManager, levelName));
         app.getStateManager().attach(app.inGameState);
+        app.inGameState.setLevel(new Level(assetManager, levelName));
     }
     
     public void changeScreen(String screenName){

@@ -68,48 +68,6 @@ public class Level extends Node{
         this.assetManager = assetManager;
         
         load();
-        
-        /*
-         * prepsat tak, aby to vsechno nacteny pridalo na AM
-         */
-//        rooms = new Room[9];
-//        rooms[0] = new Room(new Vector3f(0,0,0),10,10,0,true, assetManager);
-//        rooms[1] = new Room(new Vector3f(21,0,0),10,10,1,true, assetManager);
-//        rooms[2] = new Room(new Vector3f(42,0,0),10,10,2,true, assetManager);
-//        rooms[3] = new Room(new Vector3f(0,0,21),10,10,3,true, assetManager);
-//        rooms[4] = new Room(new Vector3f(21,0,21),10,10,4,true, assetManager);
-//        rooms[5] = new Room(new Vector3f(42,0,21),10,10,5,true, assetManager);
-//        rooms[6] = new Room(new Vector3f(0,0,42),10,10,6,true, assetManager);
-//        rooms[7] = new Room(new Vector3f(21,0,42),10,10,7,true, assetManager);
-//        rooms[8] = new Room(new Vector3f(42,0,42),10,10,8,true, assetManager);
-        
-//        addItem(ObstacleType.GLASS, rooms[2]);
-//        addObstacle(new Obstacle(assetManager, ObstacleType.GLASS), rooms[7]);
-        
-//        availableObst.put(ObstacleType.GLASS, 1);
-        
-//        start = rooms[0];
-//        finish = rooms[8];
-        
-        for(Room r: rooms){
-            this.attachChild(r);
-        }
-        
-//        rooms[0].addNeighbour(rooms[1]);
-//        
-//        rooms[0].addNeighbour(rooms[3]);
-//        
-//        rooms[2].addNeighbour(rooms[5]);
-//        
-//        rooms[3].addNeighbour(rooms[4]);
-//        
-//        rooms[3].addNeighbour(rooms[6]);
-//        
-//        rooms[4].addNeighbour(rooms[5]);
-//        
-//        rooms[6].addNeighbour(rooms[7]);
-//        
-//        rooms[7].addNeighbour(rooms[8]);
     }
     
     public Level(AssetManager assetManager){
@@ -168,9 +126,14 @@ public class Level extends Node{
     }
     
     public final void load(){
+        this.detachAllChildren();
         LevelLoader ll = new LevelLoader(this, name);
         ll.load();
         start.floor.getMaterial().setColor("Color", ColorRGBA.Green);
         finish.floor.getMaterial().setColor("Color", ColorRGBA.Red);
+        obstacles.clear();
+        for(Room r: rooms){
+            this.attachChild(r);
+        }
     }
 }

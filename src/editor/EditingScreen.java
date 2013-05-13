@@ -164,7 +164,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         fileList.clear();
         
         for(File f : files){
-            System.out.println("necykli to tady?");
             if(f.isFile() && f.getName().endsWith(".xml")){
                 String name = f.getName();
                 name = name.substring(0, name.length()-4);
@@ -372,7 +371,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             }
         }
         editedLevel.timeLimit = Integer.parseInt(nifty.getCurrentScreen()
-                .findNiftyControl("time_limit", TextField.class).getText());
+                .findNiftyControl("time_limit", TextField.class).getText())*1000;
         nifty.gotoScreen("editing");
     }
     
@@ -382,7 +381,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     public void saveAsConfirm(){
         String levelName = nifty.getCurrentScreen().findNiftyControl("file_name", TextField.class).getText();
-        editedLevel.name = levelName;
+        editedLevel.name = "custom/" + levelName;
         editedLevel.save();
         nifty.gotoScreen("editing");
     }
