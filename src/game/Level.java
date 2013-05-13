@@ -26,6 +26,7 @@ import xml_support.LevelLoader;
 public class Level extends Node{
     
     public String name;
+    public String nextLevelName;
     
     //podlaha:
     Geometry floor;

@@ -159,12 +159,6 @@ public class Thief extends Node {
     }
     
     private boolean hasNextAction(){
-        //return actualActionIndex+3 < actions.length? true:false;
-//        if(actualActionIndex+2< actions.length){
-//            return true;
-//        } else {
-//            return false;
-//        }
         if(actualActionIndex < actions.length)
             return true;
         else

@@ -147,7 +147,7 @@
             <panel id="main" height="25%" width="100%" align="center" valign="center" childLayout="horizontal" backgroundColor="#ffff">
                 <text text="Gratuluji level dokoncen :]" font="Interface/Fonts/Default.fnt" wrap="true" color="#000f" />
                 <control name="button" label="Dalsi level" width="30%" height="30%" valign="center">
-                    <interact onClick="unpause()" />
+                    <interact onClick="toNextLevel()" />
                 </control>
                 <control name="button" label="Restartovat" width="30%" height="30%" valign="center">
                     <interact onClick="restart()" />

@@ -196,7 +196,17 @@ public class InGameState extends AbstractAppState implements ScreenController {
         setLevel(actualLevel);
         nifty.gotoScreen("hud");
         isRunning = true;
-    }    
+    }
+    
+    public void toNextLevel(){
+        if(actualLevel.nextLevelName != null){
+            setLevel(new Level(assetManager, actualLevel.nextLevelName));
+        } else {
+            nifty.gotoScreen("start");
+            app.getStateManager().detach(this);
+            app.getStateManager().attach(app.startScreenState);
+        }
+    }
     
     public void exitToMenu(String target){
         localRootNode.detachAllChildren();
