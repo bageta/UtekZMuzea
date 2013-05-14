@@ -124,6 +124,10 @@ public class Room extends Node{
         }
     }
     
+    public void deleteObstacle(){
+        obstacle = null;
+    }
+    
     public void setItem(Item item){
         if(this.item == null){
             this.item = item;

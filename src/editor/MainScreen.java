@@ -96,7 +96,7 @@ public class MainScreen extends AbstractAppState implements ScreenController {
                 ListBox.class).getSelection().get(0);
         nifty.gotoScreen("editing");
         stateManager.detach(this);
-        app.editingScreen.setEditedLevel("levels/custom/" + levelName);
+        app.editingScreen.setEditedLevel("custom/" + levelName);
         stateManager.attach(app.editingScreen);
     }
     

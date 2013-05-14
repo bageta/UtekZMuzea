@@ -46,7 +46,7 @@ public class Planner2 implements PlannerInterface {
         IncrementalSolver planner = new IncrementalSolver(sasProblem);
         
         try{
-            Settings.getSettings().setTimeout(2);
+            Settings.getSettings().setTimeout(15);
             SasParallelPlan plan = planner.solve();
             
             System.out.println("PLANOVAC - 2 - output: ");
@@ -92,16 +92,10 @@ public class Planner2 implements PlannerInterface {
              * 1: zlodej
              * 2,..,k: 1,..,k-2. prekazka
              * k+1,..,l: 1,..,l-k-2. item
-             * l+1,..,l+l+1: zlodej + 1,..,l-k-2. item
+             * l+1,..,l+(l-k)+1: zlodej + 1,..,l-k-2. item
             */
             roomState[i] = problem.newVariable("room" + i, statesInRoom);
         }
-        /* narozdil od prvniho modelu zde neudava pozici zlodeje, ale cislo veci
-         * kterou nese, plus 0.pozice pro pripad, ze nenese nic:
-        */
-//        StateVariable thief = problem.newVariable("thief", levelState.items.size()+1);
-//        System.out.println("ITEMS: " + levelState.items.size() + "!!!!!!!!!!!!!!!!");
-//        
         
         //TODO: upravit tak, aby to korespondovalo s novymi akcemi
         for(Room location: levelState.rooms){
@@ -137,9 +131,21 @@ public class Planner2 implements PlannerInterface {
         
         for(int location=0; location< levelState.rooms.length; ++location){
             boolean wasAdded = false;
-            if(levelState.rooms[location]==game.InGameState.thief.actualPosition){
+            if(levelState.rooms[location]==game.InGameState.thief.actualPosition
+                    && game.InGameState.thief.carrying == null){
                 problem.addInitialStateCondition(new Condition(roomState[location], 1));
                 wasAdded = true;
+            }
+            if(levelState.rooms[location]==game.InGameState.thief.actualPosition
+                    && game.InGameState.thief.carrying != null){
+                for(int i=0; i<levelState.items.size(); ++i){
+                    if(levelState.items.get(i)==game.InGameState.thief.carrying){
+                        problem.addInitialStateCondition(new Condition(roomState[location],
+                                i+2+levelState.obstacles.size()+levelState.items.size()));
+                        System.out.println("INICIALNI PODMINKA: mistonost:" + location + "hodnota: " + (i+2+levelState.obstacles.size()+levelState.items.size()));
+                        wasAdded = true;
+                    }
+                }
             }
             for(int i=0; i<levelState.items.size(); ++i){
                 if(levelState.items.get(i).actualPosition == levelState.rooms[location]){
@@ -150,11 +156,13 @@ public class Planner2 implements PlannerInterface {
             for(int i=0; i<levelState.obstacles.size(); ++i){
                 if(levelState.obstacles.get(i).getPosition() == levelState.rooms[location]){
                     problem.addInitialStateCondition(new Condition(roomState[location], i+2));
+                    System.out.println("Mistnost " + location + " prekazka: " + (i+2));
                     wasAdded = true;
                 }
             }
-            if(!wasAdded)
+            if(!wasAdded){
                 problem.addInitialStateCondition(new Condition(roomState[location],0));
+            }
         }
         
         problem.addGoalCondition(new Condition(roomState[levelState.finish.index], 1));

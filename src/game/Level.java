@@ -127,6 +127,7 @@ public class Level extends Node{
     
     public final void load(){
         this.detachAllChildren();
+        items.clear();
         LevelLoader ll = new LevelLoader(this, name);
         ll.load();
         start.floor.getMaterial().setColor("Color", ColorRGBA.Green);

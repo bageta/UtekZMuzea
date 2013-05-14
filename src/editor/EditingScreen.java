@@ -382,7 +382,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     public void saveAsConfirm(){
         String levelName = nifty.getCurrentScreen().findNiftyControl("file_name", TextField.class).getText();
         editedLevel.name = "custom/" + levelName;
-        editedLevel.save();
+        save();
         nifty.gotoScreen("editing");
     }
     
@@ -423,25 +423,27 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             typeSelector.addItem(o.toString());
         }
         Element e = nifty.getScreen("obstacle_select").findElementByName("scroll_inside");
-        System.out.println(e);
-        for(final ObstacleType o : ObstacleType.values()){
-            PanelBuilder builder = new PanelBuilder(o.toString()+"_panel"){{
-                childLayoutHorizontal();
-                height("10%");
-                width("100%");
+        if(e.getElements().size() == 0){
+            System.out.println(e);
+            for(final ObstacleType o : ObstacleType.values()){
+                PanelBuilder builder = new PanelBuilder(o.toString()+"_panel"){{
+                    childLayoutHorizontal();
+                    height("10%");
+                    width("100%");
 
-                control(new LabelBuilder(o.toString() + "_text", o.toString()+": "){{
-                    height("100%");
-                    width("50%");
-                }});
+                    control(new LabelBuilder(o.toString() + "_text", o.toString()+": "){{
+                        height("100%");
+                        width("50%");
+                    }});
 
-                control(new TextFieldBuilder(o.toString().toLowerCase() + "_field", "0"){{
-                    height("100%");
-                    width("50%");
-                }});
+                    control(new TextFieldBuilder(o.toString().toLowerCase() + "_field", "0"){{
+                        height("100%");
+                        width("50%");
+                    }});
 
-            }};
-            builder.build(nifty, nifty.getScreen("obstacle_select"), e);
+                }};
+                builder.build(nifty, nifty.getScreen("obstacle_select"), e);
+            }
         }
     }
     

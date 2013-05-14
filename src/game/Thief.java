@@ -33,7 +33,7 @@ public class Thief extends Node {
     private int actualActionIndex;
     private State actualState;
     int iterations = 0;
-    private Item carrying;
+    public Item carrying;
     
     private AnimControl control;
     private AnimChannel channel;
@@ -89,8 +89,9 @@ public class Thief extends Node {
                 }
                 if(actualAction.actionType == ActionType.PUT){
                     this.detachChild(carrying);
-                    carrying.actualPosition = map.rooms[actualAction.from];
+                    map.rooms[actualAction.from].setItem(carrying);
                     carrying.setLocalTranslation(map.rooms[actualAction.from].getPosition());
+                    map.attachChild(carrying);
                     carrying = null;
                     target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
                 }
@@ -114,12 +115,14 @@ public class Thief extends Node {
                 moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
                     this.setLocalTranslation(target);
+                    this.actualPosition = map.rooms[actualAction.to];
                     carrying = map.rooms[actualAction.to].item;
-                    carrying.actualPosition = actualPosition;
+                    //carrying.actualPosition = actualPosition;
                     this.attachChild(carrying);
-                    Vector3f pos = this.getLocalTranslation();
+                    //Vector3f pos = this.getLocalTranslation();
                     carrying.setLocalTranslation(0,0,0);
                     //prehrat pick up animaci
+                    actualPosition.deleteItem();
                     actualState = State.DONE;
                 }
             }
@@ -138,7 +141,11 @@ public class Thief extends Node {
                     this.actualPosition = map.rooms[actualAction.to];
                     //animace pro pouyiti itemu
                     map.detachChild(carrying);
-                    map.detachChild(map.rooms[actualAction.to].obstacle);
+                    Obstacle tmp = map.rooms[actualPosition.index].obstacle;
+                    //map.detachChild(map.rooms[actualAction.to].obstacle);
+                    map.detachChild(tmp);
+                    actualPosition.deleteObstacle();
+                    map.obstacles.remove(tmp);
                     this.detachChild(carrying);
                     carrying = null;
                     actualState = State.DONE;
