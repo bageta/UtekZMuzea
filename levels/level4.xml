@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<level>
+	<name>level4</name>
+	<timeLimit>42000</timeLimit>
+	<next>level5</next>
+	<rooms>
+		<room>
+			<index>0</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(10.674629, 0.10000038, -5.9156227)</position>
+			<isAloved>false</isAloved>
+			<neighbours>
+				<neighbour>1</neighbour>
+				<neighbour>5</neighbour>
+				<neighbour>3</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>1</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(30.68837, 0.099998474, -5.8443985)</position>
+			<isAloved>false</isAloved>
+			<neighbours>
+				<neighbour>2</neighbour>
+				<neighbour>6</neighbour>
+				<neighbour>0</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>2</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(50.55237, 0.099998474, -5.8443985)</position>
+			<isAloved>false</isAloved>
+			<neighbours>
+				<neighbour>7</neighbour>
+				<neighbour>1</neighbour>
+				<neighbour>4</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>3</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(10.628853, 0.099998474, 14.3974495)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>0</neighbour>
+				<neighbour>8</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>4</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(50.50825, 0.099998474, 14.214787)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>2</neighbour>
+				<neighbour>9</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>5</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(10.719666, 0.10000229, -26.125866)</position>
+			<item>GLASS</item>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>0</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>6</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(30.833666, 0.099998474, -25.815273)</position>
+			<isAloved>false</isAloved>
+			<neighbours>
+				<neighbour>1</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>7</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(50.74861, 0.099998474, -25.815273)</position>
+			<item>DOG</item>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>2</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>8</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(10.7141075, 0.10000229, 34.52131)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>3</neighbour>
+				<neighbour>10</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>9</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(50.42209, 0.099998474, 34.074276)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>4</neighbour>
+				<neighbour>10</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>10</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(30.415167, 0.10000229, 34.450146)</position>
+			<isAloved>false</isAloved>
+			<neighbours>
+				<neighbour>9</neighbour>
+				<neighbour>8</neighbour>
+			</neighbours>
+		</room>
+	</rooms>
+	<start>6</start>
+	<finish>10</finish>
+	<avalibleObst>
+		<obstacle>
+			<type>DOG</type>
+			<count>1</count>
+		</obstacle>
+		<obstacle>
+			<type>FLASH</type>
+			<count>0</count>
+		</obstacle>
+		<obstacle>
+			<type>FIRE</type>
+			<count>0</count>
+		</obstacle>
+		<obstacle>
+			<type>GLASS</type>
+			<count>1</count>
+		</obstacle>
+	</avalibleObst>
+</level>

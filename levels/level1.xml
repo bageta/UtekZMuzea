@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <level>
-	<name>pavel</name>
-	<timeLimit>150000</timeLimit>
+	<name>level1</name>
+	<timeLimit>15000</timeLimit>
+	<next>level2</next>
 	<rooms>
 		<room>
 			<index>0</index>
 			<width>10.0</width>
 			<height>10.0</height>
-			<position>(14.182916, 0.10000038, -4.1823044)</position>
+			<position>(2.8809948, 0.099998474, -2.0548172)</position>
 			<isAloved>true</isAloved>
 			<neighbours>
 				<neighbour>1</neighbour>
@@ -17,10 +18,11 @@
 			<index>1</index>
 			<width>10.0</width>
 			<height>10.0</height>
-			<position>(34.21037, 0.10000038, -4.303158)</position>
+			<position>(22.67907, 0.10000229, -2.1247177)</position>
 			<isAloved>false</isAloved>
 			<neighbours>
 				<neighbour>0</neighbour>
+				<neighbour>3</neighbour>
 				<neighbour>2</neighbour>
 			</neighbours>
 		</room>
@@ -28,14 +30,64 @@
 			<index>2</index>
 			<width>10.0</width>
 			<height>10.0</height>
-			<position>(54.0487, 0.099998474, -4.4112587)</position>
+			<position>(42.698914, 0.10000229, -2.1247177)</position>
 			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>1</neighbour>
+				<neighbour>4</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>3</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(22.644869, 0.099998474, 17.762886)</position>
+			<item>DOG</item>
+			<isAloved>false</isAloved>
 			<neighbours>
 				<neighbour>1</neighbour>
 			</neighbours>
 		</room>
+		<room>
+			<index>4</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(62.756783, 0.099998474, -2.1340485)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>2</neighbour>
+				<neighbour>5</neighbour>
+			</neighbours>
+		</room>
+		<room>
+			<index>5</index>
+			<width>10.0</width>
+			<height>10.0</height>
+			<position>(62.79308, 0.099998474, 17.932964)</position>
+			<isAloved>true</isAloved>
+			<neighbours>
+				<neighbour>4</neighbour>
+			</neighbours>
+		</room>
 	</rooms>
 	<start>0</start>
-	<finish>2</finish>
-	<avalibleObst/>
+	<finish>5</finish>
+	<avalibleObst>
+		<obstacle>
+			<type>FLASH</type>
+			<count>0</count>
+		</obstacle>
+		<obstacle>
+			<type>FIRE</type>
+			<count>0</count>
+		</obstacle>
+		<obstacle>
+			<type>DOG</type>
+			<count>1</count>
+		</obstacle>
+		<obstacle>
+			<type>GLASS</type>
+			<count>0</count>
+		</obstacle>
+	</avalibleObst>
 </level>

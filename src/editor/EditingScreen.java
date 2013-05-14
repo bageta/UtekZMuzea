@@ -83,6 +83,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     public void setEditedLevel(){
         editedLevel = new Level(assetManager);
+        newRooms.clear();
         index = 0;
         initializeLevel();
     }
@@ -95,6 +96,9 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     public void setEditedLevel(String levelPath){
         editedLevel = new Level(assetManager, levelPath);
         editedLevel.load();
+        for(Room r: editedLevel.rooms){
+            newRooms.add(r);
+        }
         index = editedLevel.rooms.length;
         initializeLevel();
     }

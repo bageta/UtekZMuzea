@@ -46,7 +46,7 @@ public class Planner2 implements PlannerInterface {
         IncrementalSolver planner = new IncrementalSolver(sasProblem);
         
         try{
-            Settings.getSettings().setTimeout(15);
+            Settings.getSettings().setTimeout(5);
             SasParallelPlan plan = planner.solve();
             
             System.out.println("PLANOVAC - 2 - output: ");

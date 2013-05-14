@@ -210,6 +210,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     public void toNextLevel(){
         if(actualLevel.nextLevelName != null){
             setLevel(new Level(assetManager, actualLevel.nextLevelName));
+            unpause();
         } else {
             nifty.gotoScreen("start");
             app.getStateManager().detach(this);
@@ -233,7 +234,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 Vector2f mousePosition = inputManager.getCursorPosition();
                 Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
                         camera.getCoordinatedDirection(mousePosition));
-                if(selected != null && !thief.actualPosition.equals(selected)){
+                if(selected != null && !thief.actualPosition.equals(selected) && selected.isEmpty()){
                     System.out.print("A SEM?");
                     actualLevel.addObstacle(new Obstacle(assetManager, newObstacle),
                             selected);

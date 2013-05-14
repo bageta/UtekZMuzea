@@ -6,14 +6,9 @@ import com.jme3.animation.AnimChannel;
 import com.jme3.animation.AnimControl;
 import com.jme3.animation.LoopMode;
 import com.jme3.asset.AssetManager;
-/*import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Quaternion;*/
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-/*import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;*/
 
 import helper.Position;
 import planner.ActionType;
@@ -160,16 +155,17 @@ public class Thief extends Node {
         actions = plane;
         if(actions != null){
             actualState = State.DONE;
-            //System.out.println("PRAZDNY PLAN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         
     }
     
     private boolean hasNextAction(){
-        if(actualActionIndex < actions.length)
+        if(actualActionIndex < actions.length){
             return true;
-        else
+        }
+        else{
             return false;
+        }
     }
     
     private ThiefAction getNextAction(){
@@ -194,7 +190,10 @@ public class Thief extends Node {
         
         Vector3f start = new Vector3f(0.0f, 0.0f, 1.0f);
         
-        this.getLocalRotation().fromAngleAxis(direction.angleBetween(start), Vector3f.UNIT_Y);
+        float sign = Math.signum(direction.x);
+        
+        this.getLocalRotation().fromAngleAxis(sign * direction.angleBetween(start),
+                Vector3f.UNIT_Y);
     }
     
     public void setAnimation(String name){
