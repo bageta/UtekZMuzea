@@ -3,7 +3,7 @@ package plannertester;
 import java.util.Random;
 
 import game.Level;
-import game.Obstacle;
+import game.obstacles.Obstacle;
 import game.ObstacleType;
 import game.Item;
 

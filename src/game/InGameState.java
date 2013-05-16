@@ -1,5 +1,6 @@
 package game;
 
+import game.obstacles.Obstacle;
 import planner.Planner2;
 
 import time.CountDown;
@@ -27,6 +28,11 @@ import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+
+import game.obstacles.DogObstacle;
+import game.obstacles.FireObstacle;
+import game.obstacles.FlashObstacle;
+import game.obstacles.GlassObstacle;
 
 /**
  *
@@ -235,8 +241,24 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
                         camera.getCoordinatedDirection(mousePosition));
                 if(selected != null && !thief.actualPosition.equals(selected) && selected.isEmpty()){
-                    System.out.print("A SEM?");
-                    actualLevel.addObstacle(new Obstacle(assetManager, newObstacle),
+                    Obstacle toAdd;
+                    switch(newObstacle){
+                        case FIRE:
+                            toAdd = new FireObstacle(assetManager);
+                            break;
+                        case FLASH:
+                            toAdd = new FlashObstacle(assetManager);
+                            break;
+                        case DOG:
+                            toAdd = new DogObstacle(assetManager);
+                            break;
+                        case GLASS:
+                            toAdd = new GlassObstacle(assetManager);
+                            break;
+                        default:
+                            toAdd = new FireObstacle(assetManager);
+                    }
+                    actualLevel.addObstacle(toAdd,
                             selected);
                     planner.setLevel(actualLevel);
                     thief.setNewPlane(planner.makeNewPlan());

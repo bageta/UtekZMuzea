@@ -1,5 +1,6 @@
 package game;
 
+import game.obstacles.Obstacle;
 import planner.ThiefAction;
 
 import com.jme3.animation.AnimChannel;

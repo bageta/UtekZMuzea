@@ -1,16 +1,12 @@
-package game;
+package game.obstacles;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Sphere;
-import com.jme3.scene.Geometry;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
+import game.ObstacleType;
+import game.Room;
 
 /**
- * třída pro reprezentaci překážek
+ * třída pro reprezentaci překážek, genericka prekazka
  * @author Pavel
  */
 public class Obstacle extends Node {
@@ -18,7 +14,7 @@ public class Obstacle extends Node {
     //aktuální poloha překážky:
     private Room actualPosition;
     //model pro zobrazení:
-    Spatial model;
+    //Spatial model;
     
     //typ překážky:
     public ObstacleType type;
@@ -30,28 +26,28 @@ public class Obstacle extends Node {
     public Obstacle(AssetManager am, ObstacleType type){
         this.type = type;
         
-        Sphere b = new Sphere(15, 15, 1);
-        Geometry geom = new Geometry("box", b);
+//        Sphere b = new Sphere(15, 15, 1);
+//        Geometry geom = new Geometry("box", b);
+//        
+//        
+//        Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
+//        switch(type){
+//            case DOG:
+//                mat.setColor("Color", ColorRGBA.Brown);
+//                break;
+//            case GLASS:
+//                mat.setColor("Color", ColorRGBA.White);
+//                break;
+//            case FIRE:
+//                mat.setColor("Color", ColorRGBA.Red);
+//                break;
+//            case FLASH:
+//                mat.setColor("Color", ColorRGBA.Yellow);
+//                break;
+//        }
+//        geom.setMaterial(mat);
         
-        
-        Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        switch(type){
-            case DOG:
-                mat.setColor("Color", ColorRGBA.Brown);
-                break;
-            case GLASS:
-                mat.setColor("Color", ColorRGBA.White);
-                break;
-            case FIRE:
-                mat.setColor("Color", ColorRGBA.Red);
-                break;
-            case FLASH:
-                mat.setColor("Color", ColorRGBA.Yellow);
-                break;
-        }
-        geom.setMaterial(mat);
-        
-        this.attachChild(geom);
+//        this.attachChild(geom);
         //load model
     }
     

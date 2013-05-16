@@ -1,5 +1,6 @@
 package game;
 
+//import game.obstacles.Obstacle;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -14,8 +15,6 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Ray;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import xml_support.LevelSaver;
 import xml_support.LevelLoader;
@@ -43,7 +42,7 @@ public class Level extends Node{
     //list věcí umístěných v levelu
     public ArrayList<Item> items = new ArrayList<Item>();
     //list překážek umístěných v levelu
-    public ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
+    public ArrayList<game.obstacles.Obstacle> obstacles = new ArrayList<game.obstacles.Obstacle>();
     
     //mapa, odpovida poctu dostupnych veci pro vyreseni levelu:
     public Map<ObstacleType, Integer> availableObst = new HashMap<ObstacleType, Integer>();
@@ -79,7 +78,7 @@ public class Level extends Node{
      * @param obstacle přidávaná překážka
      * @param to umístění překážky
      */
-    public void addObstacle(Obstacle obstacle, Room to){
+    public void addObstacle(game.obstacles.Obstacle obstacle, Room to){
         obstacles.add(obstacle);
         obstacle.placeObstacle(to);
         to.setObstacle(obstacle);
