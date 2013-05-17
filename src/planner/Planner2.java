@@ -15,7 +15,6 @@ import freeLunch.planning.model.SasAction;
 import freeLunch.planning.model.SasParallelPlan;
 import freeLunch.planning.model.SasProblem;
 import freeLunch.planning.model.StateVariable;
-//import freeLunch.planning.model.StringActionInfo;
 import freeLunch.planning.sase.optimizer.PlanVerifier;
 import freeLunch.planning.sase.sasToSat.PlanningProblem;
 import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;

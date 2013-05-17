@@ -38,6 +38,8 @@ public class Thief extends Node {
     private Vector3f target;
     private final float MOVEMENT_SPEED = 5.0f;
     
+    private boolean door;
+    
     public Thief(AssetManager am, Level map){
         this.map = map;
         
@@ -77,20 +79,12 @@ public class Thief extends Node {
             if(hasNextAction()){
                 System.out.println(actualActionIndex);
                 actualAction = getNextAction();
+                door = true;
                 if(actualAction.actionType == ActionType.MOVE || actualAction.actionType == ActionType.PICK){
-//                    System.out.println("Actual action to: " + actualAction.to);
-//                    System.out.println("target: " + map.rooms[actualAction.to]);
                     target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
-                    //target = map.rooms[actualAction.to].getPosition();
-//                    System.out.println("target position: " + target);
                 }
                 if(actualAction.actionType == ActionType.PUT){
-                    this.detachChild(carrying);
-                    map.rooms[actualAction.from].setItem(carrying);
-                    carrying.setLocalTranslation(map.rooms[actualAction.from].getPosition());
-                    map.attachChild(carrying);
-                    carrying = null;
-                    target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
+                    target = map.rooms[actualAction.from].getPosition();
                 }
                 if(actualAction.actionType == ActionType.USE){
                     target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
@@ -113,22 +107,37 @@ public class Thief extends Node {
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
                     this.setLocalTranslation(target);
                     this.actualPosition = map.rooms[actualAction.to];
-                    carrying = map.rooms[actualAction.to].item;
-                    //carrying.actualPosition = actualPosition;
-                    this.attachChild(carrying);
-                    //Vector3f pos = this.getLocalTranslation();
-                    carrying.setLocalTranslation(0,0,0);
-                    //prehrat pick up animaci
-                    actualPosition.deleteItem();
-                    actualState = State.DONE;
+                    if(door){
+                        target = map.rooms[actualAction.to].getPosition();
+                        door = false;
+                    } else {
+                        carrying = map.rooms[actualAction.to].item;
+                        //carrying.actualPosition = actualPosition;
+                        this.attachChild(carrying);
+                        //Vector3f pos = this.getLocalTranslation();
+                        carrying.setLocalTranslation(0,0,0);
+                        //prehrat pick up animaci
+                        actualPosition.deleteItem();
+                        actualState = State.DONE;
+                    }
                 }
             }
             if(actualAction.actionType == ActionType.PUT){
                 moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
                     this.setLocalTranslation(target);
-                    this.actualPosition = map.rooms[actualAction.to];
-                    actualState = State.DONE;
+                    if(door){
+                        this.detachChild(carrying);
+                        map.rooms[actualAction.from].setItem(carrying);
+                        carrying.setLocalTranslation(map.rooms[actualAction.from].getPosition());
+                        map.attachChild(carrying);
+                        carrying = null;
+                        target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;
+                        door = false;
+                    } else {
+                        this.actualPosition = map.rooms[actualAction.to];
+                        actualState = State.DONE;
+                    }
                 }
             }
             if(actualAction.actionType == ActionType.USE){
@@ -137,15 +146,20 @@ public class Thief extends Node {
                     this.setLocalTranslation(target);
                     this.actualPosition = map.rooms[actualAction.to];
                     //animace pro pouyiti itemu
-                    map.detachChild(carrying);
-                    Obstacle tmp = map.rooms[actualPosition.index].obstacle;
-                    //map.detachChild(map.rooms[actualAction.to].obstacle);
-                    map.detachChild(tmp);
-                    actualPosition.deleteObstacle();
-                    map.obstacles.remove(tmp);
-                    this.detachChild(carrying);
-                    carrying = null;
-                    actualState = State.DONE;
+                    if(door){
+                        target = map.rooms[actualAction.to].getPosition();
+                        door = false;
+                    } else {
+                        map.detachChild(carrying);
+                        Obstacle tmp = map.rooms[actualPosition.index].obstacle;
+                        //map.detachChild(map.rooms[actualAction.to].obstacle);
+                        map.detachChild(tmp);
+                        actualPosition.deleteObstacle();
+                        map.obstacles.remove(tmp);
+                        this.detachChild(carrying);
+                        carrying = null;
+                        actualState = State.DONE;
+                    }
                 }
             }
         }
