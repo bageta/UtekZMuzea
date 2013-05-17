@@ -1,5 +1,6 @@
 package game;
 
+import game.items.Item;
 import game.obstacles.Obstacle;
 import com.jme3.scene.Node;
 import com.jme3.math.Vector3f;

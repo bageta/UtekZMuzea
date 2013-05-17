@@ -5,7 +5,7 @@ import java.util.Random;
 import game.Level;
 import game.obstacles.Obstacle;
 import game.ObstacleType;
-import game.Item;
+import game.items.Item;
 
 /**
  *

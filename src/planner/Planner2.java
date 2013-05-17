@@ -128,7 +128,7 @@ public class Planner2 implements PlannerInterface {
                 }
             }
         }
-        
+        System.out.println("Projde checkpoint1");
         for(int location=0; location< levelState.rooms.length; ++location){
             boolean wasAdded = false;
             if(levelState.rooms[location]==game.InGameState.thief.actualPosition

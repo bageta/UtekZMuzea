@@ -1,8 +1,7 @@
 package game;
 
 //import game.obstacles.Obstacle;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import game.items.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -40,7 +39,7 @@ public class Level extends Node{
     public long timeLimit;
     
     //list věcí umístěných v levelu
-    public ArrayList<Item> items = new ArrayList<Item>();
+    public ArrayList<game.items.Item> items = new ArrayList<game.items.Item>();
     //list překážek umístěných v levelu
     public ArrayList<game.obstacles.Obstacle> obstacles = new ArrayList<game.obstacles.Obstacle>();
     
@@ -86,7 +85,23 @@ public class Level extends Node{
     }
     
     public void addItem(ObstacleType itemType, Room to){
-        Item item = new Item(to, itemType, assetManager);
+        game.items.Item item;
+        switch(itemType){
+            case DOG:
+                item= new DogItem(to, assetManager);
+                break;
+            case FIRE:
+                item= new FireItem(to, assetManager);
+                break;
+            case FLASH:
+                item= new FlashItem(to, assetManager);
+                break;
+            case GLASS:
+                item= new GlassItem(to, assetManager);
+                break;
+            default:
+                item = null;
+        }
         items.add(item);
         to.setItem(item);
         this.attachChild(item);

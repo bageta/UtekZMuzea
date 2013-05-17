@@ -9,7 +9,7 @@ import game.Room;
  * třída pro reprezentaci překážek, genericka prekazka
  * @author Pavel
  */
-public class Obstacle extends Node {
+public abstract class Obstacle extends Node {
     
     //aktuální poloha překážky:
     private Room actualPosition;

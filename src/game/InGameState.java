@@ -103,13 +103,16 @@ public class InGameState extends AbstractAppState implements ScreenController {
             initializeGui();
         }
         
-        System.out.println("Nebo projde?");
+        
         
         thief = new Thief(assetManager, actualLevel);
+        
         counter = new CountDown(actualLevel.timeLimit);
 
         planner = new Planner2(actualLevel);
+
         thief.setNewPlane(planner.makeNewPlan());
+                System.out.println("Nebo projde?");
         counter.start();
 
         //localRootNode.addLight(dl);
@@ -119,6 +122,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     public void setLevel(Level level){
         actualLevel = level;
+        System.out.print("SEMA SE TO DOSTALO");
         initializeLevel();
     }
     
@@ -256,7 +260,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
                             toAdd = new GlassObstacle(assetManager);
                             break;
                         default:
-                            toAdd = new FireObstacle(assetManager);
+                            toAdd = null;
                     }
                     actualLevel.addObstacle(toAdd,
                             selected);

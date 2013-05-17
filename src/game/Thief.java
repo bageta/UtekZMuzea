@@ -1,5 +1,6 @@
 package game;
 
+import game.items.Item;
 import game.obstacles.Obstacle;
 import planner.ThiefAction;
 
@@ -29,7 +30,7 @@ public class Thief extends Node {
     private int actualActionIndex;
     private State actualState;
     int iterations = 0;
-    public Item carrying;
+    public game.items.Item carrying;
     
     private AnimControl control;
     private AnimChannel channel;
