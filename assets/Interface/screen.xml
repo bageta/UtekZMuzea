@@ -8,7 +8,8 @@
         </layer>
         <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
             <panel id="panel_top" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#f008">
-                <text text="Utek Z Muzea" font="Interface/Fonts/Default.fnt" height="100%" width="100%" color='#000f' />
+                <image filename="Interface/images/headline.png" width="100%" height="100%" />
+                <!--<text text="Utek Z Muzea" font="Interface/Fonts/Default.fnt" height="100%" width="100%" color='#000f' />-->
             </panel>
             <panel id="panel_mid" height="50%" width="75%" align="center" childLayout="center" backgroundColor="#0f08">
                 <text text="zvolte jednu z moznosti:" font="Interface/Fonts/Default.fnt" wrap="true" color="#000f" />

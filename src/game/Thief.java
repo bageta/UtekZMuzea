@@ -43,18 +43,12 @@ public class Thief extends Node {
     public Thief(AssetManager am, Level map){
         this.map = map;
         
-        /*Box b = new Box(map.start.getPosition(), 1,1,1);
-        Geometry geom = new Geometry("box", b);*/
         actualPosition = map.start;
         
         this.setLocalTranslation(map.start.getPosition());
         model = am.loadModel("Models/Oto/Oto.mesh.xml");
         model.setLocalScale(0.4f);
         model.setLocalTranslation(0.0f, 2.0f, 0.0f);
-        
-        /*Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Red);
-        geom.setMaterial(mat);*/
         
         actualAction = new ThiefAction(ActionType.MOVE, 0, 0);
         actions = new ThiefAction[1];
@@ -68,10 +62,8 @@ public class Thief extends Node {
         channel.setAnim("Walk");
         
         target = Vector3f.ZERO;
-        //start = Vector3f.ZERO;
         
         this.attachChild(model);
-        //this.attachChild(geom);
     }
     
     public void update(float tpf){

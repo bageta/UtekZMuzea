@@ -1,7 +1,5 @@
 package game;
 
-import menu.StartScreen;
-
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
@@ -9,12 +7,15 @@ import com.jme3.system.AppSettings;
 
 import de.lessvoid.nifty.Nifty;
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import menu.StartScreen;
 
 /**
- * hlavni trida hry, dedi se SimpleApplication, dochazi ke spusteni hry,
- * obsahuje metodz pro inicializaci hry a auktualizaci herniho stavu
+ * Hlavní třída hry, dědí se od SimpleApplication, dochazí ke spuštení hry a
+ * načtení a inicializaci uživatelského rozhraní. Důležité jsou její členské
+ * proměnné, které slouží k reprezentaci hlavních stavů celé hry.
  * @author Pavel Pilar
  */
 public class Main extends SimpleApplication {
@@ -22,6 +23,11 @@ public class Main extends SimpleApplication {
     public StartScreen startScreenState;
     public InGameState inGameState;
 
+    /**
+     * Metoda, která se provede při spuštení hry, vytvoří se v ní instance hlavní
+     * třídy hry a na ní se zavolá spuštění celé aplikace.
+     * @param args argumenty příkazové řádky, nijak se nezpracovávají
+     */
     public static void main(String[] args) {
         AppSettings settings = new AppSettings(true);
         settings.setFrameRate(60);
@@ -31,16 +37,20 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * metoda, ktera inicializuje hru, dochazi kde k nastaveni kamery nacteni
+     * Metoda, která se automaticky volá po spuštění hry, zajišťuje inicializaci
+     * jednotilvých herních stavů, načtení GUI a nastaveni kamery.
      * modelu, nastaveni vychozich pozic a nacteni zvoleneho levelu
      */
     @Override public void simpleInitApp() {
         
+        /* vytvoření základních herních stavů */
         inGameState = new InGameState(this);
         startScreenState = new StartScreen(this);
         
+        /* nastavení úvodního stavu jako výchozího */
         stateManager.attach(startScreenState);
         
+        /* vypnutí výpisu statistik na obrazovku */
         setDisplayStatView(false);
         
         /* inicializace gui*/
@@ -51,14 +61,15 @@ public class Main extends SimpleApplication {
         Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
         guiViewPort.addProcessor(niftyDisplay);
         
-        //odstani se listener pro flyCam, ktera hre nevyhovuje a nepouziva se
+        /*odstranění listeneru pro flyCam, která hře nevyhovuje a nepoužíva se */
         inputManager.removeListener(flyCam);
     }
 
     /**
-     * metoda, ktera se automaticky vola pri kazdem vyrendrovani snimku a slouzi
-     * k auktualizaci stavu hernich objektu
-     * @param tpf doba za kterou byl vyrendrovan snimek
+     * Metoda, která se automaticky volá při každém vyrendrování snímku a slouží
+     * k auktualizaci stavu herních objektů. V programu je nahrazena update metodami,
+     * jednotlivých stavů hry.
+     * @param tpf doba za kterou byl vyrendrován snímek
      */
     @Override public void simpleUpdate(float tpf) {
     }
