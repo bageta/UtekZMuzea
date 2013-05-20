@@ -31,9 +31,8 @@ public class Level extends Node{
     public String name;
     /** Jméno následujícího levelu. */
     public String nextLevelName;
-    
-//    //podlaha:
-//    Geometry floor;
+    /** Index levelu. Pro levely napevno ulozene ve hre. */
+    public int index;
     
     /** Pole místnostní tvořících level, defacto mapa levelu. */
     public Room[] rooms;

@@ -33,6 +33,7 @@ import game.obstacles.DogObstacle;
 import game.obstacles.FireObstacle;
 import game.obstacles.FlashObstacle;
 import game.obstacles.GlassObstacle;
+import java.io.IOException;
 import planner.ThiefAction;
 
 /**
@@ -138,6 +139,12 @@ public class InGameState extends AbstractAppState implements ScreenController {
             if(counter.getRemainingMillis() == 0){
                 isRunning = false;
                 thief.setAnimation("stand");
+                if(actualLevel.index >= app.player.levelAchived){
+                    app.player.levelAchived = actualLevel.index+1;
+                    try{
+                        app.player.save();
+                    } catch (IOException e){}
+                }
                 nifty.gotoScreen("win");
             }
             if(thief.getActualPosition().equals(actualLevel.finish)){
@@ -277,6 +284,12 @@ public class InGameState extends AbstractAppState implements ScreenController {
                         isRunning = false;
                         thief.setAnimation("stand");
                         nifty.gotoScreen("win");
+                        if(actualLevel.index >= app.player.levelAchived){
+                            app.player.levelAchived = actualLevel.index+1;
+                            try{
+                                app.player.save();
+                            } catch (IOException e){}
+                        }
                     }
                     int i = actualLevel.availableObst.get(newObstacle);
                     actualLevel.availableObst.put(newObstacle, i-1);

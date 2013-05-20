@@ -49,6 +49,10 @@ public class LevelLoader {
         if(list.getLength() > 0){
             levelReference.nextLevelName = list.item(0).getTextContent();
         }
+        list = doc.getElementsByTagName("index");
+        if(list.getLength() > 0){
+            levelReference.index = Integer.parseInt(list.item(0).getTextContent());
+        }
         list = doc.getElementsByTagName("timeLimit");
         if(list.getLength() > 0){
             levelReference.timeLimit = Integer.parseInt(list.item(0).getTextContent());

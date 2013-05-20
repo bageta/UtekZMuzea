@@ -2,6 +2,7 @@
 <level>
 	<name>level4</name>
 	<timeLimit>42000</timeLimit>
+	<index>4</index>
 	<next>level5</next>
 	<rooms>
 		<room>

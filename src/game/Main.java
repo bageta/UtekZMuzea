@@ -6,6 +6,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
 
 import de.lessvoid.nifty.Nifty;
+import java.io.IOException;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +23,8 @@ public class Main extends SimpleApplication {
     
     public StartScreen startScreenState;
     public InGameState inGameState;
+    
+    public Player player;
 
     /**
      * Metoda, která se provede při spuštení hry, vytvoří se v ní instance hlavní
@@ -60,6 +63,15 @@ public class Main extends SimpleApplication {
         Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
         Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
         guiViewPort.addProcessor(niftyDisplay);
+        
+        /* nacteni profilu hrace */
+        try{
+            player = Player.load();
+        } catch (IOException e){
+            player = new Player();
+        } catch (ClassNotFoundException e){
+            player = new Player();
+        }
         
         /*odstranění listeneru pro flyCam, která hře nevyhovuje a nepoužíva se */
         inputManager.removeListener(flyCam);
