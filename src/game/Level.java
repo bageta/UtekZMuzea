@@ -142,21 +142,26 @@ public class Level extends Node{
     }
     
     /**
-     * 
-     * @param cameraPosition
-     * @param cameraDirection
-     * @return 
+     * Metoda, která vrací místnost, která je v kolizi s vyslaným paprskem určeným
+     * počátkem a směrem. Slouží k výběru místnosti uživatelem. Paprsek vzniká ze
+     * souřadnic kliknutí myši
+     * @param cameraPosition výchozí bod
+     * @param cameraDirection směr paprsku
+     * @return reference na místnost, která odpovídá kolizi, nebo null
      */
     public Room getRoom(Vector3f cameraPosition, Vector3f cameraDirection){
         CollisionResults results = new CollisionResults();
+        //vytvori se paprsek s pocatkem v cameraPosition a smerem cameraDirection
         Ray ray = new Ray(cameraPosition, cameraDirection);
-        //ray.collideWith(new Plane(), results);
+        //zjisti se kolize paprsku s levelem:
         this.collideWith(ray, results);
+        //pokud existuje nějaká nejbližší kolize, porovná se s podlahami místností:
         if(results.size() > 0){
             CollisionResult closest = results.getClosestCollision();
             Geometry toCompare = closest.getGeometry();
             for(Room r: rooms){
                 if(r.floor.equals(toCompare)){
+                    //a určí se tak vybraná místnost:
                     return r;
                 }
             }
@@ -164,6 +169,9 @@ public class Level extends Node{
         return null;
     }
     
+    /**
+     * Slouží k uložení levelu do souboru pomocí xml_support.LevelSaver
+     */
     public void save(){
         if(start == null){
             start = rooms[0];
@@ -175,6 +183,11 @@ public class Level extends Node{
         ls.save();
     }
     
+    /**
+     * Slouží k načtení levelu ze souboru. Používá xml_support.LevelLoader.
+     * Před samotným načtením je ještě potřeba vynulovat všechny listy, aby se
+     * v nich nekumulovali nepoužívané objekty.
+     */
     public final void load(){
         this.detachAllChildren();
         items.clear();

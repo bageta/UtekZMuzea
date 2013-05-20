@@ -140,15 +140,15 @@ public class Planner2 implements PlannerInterface {
         System.out.println("Projde checkpoint1");
         for(int location=0; location< levelState.rooms.length; ++location){
             boolean wasAdded = false;
-            if(levelState.rooms[location]==game.InGameState.thief.actualPosition
-                    && game.InGameState.thief.carrying == null){
+            if(levelState.rooms[location]==game.InGameState.thief.getActualPosition()
+                    && game.InGameState.thief.getCarrying() == null){
                 problem.addInitialStateCondition(new Condition(roomState[location], 1));
                 wasAdded = true;
             }
-            if(levelState.rooms[location]==game.InGameState.thief.actualPosition
-                    && game.InGameState.thief.carrying != null){
+            if(levelState.rooms[location]==game.InGameState.thief.getActualPosition()
+                    && game.InGameState.thief.getCarrying() != null){
                 for(int i=0; i<levelState.items.size(); ++i){
-                    if(levelState.items.get(i)==game.InGameState.thief.carrying){
+                    if(levelState.items.get(i)==game.InGameState.thief.getCarrying()){
                         problem.addInitialStateCondition(new Condition(roomState[location],
                                 i+2+levelState.obstacles.size()+levelState.items.size()));
                         System.out.println("INICIALNI PODMINKA: mistonost:" + location + "hodnota: " + (i+2+levelState.obstacles.size()+levelState.items.size()));

@@ -1,17 +1,13 @@
 package game.items;
 
 import com.jme3.asset.AssetManager;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Cylinder;
 import game.ObstacleType;
 import game.Room;
 
 /**
  *
- * @author Pavel
+ * @author Pavel Pilař
  */
 public class DogItem extends Item {
     

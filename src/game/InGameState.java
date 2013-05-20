@@ -140,7 +140,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 thief.setAnimation("stand");
                 nifty.gotoScreen("win");
             }
-            if(thief.actualPosition.equals(actualLevel.finish)){
+            if(thief.getActualPosition().equals(actualLevel.finish)){
                 isRunning = false;
                 thief.setAnimation("stand");
                 nifty.gotoScreen("fail");
@@ -249,7 +249,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 Vector2f mousePosition = inputManager.getCursorPosition();
                 Room selected = actualLevel.getRoom(camera.getWorldCoordinates(mousePosition),
                         camera.getCoordinatedDirection(mousePosition));
-                if(selected != null && !thief.actualPosition.equals(selected) && selected.isEmpty()){
+                if(selected != null && !thief.getActualPosition().equals(selected) && selected.isEmpty()){
                     Obstacle toAdd;
                     switch(newObstacle){
                         case FIRE:
