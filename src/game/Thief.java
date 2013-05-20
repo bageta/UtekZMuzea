@@ -67,6 +67,9 @@ public class Thief extends Node {
     }
     
     public void update(float tpf){
+        if(carrying != null){
+            carrying.update(tpf);
+        }
         if(actualState == State.DONE){
             if(hasNextAction()){
                 System.out.println(actualActionIndex);
@@ -107,7 +110,7 @@ public class Thief extends Node {
                         //carrying.actualPosition = actualPosition;
                         this.attachChild(carrying);
                         //Vector3f pos = this.getLocalTranslation();
-                        carrying.setLocalTranslation(0,0,0);
+                        carrying.setLocalTranslation(0,4.0f,0);
                         //prehrat pick up animaci
                         actualPosition.deleteItem();
                         actualState = State.DONE;
