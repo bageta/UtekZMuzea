@@ -1,8 +1,9 @@
 package game;
 
 /**
- * enum pro reprezentaci typů překážek
- * @author Pavel Pilar
+ * Enum pro reprezentaci jednotlivých typů překážek a předmětů k jejich odstranění.
+ * Hodnoty odpovídají jedntolivým typům a jsou jasně rozlišitelné dle názvů.
+ * @author Pavel Pilař
  */
 public enum ObstacleType {
     GLASS,

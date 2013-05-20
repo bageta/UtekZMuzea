@@ -16,7 +16,7 @@ import menu.StartScreen;
  * Hlavní třída hry, dědí se od SimpleApplication, dochazí ke spuštení hry a
  * načtení a inicializaci uživatelského rozhraní. Důležité jsou její členské
  * proměnné, které slouží k reprezentaci hlavních stavů celé hry.
- * @author Pavel Pilar
+ * @author Pavel Pilař
  */
 public class Main extends SimpleApplication {
     

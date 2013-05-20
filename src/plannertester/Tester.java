@@ -13,7 +13,7 @@ public class Tester {
     
     public static void main(){
         TestGenerator tg = new TestGenerator();
-        toTest = tg.getTestSet();
+        //toTest = tg.getTestSet();
         Tester tester = new Tester();
         PlannerInterface[] planners = {new Planner2()};
         tester.test(planners);

@@ -224,7 +224,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
     
     public void toNextLevel(){
         if(actualLevel.nextLevelName != null){
-            setLevel(new Level(assetManager, actualLevel.nextLevelName));
+            setLevel(new Level(actualLevel.nextLevelName, assetManager));
             unpause();
         } else {
             nifty.gotoScreen("start");

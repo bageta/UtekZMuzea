@@ -102,7 +102,7 @@ public class Planner implements PlannerInterface{
         
         for(Room r : levelState.rooms){
             for(Room rr: r.neigbours){
-                if(!rr.hasObstacle())
+                if(!(rr.obstacle != null))
                     addMoveThiefAction(problem, thiefLocation, r.index, rr.index);
             }
         }

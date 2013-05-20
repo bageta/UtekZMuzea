@@ -20,13 +20,8 @@ public class DogItem extends Item {
     public DogItem(Room to, AssetManager am){
         super(to, ObstacleType.DOG, am);
         
-        Cylinder b = new Cylinder(10, 10, 1, 3);
-        model = new Geometry("cylinder", b);
-        
-        Material mat = new Material(am, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Brown);
-        model.setMaterial(mat);
-        
+        model = am.loadModel("Models/Ham/ham.j3o");
+
         this.attachChild(model);
     }
     
