@@ -1,6 +1,6 @@
 package planner;
 
-import freeLunch.planning.model.ActionInfo;
+import core.planning.model.ActionInfo;
 /**
  *
  * @author Pavel

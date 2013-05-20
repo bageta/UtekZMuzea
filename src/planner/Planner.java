@@ -6,18 +6,17 @@ import game.Room;
 import java.util.List;
 import java.util.ArrayList;
 
-import freeLunch.planning.NonexistentPlanException;
-import freeLunch.planning.TimeoutException;
-import freeLunch.planning.cmdline.Settings;
-import freeLunch.planning.model.Condition;
-import freeLunch.planning.model.SasAction;
-import freeLunch.planning.model.SasParallelPlan;
-import freeLunch.planning.model.SasProblem;
-import freeLunch.planning.model.StateVariable;
+import core.planning.NonexistentPlanException;
+import core.planning.TimeoutException;
+import core.planning.model.Condition;
+import core.planning.model.SasAction;
+import core.planning.model.SasParallelPlan;
+import core.planning.model.SasProblem;
+import core.planning.model.StateVariable;
 //import freeLunch.planning.model.StringActionInfo;
-import freeLunch.planning.sase.optimizer.PlanVerifier;
-import freeLunch.planning.sase.sasToSat.PlanningProblem;
-import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;
+import core.planning.sase.optimizer.PlanVerifier;
+import core.planning.sase.sasToSat.SasProblemBuilder;
+import core.planning.sase.sasToSat.incremental.IncrementalSolver;
 
 /**
  *
@@ -38,13 +37,13 @@ public class Planner implements PlannerInterface{
     }
     
     public ThiefAction[] makeNewPlan(){
-        PlanningProblem problem = generateProblem();
+        SasProblemBuilder problem = generateProblem();
         SasProblem sasProblem = problem.getSasProblem();
         
         IncrementalSolver planner = new IncrementalSolver(sasProblem);
         
         try{
-            Settings.getSettings().setTimeout(3);
+            planner.getSettings().setTimelimit(3);
             SasParallelPlan plan = planner.solve();
             
             System.out.println("PLANOVAC - 1 - output: ");
@@ -79,9 +78,9 @@ public class Planner implements PlannerInterface{
         return null;
     }
     
-    private PlanningProblem generateProblem(){
+    private SasProblemBuilder generateProblem(){
         
-        PlanningProblem problem = new PlanningProblem();
+        SasProblemBuilder problem = new SasProblemBuilder();
         
         //StateVariable pro polohu zlodeje:
         StateVariable thiefLocation = problem.newVariable("thief", levelState.rooms.length);
@@ -156,7 +155,7 @@ public class Planner implements PlannerInterface{
         return problem;
     }
     
-    private void addMoveThiefAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to){
+    private void addMoveThiefAction(SasProblemBuilder problem, StateVariable thiefLocation, int from, int to){
         SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE, from, to));
         //SasAction op = problem.newAction(new StringActionInfo(String.format("move %d %d", from, to)));
         
@@ -165,7 +164,7 @@ public class Planner implements PlannerInterface{
         op.getEffects().add(new Condition(thiefLocation, to)); 
     }
     
-    private void addMoveThiefOverAction(PlanningProblem problem, StateVariable thiefLocation, int from, int to,
+    private void addMoveThiefOverAction(SasProblemBuilder problem, StateVariable thiefLocation, int from, int to,
             StateVariable obstacleActive, StateVariable obstacleLocation){
         SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE, from, to));
         //SasAction op = problem.newAction(new StringActionInfo(String.format("move %d %d", from, to)));
@@ -177,7 +176,7 @@ public class Planner implements PlannerInterface{
         op.getEffects().add(new Condition(thiefLocation, to));
     }
     
-    private void addPickUpItemAction(PlanningProblem problem, StateVariable thiefLocation,
+    private void addPickUpItemAction(SasProblemBuilder problem, StateVariable thiefLocation,
             StateVariable itemLocation, int location){
         SasAction op = problem.newAction(new ThiefAction(ActionType.PICK, itemLocation.getId(), location));
         //SasAction op = problem.newAction(new StringActionInfo(String.format("pick %d %d", itemLocation.getName(), location)));
@@ -189,7 +188,7 @@ public class Planner implements PlannerInterface{
         op.getPreconditions().add(new Condition(thiefLocation, location));
     }
     
-    private void addUseItemAction(PlanningProblem problem, StateVariable thiefLocation, 
+    private void addUseItemAction(SasProblemBuilder problem, StateVariable thiefLocation, 
             StateVariable itemLocation, StateVariable obstacleLocation, StateVariable obstacleActive,
             int from, int to){
         SasAction op = problem.newAction(new ThiefAction(ActionType.USE, itemLocation.getId(), to));
@@ -205,7 +204,7 @@ public class Planner implements PlannerInterface{
         op.getPreconditions().add(new Condition(obstacleLocation, to));
     }
     
-    private void addPutDownItemAction(PlanningProblem problem, StateVariable thiefLocation,
+    private void addPutDownItemAction(SasProblemBuilder problem, StateVariable thiefLocation,
             StateVariable itemLocation, int location){
         SasAction op = problem.newAction(new ThiefAction(ActionType.PUT,itemLocation.getId(), thiefLocation.getId()));
         //SasAction op = problem.newAction(new StringActionInfo(String.format("put %d %d", itemLocation.getName(), thiefLocation)));

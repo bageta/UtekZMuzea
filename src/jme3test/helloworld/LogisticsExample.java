@@ -18,18 +18,17 @@
  ******************************************************************************/
 package jme3test.helloworld;
 
-import freeLunch.planning.NonexistentPlanException;
-import freeLunch.planning.TimeoutException;
-import freeLunch.planning.cmdline.Settings;
-import freeLunch.planning.model.Condition;
-import freeLunch.planning.model.SasAction;
-import freeLunch.planning.model.SasParallelPlan;
-import freeLunch.planning.model.SasProblem;
-import freeLunch.planning.model.StateVariable;
-import freeLunch.planning.model.StringActionInfo;
-import freeLunch.planning.sase.optimizer.PlanVerifier;
-import freeLunch.planning.sase.sasToSat.PlanningProblem;
-import freeLunch.planning.sase.sasToSat.incremental.IncrementalSolver;
+import core.planning.NonexistentPlanException;
+import core.planning.TimeoutException;
+import core.planning.forwardSearch.BasicForwardSearchSolver;
+import core.planning.model.Condition;
+import core.planning.model.SasAction;
+import core.planning.model.SasParallelPlan;
+import core.planning.model.SasProblem;
+import core.planning.model.StateVariable;
+import core.planning.model.StringActionInfo;
+import core.planning.sase.optimizer.PlanVerifier;
+import core.planning.sase.sasToSat.SasProblemBuilder;
 
 public class LogisticsExample {
 
@@ -39,16 +38,23 @@ public class LogisticsExample {
     }
 
     public void testLogisticsProblem() {
-        // We generate the planning problem (see below) Hello bazaar
-        PlanningProblem problem = generateProblem();
+        // We generate the planning problem (see below)
+        SasProblemBuilder problem = generateProblem();
         SasProblem sasProb = problem.getSasProblem();
 
         // We initialize the planner with the problem
-        IncrementalSolver planner = new IncrementalSolver(sasProb);
+        
+        // povodny planovac, mal by byt rychlejsi nez minule, robi optimalne plany, nevie zistit, ze neexistuje plan
+        //IncrementalSolver planner = new IncrementalSolver(sasProb);
+        
+        // velmi rychly planovac, vie zistit, ze neexistuje plan, ale robi nekvalitne (velmi dlhe) plany
+        BasicForwardSearchSolver planner = new BasicForwardSearchSolver(sasProb); 
+        
+        // minule, robi optimalne plany, nevie zistit, ze neexistuje plan, moze byt rychlejsi nez IncrementalSolver
+        //IterativeSatBasedSolver planner = new IterativeSatBasedSolver(new Sat4JSolver(), new SaseTranslator(sasProb));
 
         // We solve the problem
         try {
-            Settings.getSettings().setTimeout(2); //time limit is 2 seconds 
             SasParallelPlan plan = planner.solve();
 
             // print the plan
@@ -77,10 +83,10 @@ public class LogisticsExample {
      * 
      * @return the planning problem
      */
-    private PlanningProblem generateProblem() {
+    private SasProblemBuilder generateProblem() {
 
         // Initialize the planning problem
-        PlanningProblem problem = new PlanningProblem();
+        SasProblemBuilder problem = new SasProblemBuilder();
 
         // ==========================
         // Create the state variables
@@ -96,7 +102,7 @@ public class LogisticsExample {
         // state variables of package locations
         // a package can be either at one of the locations
         // or on one of the trucks
-        // domain size = number of location + number of tracks
+        // domain size = number of location + number of trucks
         StateVariable[] packageLocation = new StateVariable[10];
         for (int i = 0; i < 10; i++) {
             packageLocation[i] = problem.newVariable("p" + i, 8);
@@ -167,7 +173,7 @@ public class LogisticsExample {
         return problem;
     }
 
-    private void addMoveTruckAction(PlanningProblem problem, StateVariable truckLocation, int from, int to) {
+    private void addMoveTruckAction(SasProblemBuilder problem, StateVariable truckLocation, int from, int to) {
         // Create a new operator named like MoveTruck-1:3->1
         SasAction op = problem.newAction(new StringActionInfo(String.format("MoveTruck-%s:%d->%d", truckLocation.getName(), from, to)));
         // add the preconditions - the truck must be at the "from" location
@@ -176,7 +182,7 @@ public class LogisticsExample {
         op.getEffects().add(new Condition(truckLocation, to));
     }
 
-    private void addLoadPackageAction(PlanningProblem problem, StateVariable truckLocation, StateVariable packageLocation, int location) {
+    private void addLoadPackageAction(SasProblemBuilder problem, StateVariable truckLocation, StateVariable packageLocation, int location) {
         SasAction op = problem.newAction(new StringActionInfo(String.format("LoadPackage-%s-onTruck-%s-at-%d", packageLocation.getName(), truckLocation.getName(), location)));
         // the precondition - the package is at the correct location
         op.getPreconditions().add(new Condition(packageLocation, location));
@@ -186,7 +192,7 @@ public class LogisticsExample {
         op.getPreconditions().add(new Condition(truckLocation, location));
     }
 
-    private void addUnloadPackageAction(PlanningProblem problem, StateVariable truckLocation, StateVariable packageLocation, int location) {
+    private void addUnloadPackageAction(SasProblemBuilder problem, StateVariable truckLocation, StateVariable packageLocation, int location) {
         SasAction op = problem.newAction(new StringActionInfo(String.format("UnloadPackage-%s-onTruck-%s-at-%d", packageLocation.getName(), truckLocation.getName(), location)));
         // the precondition - the package is on the correct truck (locations 5,6,7 are trucks 0,1,2)
         op.getPreconditions().add(new Condition(packageLocation, truckLocation.getId() + 5));

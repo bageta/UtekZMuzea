@@ -33,6 +33,7 @@ import game.obstacles.DogObstacle;
 import game.obstacles.FireObstacle;
 import game.obstacles.FlashObstacle;
 import game.obstacles.GlassObstacle;
+import planner.ThiefAction;
 
 /**
  *
@@ -87,7 +88,6 @@ public class InGameState extends AbstractAppState implements ScreenController {
         inputManager.addMapping("mouseClick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
         inputManager.addMapping("rightMouseClick", new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
         inputManager.addListener(actionListener, new String[]{"mouseClick", "rightMouseClick"});
-        //inputManager.removeListener();
         
         DirectionalLight dl = new DirectionalLight();
         dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
@@ -110,9 +110,14 @@ public class InGameState extends AbstractAppState implements ScreenController {
         counter = new CountDown(actualLevel.timeLimit);
 
         planner = new Planner2(actualLevel);
-
-        thief.setNewPlane(planner.makeNewPlan());
-                System.out.println("Nebo projde?");
+        ThiefAction[] plan = planner.makeNewPlan();
+        if(plan != null){
+            thief.setNewPlane(plan);
+        } else {
+            isRunning = false;
+            thief.setAnimation("stand");
+            nifty.gotoScreen("win");
+        }
         counter.start();
 
         //localRootNode.addLight(dl);
@@ -265,7 +270,14 @@ public class InGameState extends AbstractAppState implements ScreenController {
                     actualLevel.addObstacle(toAdd,
                             selected);
                     planner.setLevel(actualLevel);
-                    thief.setNewPlane(planner.makeNewPlan());
+                    ThiefAction[] plan = planner.makeNewPlan();
+                    if(plan != null){
+                        thief.setNewPlane(plan);
+                    } else {
+                        isRunning = false;
+                        thief.setAnimation("stand");
+                        nifty.gotoScreen("win");
+                    }
                     int i = actualLevel.availableObst.get(newObstacle);
                     actualLevel.availableObst.put(newObstacle, i-1);
                     nifty.getCurrentScreen().findNiftyControl("obstacle" + buttonNumber, Button.class)
