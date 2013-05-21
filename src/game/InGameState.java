@@ -110,7 +110,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
         
         counter = new CountDown(actualLevel.timeLimit);
 
-        planner = new Planner2(actualLevel);
+        planner = new Planner2(actualLevel, thief);
         ThiefAction[] plan = planner.makeNewPlan();
         if(plan != null){
             thief.setNewPlane(plan);

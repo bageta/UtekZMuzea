@@ -1,8 +1,8 @@
 package planner;
 
 import game.Level;
-import game.Main;
 import game.Room;
+import game.Thief;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,11 @@ import core.planning.sase.sasToSat.incremental.IncrementalSolver;
 public class Planner2 implements PlannerInterface {
     
     Level levelState;
+    Thief thief;
     
-    public Planner2(Level actualLevel){
+    public Planner2(Level actualLevel, Thief thief){
         levelState = actualLevel;
+        this.thief = thief;
     }
     
     public Planner2(){}
@@ -140,15 +142,15 @@ public class Planner2 implements PlannerInterface {
         System.out.println("Projde checkpoint1");
         for(int location=0; location< levelState.rooms.length; ++location){
             boolean wasAdded = false;
-            if(levelState.rooms[location]==game.InGameState.thief.getActualPosition()
-                    && game.InGameState.thief.getCarrying() == null){
+            if(levelState.rooms[location]==thief.getActualPosition()
+                    && thief.getCarrying() == null){
                 problem.addInitialStateCondition(new Condition(roomState[location], 1));
                 wasAdded = true;
             }
-            if(levelState.rooms[location]==game.InGameState.thief.getActualPosition()
-                    && game.InGameState.thief.getCarrying() != null){
+            if(levelState.rooms[location]==thief.getActualPosition()
+                    && thief.getCarrying() != null){
                 for(int i=0; i<levelState.items.size(); ++i){
-                    if(levelState.items.get(i)==game.InGameState.thief.getCarrying()){
+                    if(levelState.items.get(i)==thief.getCarrying()){
                         problem.addInitialStateCondition(new Condition(roomState[location],
                                 i+2+levelState.obstacles.size()+levelState.items.size()));
                         System.out.println("INICIALNI PODMINKA: mistonost:" + location + "hodnota: " + (i+2+levelState.obstacles.size()+levelState.items.size()));
@@ -182,7 +184,6 @@ public class Planner2 implements PlannerInterface {
     private void addMoveThiefAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to){
         SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE,from.getId(), to.getId()));
-        //SasAction op = problem.newAction(new StringActionInfo(String.format("move: %d->%d", from.getId(), to.getId())));
         
         op.getPreconditions().add(new Condition(from, 1));
         op.getPreconditions().add(new Condition(to, 0));
@@ -194,7 +195,6 @@ public class Planner2 implements PlannerInterface {
     private void addUseItemAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to, int obstacle, int thiefAndItem){
         SasAction op = problem.newAction(new ThiefAction(ActionType.USE,from.getId(), to.getId()));
-        //SasAction op = problem.newAction(new StringActionInfo(String.format("use: %d->%d", from.getId(), to.getId())));
         
         op.getPreconditions().add(new Condition(to, obstacle));
         op.getPreconditions().add(new Condition(from, thiefAndItem));
@@ -206,7 +206,6 @@ public class Planner2 implements PlannerInterface {
     private void addPickUpItemAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to, int item){
         SasAction op = problem.newAction(new ThiefAction(ActionType.PICK,from.getId(), to.getId()));
-        //SasAction op = problem.newAction(new StringActionInfo(String.format("pick: %d->%d", from.getId(), to.getId())));
         
         op.getPreconditions().add(new Condition(to, item));
         op.getPreconditions().add(new Condition(from, 1));
