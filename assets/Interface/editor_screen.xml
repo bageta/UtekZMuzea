@@ -140,9 +140,13 @@
                         </panel>
                     </panel>
                 </panel>
-                <panel id="time_panel" childLayout="horizontal">
-                    <text text="Nastavte casovy limit:(ve vterinach)" font="Interface/Fonts/Default.fnt" color='#000f' />
-                    <control name="textfield" id="time_limit" />
+                <panel id="time_panel" childLayout="horizontal" height="10%" width="90%">
+                    <panel childLayout="center" width="50%" height="100%">
+                        <text text="Nastavte casovy limit:(ve vterinach)" font="Interface/Fonts/Default.fnt" color='#000f' />
+                    </panel>
+                    <panel childLayout="center" width="50%" height="100%">
+                        <control name="textfield" id="time_limit" />
+                    </panel>
                 </panel>
             </panel>
             <panel id="lower" width="100%" height="20%" childLayout="horizontal">

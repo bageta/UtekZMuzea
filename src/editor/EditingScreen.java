@@ -33,6 +33,7 @@ import game.InGameCamera;
 import game.Level;
 import game.ObstacleType;
 import game.Room;
+import game.items.Item;
 import java.io.File;
 
 import java.util.ArrayList;
@@ -252,10 +253,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                         editedLevel.collideWith(ray2, del_results);
                         CollisionResult closest = del_results.getClosestCollision();
                         if(closest != null){
-                            System.out.println("Neco se vybere...");
-                            editedLevel.detachChild(closest.getGeometry());
                             deleteRoom(closest.getGeometry());
-                            deleteItem(closest.getGeometry());
                         }
                         break;
                     case ADD_DOOR_ROOM_1:
@@ -405,22 +403,12 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
             if(newRooms.get(toDelete).item == null){
                 editedLevel.detachChild(newRooms.get(toDelete));
                 newRooms.remove(toDelete);
+            } else {
+                Item delItem = newRooms.get(toDelete).item;
+                editedLevel.detachChild(delItem);
+                delItem.actualPosition.deleteItem();
+                editedLevel.items.remove(delItem); 
             }
-        }
-    }
-    
-    private void deleteItem(Geometry toCompare){
-        int toDelete = -1;
-        for(int i=0; i<editedLevel.items.size(); ++i){
-            if(toCompare.equals(editedLevel.items.get(i).model)){
-                toDelete = i;
-                break;
-            }
-        }
-        if(toDelete != -1){
-            editedLevel.detachChild(editedLevel.items.get(toDelete));
-            editedLevel.items.get(toDelete).actualPosition.deleteItem();
-            editedLevel.items.remove(toDelete);
         }
     }
     
