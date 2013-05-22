@@ -9,7 +9,6 @@
         <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
             <panel id="panel_top" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#f008">
                 <image filename="Interface/images/headline.png" width="100%" height="100%" />
-                <!--<text text="Utek Z Muzea" font="Interface/Fonts/Default.fnt" height="100%" width="100%" color='#000f' />-->
             </panel>
             <panel id="panel_mid" height="50%" width="75%" align="center" childLayout="center" backgroundColor="#0f08">
                 <text text="zvolte jednu z moznosti:" font="Interface/Fonts/Default.fnt" wrap="true" color="#000f" />
@@ -31,9 +30,9 @@
     <screen id="level_select" controller="menu.StartScreen">
         <layer id="foreground" childLayout="vertical">
             <panel id="tabs_container" height="80%" width="100%" childLayout="vertical">
-                <control name="nifty-tabs" id="tabs">
-                    <control name="nifty-tab" caption="Muzeum 1" id="tab_1">
-                        <panel id="tab_panel_1" childLayout="vertical">
+                <control name="nifty-tabs" id="tabs" width="100%" height="100%">
+                    <control name="nifty-tab" caption="Muzeum 1" id="tab_1" width="100%" height="100%">
+                        <panel id="tab_panel_1" childLayout="vertical" width="90%" height="90%">
                             <panel id="tabbed_upper" childLayout="horizontal" width="100%" height="30%">
                                 <control name="button" label="Level 1" id="butt_1" width="25%" height="100%">
                                     <interact onClick="startGame(level1)" />

@@ -11,7 +11,6 @@ import com.jme3.input.InputManager;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Button;
 import de.lessvoid.nifty.controls.ListBox;
-import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import game.Level;
@@ -101,11 +100,6 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void  gotoLevelSelect(){
         ListBox customLevels = nifty.getScreen("level_select")
                 .findNiftyControl("custom_levels", ListBox.class);
-        
-//        for(int i=app.player.levelAchived+1; i<13; ++i){
-//            nifty.getScreen("level_select")
-//                    .findNiftyControl(("butt_" + i), Button.class).disable();
-//        }
         
         customLevels.clear();
         
