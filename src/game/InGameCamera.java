@@ -1,15 +1,11 @@
 package game;
 
-import java.io.IOException;
-
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
-import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.MouseButtonTrigger;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -18,18 +14,20 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 
+import java.io.IOException;
+
 /**
- * Kamera, ktera se chova jako bezna kamera v RTS hrach, tedy pohled je mirne
- * zesikma shora a hrac muze s kamerou hybat 4 smery, rotovat, priblizova a 
- * oddalovat a take menit sklon kamery
- * @author Pavel
+ * Kamera, která se chová jako běžná kamera v RTS hrách. Tedy pohled je mírně
+ * zešikma shora a hráč může s kamerou hýbat 4 směry, rotovat, přibližovat a 
+ * oddalovat a také měnit sklon kamery
+ * @author Pavel Pilař
  */
 public class InGameCamera implements Control, ActionListener {
     
     /**
-     * enum pro representaci toho, jaká akce se s kamerou bude provádět
+     * enum pro representaci toho, jaká akce se s kamerou bude provádět.
      */
-    public enum Degree{
+    private enum Degree{
         SIDE,
         FWD,
         ROTATE,
@@ -37,24 +35,32 @@ public class InGameCamera implements Control, ActionListener {
         DISTANCE
     }
     
+    /** reference na inputManager aplikace */
     private InputManager inputManager;
+    /** reference na kameru aplikace */
     private final Camera cam;
     
+    /* pole směr pro různé akce */
     private int[] direction = new int[5];
     private float[] accelPeriod = new float[5];
     
+    /* různé atributy jako rychlost atd pro různé akce */
     private float[] maxSpeed = new float[5];
     private float[] maxAccelPeriod = new float[5];
     private float[] minValue = new float[5];
     private float[] maxValue = new float[5];
     
+    /** pozice kamery. */
     private Vector3f position = new Vector3f();
     
+    /** centrální pozice kamery. */
     private Vector3f center = new Vector3f();
+    /** naklonění, rotace a vzdálenost kamery */
     private float tilt = (float)(Math.PI / 4);
     private float rot = 0;
     private float distance = 15;
     
+    /** ordinální hodnoty z enumu Degree */
     private static final int SIDE = Degree.SIDE.ordinal();
     private static final int FWD = Degree.FWD.ordinal();
     private static final int ROTATE = Degree.ROTATE.ordinal();
@@ -62,7 +68,8 @@ public class InGameCamera implements Control, ActionListener {
     private static final int DISTANCE = Degree.DISTANCE.ordinal();
     
     /**
-     * konstruktor třídy s kamerou
+     * Konstruktor třídy s kamerou. Nastavují se hranice pohybu, naklonění,
+     * atd. A maximální rychlosi pro různé akce.
      * @param cam kamera, která se bude ovládat
      * @param target cílový spatial, ke kterému se kamera přidá
      */
@@ -85,18 +92,29 @@ public class InGameCamera implements Control, ActionListener {
     }
     
     /**
-     * nastavení maximální rychlosti kamary
+     * Nastavení maximální rychlosti kamary pro různé akce.
      * @param deg akce, pro kterou se rychlost nastavuje
      * @param maxSpeed maximální rychlost kamery
      * @param accelTime čas akcelerace
      */
-    public void setMaxSpeed(Degree deg, float maxSpeed, float accelTime){
+    private void setMaxSpeed(Degree deg, float maxSpeed, float accelTime){
         this.maxSpeed[deg.ordinal()] = maxSpeed/accelTime;
         maxAccelPeriod[deg.ordinal()] = accelTime;
     }
     
+     /**
+     * natavení horní a dolní meze daného pohybu
+     * @param dg Degree určující daný pohyb
+     * @param min dolní mez
+     * @param max horní mez
+     */
+    private void setMinMaxValues(Degree dg, float min, float max) {
+        minValue[dg.ordinal()] = min;
+        maxValue[dg.ordinal()] = max;
+    }
+    
     /**
-     * přiřazení zachycování vstupu z klávesnice a myši ke kameře
+     * přiřazení zachycování vstupu z klávesnice ke kameře
      * @param inputManager nastavení inputManageru, který události zpracovává
      */
     public void registerWithInput(InputManager inputManager){
@@ -119,41 +137,13 @@ public class InGameCamera implements Control, ActionListener {
         inputManager.addListener(this, mappings);
         inputManager.setCursorVisible(true);
     }
-    
-    public void write(JmeExporter ex) throws IOException {
-    }
-    
-    public void read(JmeImporter im) throws IOException {
-    }
-    
+   
     /**
-     * vytvoření kopie kamery
-     * @param spatial nový Spatial, pro který se kopie vytváří
-     * @return nakopírovaná kameru
-     */
-    public Control cloneForSpatial(Spatial spatial) {
-        InGameCamera other = new InGameCamera(cam, spatial);
-        other.registerWithInput(inputManager);
-        return other;
-    }
-    
-    public void setSpatial(Spatial spatial) {  
-    }
- 
-    public void setEnabled(boolean enabled) {
-    }
- 
-    public boolean isEnabled() {
-        return true;
-    }
-    
-    /**
-     * update metoda kamery, provádí se pohyb kamery podle zachyceného vstupu z
-     * klávesnice, myši
+     * Update metoda kamery, provádí se pohyb kamery podle zachyceného vstupu z
+     * klávesnice
      * @param tpf čas vyrendrování jednoho snímku
      */
     public void update(final float tpf) {
- 
         for (int i = 0; i < direction.length; i++) {
             int dir = direction[i];
             switch (dir) {
@@ -204,7 +194,7 @@ public class InGameCamera implements Control, ActionListener {
     }
     
     /**
-     * oříznutí předané hodnoty podle daného intervalu
+     * Oříznutí předané hodnoty podle daného intervalu.
      * @param min spodní mez
      * @param value ořezávaná hodnota
      * @param max horní mez
@@ -221,67 +211,19 @@ public class InGameCamera implements Control, ActionListener {
     }
     
     /**
-     * vrací maximální rychlost daného pohybu
-     * @param dg Degree určující daný pohyb
-     * @return maximální rychlost daného pohybu
-     */
-    public float getMaxSpeed(Degree dg) {
-        return maxSpeed[dg.ordinal()];
-    }
-     
-    /**
-     * vrací horní mez pro daný pohyb
-     * @param dg Degree určující daný pohyb
-     * @return horní mez daného pohybu
-     */
-    public float getMinValue(Degree dg) {
-        return minValue[dg.ordinal()];
-    }
-    
-    /**
-     * vrací dolní mez pro daný pohyb
-     * @param dg Degree určující daný pohyb
-     * @return dolní mez daného pohybu
-     */
-    public float getMaxValue(Degree dg) {
-        return maxValue[dg.ordinal()];
-    }
-    
-    /**
-     * natavení horní a dolní meze daného pohybu
-     * @param dg Degree určující daný pohyb
-     * @param min dolní mez
-     * @param max horní mez
-     */
-    public void setMinMaxValues(Degree dg, float min, float max) {
-        minValue[dg.ordinal()] = min;
-        maxValue[dg.ordinal()] = max;
-    }
-    
-    /**
-     * vrací aktuální pozici kamery
-     * @return aktuální pozice kamery
-     */
-    public Vector3f getPosition() {
-        return position;
-    }
-    
-    /**
-     * nastavení počátečního bodu kamery, od kterého se počítají meze pro pohyb
+     * Nastavení počátečního bodu kamery, od kterého se počítají meze pro pohyb.
      * @param center souřadnice počátečního bodu
      */
     public void setCenter(Vector3f center) {
         this.center.set(center);
     }
- 
-    public void render(RenderManager rm, ViewPort vp) {
-    }
     
     /**
-     * 
-     * @param name
-     * @param isPressed
-     * @param tpf 
+     * Zachytávání vstupu od uživatele, podle zachyceného vstupu se nastavuje,
+     * direction příslušné akce.
+     * @param name Jméno akce namapované na klávesu
+     * @param isPressed je klávesa stále stisknutá?
+     * @param tpf čas vyrenderování snímku
      */
     public void onAction(String name, boolean isPressed, float tpf) {
         int press = isPressed ? 1 : 0;
@@ -297,20 +239,51 @@ public class InGameCamera implements Control, ActionListener {
         direction[deg.ordinal()] = press;
     }
     
-    public Vector3f getDirection(){
-        return cam.getDirection();
-    }
-    
-    public Vector3f getLocation(){
-        return cam.getLocation();
-    }
-    
+    /**
+     * Metoda, která vrací pozici kamery ve světových souřadnicích v závislosti
+     * na pozici bodu obrazovky.
+     * @param screenPos souřednice bodu na obrazovce 
+     * @return 
+     */
     public Vector3f getWorldCoordinates(Vector2f screenPos){
         return cam.getWorldCoordinates(screenPos, 0f);
     }
     
+    /**
+     * metoda, která vrací směrový vektor kamery s počátkem v bodu obrazovky.
+     * @param screenPos souřadnice bodu na obrazovce
+     * @return 
+     */
     public Vector3f getCoordinatedDirection(Vector2f screenPos){
         Vector3f coordinates = cam.getWorldCoordinates(screenPos, 0f);
         return cam.getWorldCoordinates(screenPos, 1f).subtractLocal(coordinates).normalizeLocal();
+    }
+    
+    
+    //metody se nepoužívají, ale musí zde být kvůli rozhraní Control:
+    
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+    }
+    
+    @Override
+    public void read(JmeImporter im) throws IOException {
+    }
+    
+     /**
+     * vytvoření kopie kamery
+     * @param spatial nový Spatial, pro který se kopie vytváří
+     * @return nakopírovaná kameru
+     */
+    public Control cloneForSpatial(Spatial spatial) {
+        InGameCamera other = new InGameCamera(cam, spatial);
+        other.registerWithInput(inputManager);
+        return other;
+    }
+    
+    public void setSpatial(Spatial spatial) {  
+    }
+    
+    public void render(RenderManager rm, ViewPort vp) {
     }
 }
