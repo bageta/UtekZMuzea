@@ -127,7 +127,7 @@ public class Thief extends Node {
             if(actualAction.actionType == ActionType.MOVE){
                 moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
-                    this.setLocalTranslation(target);
+                    this.setLocalTranslation(target.x, 0.0f, target.z);
                     this.actualPosition = map.rooms[actualAction.to];
                     actualState = State.DONE;
                 }
@@ -135,7 +135,7 @@ public class Thief extends Node {
             if(actualAction.actionType == ActionType.PICK){
                 moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
-                    this.setLocalTranslation(target);
+                    this.setLocalTranslation(target.x, 0.0f, target.z);
                     this.actualPosition = map.rooms[actualAction.to];
                     if(door){
                         target = map.rooms[actualAction.to].getPosition();
@@ -152,7 +152,7 @@ public class Thief extends Node {
             if(actualAction.actionType == ActionType.PUT){
                 moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
-                    this.setLocalTranslation(target);
+                    this.setLocalTranslation(target.x, 0.0f, target.z);
                     if(door){
                         this.detachChild(carrying);
                         map.rooms[actualAction.from].setItem(carrying);
@@ -170,7 +170,7 @@ public class Thief extends Node {
             if(actualAction.actionType == ActionType.USE){
                 moveThief(tpf);
                 if(Position.isClose(getLocalTranslation(), target, 0.1f)){
-                    this.setLocalTranslation(target);
+                    this.setLocalTranslation(target.x, 0.0f, target.z);
                     this.actualPosition = map.rooms[actualAction.to];
                     if(door){
                         target = map.rooms[actualAction.to].getPosition();
@@ -235,12 +235,12 @@ public class Thief extends Node {
      */
     public void moveThief(float tpf){
         Vector3f direction = new Vector3f(target.x-this.getLocalTranslation().x,
-                target.y - this.getLocalTranslation().y,
+                0.0f,
                 target.z - this.getLocalTranslation().z);
         
         direction = direction.normalize();
         this.move(direction.x*tpf*MOVEMENT_SPEED,
-            direction.y*tpf*MOVEMENT_SPEED,
+            0.0f,
             direction.z*tpf*MOVEMENT_SPEED);
         
         Vector3f start = new Vector3f(0.0f, 0.0f, 1.0f);
