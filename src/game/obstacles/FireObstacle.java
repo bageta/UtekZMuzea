@@ -6,14 +6,17 @@ import com.jme3.effect.ParticleMesh;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+
 import game.ObstacleType;
 
 /**
- *
- * @author Pavel
+ * Reprezentace překážky typu oheň. Vytvoří se částicový efekt ohně,
+ * který se bude ve hře zobrazovat a rodiči se nastaví typ oheň.
+ * @author Pavel Pilař
  */
 public class FireObstacle extends Obstacle{
     
+    /** Konstruktor překážky typu oheň. */
     public FireObstacle(AssetManager am){
         super(am, ObstacleType.FIRE);
             
@@ -22,9 +25,9 @@ public class FireObstacle extends Obstacle{
         Material mat_red = new Material(am, "Common/MatDefs/Misc/Particle.j3md");
         mat_red.setTexture("Texture", am.loadTexture("Effects/Explosion/flame.png"));
         fire.setMaterial(mat_red);
-        fire.setImagesX(2); fire.setImagesY(2); // 2x2 texture animation
-        fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
-        fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
+        fire.setImagesX(2); fire.setImagesY(2);
+        fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));
+        fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f));
         fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
         fire.setStartSize(0.6f);
         fire.setEndSize(0.1f);

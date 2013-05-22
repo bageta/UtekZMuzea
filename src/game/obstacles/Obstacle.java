@@ -2,25 +2,27 @@ package game.obstacles;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
+
 import game.ObstacleType;
 import game.Room;
 
 /**
- * třída pro reprezentaci překážek, genericka prekazka
- * @author Pavel
+ * Třída pro reprezentaci překážek, generická překážka. Třída je abstraktní,
+ * slouží jako předek překážkám s konkrétním typem a modelem a poskytuje
+ * rozhraní pro práci s překážkami.
+ * @author Pavel Pilař
  */
 public abstract class Obstacle extends Node {
     
-    //aktuální poloha překážky:
+    /** aktuální poloha překážky: */
     private Room actualPosition;
-    //model pro zobrazení:
-    //Spatial model;
     
-    //typ překážky:
+    /** typ překážky: */
     public ObstacleType type;
     
     /**
-     * kostruktor pro vytvoření nové překážky daného typu
+     * kostruktor pro vytvoření nové překážky daného typu. Nastaví se typ
+     * překážky.
      * @param type typ překážky
      */
     public Obstacle(AssetManager am, ObstacleType type){
@@ -37,24 +39,11 @@ public abstract class Obstacle extends Node {
     }
     
     /**
-     * vrací aktuální pozici
-     * @return 
+     * vrací místnost ve, které je překážka.
+     * @return reference na místnost obsahující tuto překážku
      */
     public Room getPosition(){
         return actualPosition;
     }
     
-    /**
-     * vrací typ překážky jako číslo
-     * @return typ překážky jako číslo
-     */
-    public int getTypeOrdinal(){
-        int result = 0;
-        if(type == ObstacleType.DOG){
-            result = ObstacleType.DOG.ordinal();
-        } else if(type == ObstacleType.GLASS){
-            result = ObstacleType.GLASS.ordinal();
-        }
-        return result;
-    }
 }
