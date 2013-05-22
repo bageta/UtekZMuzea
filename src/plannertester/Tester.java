@@ -5,7 +5,7 @@ import game.Level;
 
 /**
  *
- * @author Pavel
+ * @author Pavel Pilař
  */
 public class Tester {
     

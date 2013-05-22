@@ -20,32 +20,45 @@ import core.planning.sase.sasToSat.SasProblemBuilder;
 import core.planning.sase.sasToSat.incremental.IncrementalSolver;
 
 /**
- * modelovani problemu podle stavu lokaci
- * TODO: TEORETICKY FUNKCNI VERZE, TREBA OTESTOVAT
- * @author Pavel
+ * Modelovani plánovacího problému podle stavu lokaci. Způsob zvolený ve hře.
+ * Tento způsob je detailně popsán a vysvětlen v přiloženém textu práce.
+ * @author Pavel Pilař
  */
 public class Planner2 implements PlannerInterface {
     
+    /** reference na level */
     Level levelState;
+    /** reference na zloděje ve hře */
     Thief thief;
     
+    /** konstruktor plánovače. */
     public Planner2(Level actualLevel, Thief thief){
         levelState = actualLevel;
         this.thief = thief;
     }
     
-    public Planner2(){}
-    
+    /**
+     * Přiřadí plánovači nový level.
+     * @param actualLevel reference na level
+     */
     public void setLevel(Level actualLevel){
         levelState = actualLevel;
     }
     
+    /**
+     * Vytvoří pro zloděje nový plán.
+     * @return vrací plán pro zloděje jako pole akcí typu ThiefAction
+     */
     public ThiefAction[] makeNewPlan(){
+        
+        //vygenerujeme problém:
         SasProblemBuilder problem = generateProblem();
         SasProblem sasProblem = problem.getSasProblem();
         
+        //solver generující optimální plán:
         IncrementalSolver planner = new IncrementalSolver(sasProblem);
         
+        //rychlý solver, používaný pro zjištění existence plánu 
         BasicForwardSearchSolver planner2 = new BasicForwardSearchSolver(sasProblem);
         
         try{
@@ -60,15 +73,10 @@ public class Planner2 implements PlannerInterface {
             planner.getSettings().setTimelimit(5);
             SasParallelPlan plan = planner.solve();
             
-            
-            System.out.println("PLANOVAC - 2 - output: ");
-            System.out.print(plan);
-            
             PlanVerifier verifier = new PlanVerifier();
             boolean valid = verifier.verifyPlan(sasProblem, plan);
             if(valid){
                 ArrayList<SasAction> actions = new ArrayList<SasAction>();
-                System.out.println("Plan is valid");
                 for(List<SasAction> list: plan.getPlan()){
                     for(SasAction action : list){
                         actions.add(action);
@@ -80,18 +88,19 @@ public class Planner2 implements PlannerInterface {
                 }
                 return thiefActions;
             } else {
-                System.out.println("Plan in not valid");
+                return null;
             }
-            
-            System.out.println("PLANOVAC - 2 - output END -----------------------");
         } catch(TimeoutException e){
             return null;
         } catch(NonexistentPlanException e){
             return null;
         }
-        return null;
     }
     
+    /**
+     * Metoda generující problém pro plánovač.
+     * @return vrací problém jako objekt typu SasProblemBuilder
+     */
     private SasProblemBuilder generateProblem(){
         SasProblemBuilder problem = new SasProblemBuilder();
         
@@ -108,23 +117,21 @@ public class Planner2 implements PlannerInterface {
             roomState[i] = problem.newVariable("room" + i, statesInRoom);
         }
         
-        //TODO: upravit tak, aby to korespondovalo s novymi akcemi
         for(Room location: levelState.rooms){
             for(Room location2: location.neigbours){
-                System.out.println("CYCLE - START-------------------------------");
-                System.out.println("MOVEACTION: form: " + roomState[location.index] + "to: " + roomState[location2.index]);
+                //přidáme všechny možné přesuny:
                 addMoveThiefAction(problem, roomState[location.index], roomState[location2.index]);
                 for(int j=2+levelState.obstacles.size()+levelState.items.size();
                         j<statesInRoom; ++j){
-                    System.out.println("MOVE_WITH_ACTION: form: " + roomState[location.index] + " to: " + roomState[location2.index] + " item: " + j);
+                    //přidáme všechny možné přesuny s věcí:
                     addMoveWithItemAction(problem, roomState[location.index],
                            roomState[location2.index], j);
-                    System.out.println("PUT_ACTION: form: " + roomState[location.index] + " to: " + roomState[location2.index] + " item: " + j);
+                    //přidáme všechny možné akce položení věci:
                     addPutDownItemAction(problem, roomState[location.index],
                            roomState[location2.index], j);
                     for(int obstacle=2; obstacle< levelState.obstacles.size()+2; ++obstacle){
                         if(levelState.obstacles.get(obstacle-2).type == levelState.items.get(j-levelState.items.size()-levelState.obstacles.size()-2).type){
-                            System.out.println("USE_ACTION: form: " + roomState[location.index] + " to: " + roomState[location2.index] + " item: " + j + " obstacle: " + obstacle);
+                            //přidáme všechny možné akce použítí věci:
                             addUseItemAction(problem, roomState[location.index],
                                    roomState[location2.index], obstacle, j);
                         }
@@ -133,13 +140,13 @@ public class Planner2 implements PlannerInterface {
                 for(int item=2+levelState.obstacles.size();
                         item<2+levelState.obstacles.size()+levelState.items.size();
                         ++item){
-                    System.out.println("PICK_ACTION: form: " + roomState[location.index] + " to: " + roomState[location2.index] + " item: " + item);
+                    //přidáme všechny možné akce zvednutí věci:
                     addPickUpItemAction(problem, roomState[location.index],
                             roomState[location2.index], item);
                 }
             }
         }
-        System.out.println("Projde checkpoint1");
+        //vložíme počáteční podmínky:
         for(int location=0; location< levelState.rooms.length; ++location){
             boolean wasAdded = false;
             if(levelState.rooms[location]==thief.getActualPosition()
@@ -153,7 +160,6 @@ public class Planner2 implements PlannerInterface {
                     if(levelState.items.get(i)==thief.getCarrying()){
                         problem.addInitialStateCondition(new Condition(roomState[location],
                                 i+2+levelState.obstacles.size()+levelState.items.size()));
-                        System.out.println("INICIALNI PODMINKA: mistonost:" + location + "hodnota: " + (i+2+levelState.obstacles.size()+levelState.items.size()));
                         wasAdded = true;
                     }
                 }
@@ -167,7 +173,6 @@ public class Planner2 implements PlannerInterface {
             for(int i=0; i<levelState.obstacles.size(); ++i){
                 if(levelState.obstacles.get(i).getPosition() == levelState.rooms[location]){
                     problem.addInitialStateCondition(new Condition(roomState[location], i+2));
-                    System.out.println("Mistnost " + location + " prekazka: " + (i+2));
                     wasAdded = true;
                 }
             }
@@ -176,22 +181,39 @@ public class Planner2 implements PlannerInterface {
             }
         }
         
+        //přidáme cílovou podmínku:
         problem.addGoalCondition(new Condition(roomState[levelState.finish.index], 1));
         
         return problem;
     }
     
+    /**
+     * Metoda pro přidání akce přesunu.
+     * @param problem problém do kterého se akce přidá
+     * @param from odkud akce vede
+     * @param to kam akce vede
+     */
     private void addMoveThiefAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to){
         SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE,from.getId(), to.getId()));
         
+        //nastavení podmínek, které akce musí splňovat:
         op.getPreconditions().add(new Condition(from, 1));
         op.getPreconditions().add(new Condition(to, 0));
         
+        //nastavení efektů akce:
         op.getEffects().add(new Condition(from, 0));
         op.getEffects().add(new Condition(to, 1));
     }
     
+    /**
+     * Metoda pro přidání akce použití věci.
+     * @param problem problém do kterého se akce přidá
+     * @param from odkud akce vede
+     * @param to kam akce vede
+     * @param obstacle hodnota reprezentující překážku
+     * @param thiefAndItem hodnota reprezentující zloděj a věc 
+     */
     private void addUseItemAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to, int obstacle, int thiefAndItem){
         SasAction op = problem.newAction(new ThiefAction(ActionType.USE,from.getId(), to.getId()));
@@ -203,6 +225,13 @@ public class Planner2 implements PlannerInterface {
         op.getEffects().add(new Condition(to, 1));
     }
     
+    /**
+     * Metoda pro přidání akce zvednutí.
+     * @param problem problém do kterého se akce přidá
+     * @param from odkud akce vede
+     * @param to kam akce vede
+     * @param item hodnota reprezentující věc
+     */
     private void addPickUpItemAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to, int item){
         SasAction op = problem.newAction(new ThiefAction(ActionType.PICK,from.getId(), to.getId()));
@@ -214,6 +243,13 @@ public class Planner2 implements PlannerInterface {
         op.getEffects().add(new Condition(from, 0));
     }
     
+    /**
+     * Metoda pro přesun zloděje s věcí.
+     * @param problem problém do kterého se akce přidá
+     * @param from odkud akce vede
+     * @param to kam akce vede
+     * @param thiefAndItem hodnota reprezentující zloděje a věc 
+     */
     private void addMoveWithItemAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to, int thiefAndItem){
         SasAction op = problem.newAction(new ThiefAction(ActionType.MOVE, from.getId(), to.getId()));
@@ -225,6 +261,13 @@ public class Planner2 implements PlannerInterface {
         op.getEffects().add(new Condition(from, 0));
     }
     
+    /**
+     * Metoda pro položení věci do místnosti.
+     * @param problem problém do kterého se akce přidá
+     * @param from odkud akce vede
+     * @param to kam akce vede
+     * @param thiefAndItem hodnota reprezentující zloděje a věc
+     */
     private void addPutDownItemAction(SasProblemBuilder problem, StateVariable from,
             StateVariable to, int thiefAndItem){
         SasAction op = problem.newAction(new ThiefAction(ActionType.PUT, from.getId(), to.getId()));
