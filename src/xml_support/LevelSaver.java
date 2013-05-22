@@ -17,17 +17,25 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 /**
- *
- * @author Pavel Pilar
+ * Třída sloužící k ukládání levelu.
+ * @author Pavel Pilař
  */
 public class LevelSaver {
-
+    
+    /** reference na level */
     private Level levelReference;
     
+    /**
+     * Konstruktor třídy, nastaví se příslušná reference na level.
+     * @param levelReference reference na level
+     */
     public LevelSaver(Level levelReference){
         this.levelReference = levelReference;
     }
     
+    /**
+     * Uloží level do souboru. Cesta se vypočítá ze jména levelu.
+     */
     public void save(){
         try{
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -53,6 +61,11 @@ public class LevelSaver {
         }
     }
     
+    /**
+     * Provede samotné zpracování dokumentu. Vytváří elementy a gerenuje jejich
+     * obsah.
+     * @param doc reference na dokument
+     */
     private void makeSave(Document doc){
         Element root = doc.createElement("level");
         root.appendChild(doc.createElement("name")).setTextContent(levelReference.name);

@@ -10,19 +10,29 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.*;
 
 /**
- *
- * @author Pavel Pilar
+ * Třída sloužící k načtení levelu ze souboru. Pomocí rozhranní DOM.
+ * @author Pavel Pilař
  */
 public class LevelLoader {
     
+    /** reference na level */
     private Level levelReference;
+    /** cesta k levelu */
     private String path;
     
+    /**
+     * Konstruktor LevelSaveru, nastaví referenci na level a cestu k souboru.
+     * @param levelReference reference na level
+     * @param path cesta k souboru
+     */
     public LevelLoader(Level levelReference, String path){
         this.levelReference = levelReference;
         this.path = path;
     }
     
+    /**
+     * Načtení levelu ze souboru.
+     */
     public void load(){
         try{
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -40,6 +50,10 @@ public class LevelLoader {
         }
     }
     
+    /**
+     * Samotné zpracování dokumentu obsahujícího level.
+     * @param doc reference na dokument
+     */
     private void makeLoad(Document doc){
         NodeList list = doc.getElementsByTagName("name");
         if(list.getLength() > 0){
