@@ -3,20 +3,21 @@ package game.items;
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.shape.Cylinder;
+
 import game.ObstacleType;
 import game.Room;
 
 /**
- *
- * @author Pavel
+ * Reprezentace věci na odstranění překážky typu oheň. Nahrává model hasícího
+ * přístroje, který se bude ve hře zobrazovat a rodiči se nastaví typ oheň.
+ * @author Pavel Pilař
  */
 public class FireItem extends Item {
     
     Spatial model;
     
+    /** Konstruktor věci na odstranění překážky typu oheň. */
     public FireItem(Room to, AssetManager am){
         super(to, ObstacleType.FIRE, am);
         

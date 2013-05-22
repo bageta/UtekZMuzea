@@ -1,24 +1,23 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.items;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Spatial;
+
 import game.ObstacleType;
 import game.Room;
 
 /**
- *
- * @author Pavel
+ * Reprezentace věci na odstranění překážky typu elektřina. Nahrává model klíče,
+ * který se bude ve hře zobrazovat a rodiči se nastaví typ elektřina.
+ * @author Pavel Pilař
  */
 public class FlashItem extends Item {
     
     Spatial model;
     
+    /** Konstruktor věci na odstranění překážky typu elektřina. */
     public FlashItem(Room to, AssetManager am){
         super(to, ObstacleType.FLASH, am);
         
