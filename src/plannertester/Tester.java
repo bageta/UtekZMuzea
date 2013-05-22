@@ -22,6 +22,7 @@ public class Tester {
      * @param args jako argumenty se předávají cesty k jednotlivým levelům
      */
     public static void main(String[] args){
+        if(args.length>0){
         Tester tester = new Tester();
         toTest = new Level[args.length];
         for(int i=0; i<args.length; ++i){ 
@@ -31,6 +32,9 @@ public class Tester {
         PlannerInterface[] planners = {new Planner2(null, tester.thief),
             new Planner(null, tester.thief)};
         tester.test(planners);
+        } else {
+            System.out.println("Pouziti: Tester.java - [seznam cest k levelum]");
+        }
     }
     
     /**

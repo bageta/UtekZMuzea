@@ -14,6 +14,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.Ray;
 import com.jme3.scene.Geometry;
@@ -21,14 +22,10 @@ import com.jme3.scene.shape.Box;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
-import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
-import de.lessvoid.nifty.controls.textfield.builder.TextFieldBuilder;
 import de.lessvoid.nifty.controls.TextField;
-import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -42,7 +39,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Pavel
+ * @author Pavel Pilař
  */
 public class EditingScreen extends AbstractAppState implements ScreenController {
     
@@ -91,6 +88,11 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     private void initializeLevel(){
         localRootNode.detachAllChildren();
         localRootNode.attachChild(editedLevel);
+        
+        DirectionalLight dl = new DirectionalLight();
+        dl.setDirection(new Vector3f(-0.1f,-1.0f,1.0f).normalizeLocal());
+        
+        localRootNode.addLight(dl);
     }
     
     public void setEditedLevel(String levelPath){
@@ -105,7 +107,22 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     
     @Override public void onEndScreen(){}
     
-    @Override public void onStartScreen(){}
+    @Override public void onStartScreen(){
+        if(nifty.getCurrentScreen().getScreenId().equals("obstacle_select")){
+            for(ObstacleType o : editedLevel.availableObst.keySet()){
+            nifty.getCurrentScreen().findNiftyControl(o.toString().toLowerCase() + "_field",
+                    TextField.class).setText(editedLevel.availableObst.get(o).toString());
+            }
+            nifty.getCurrentScreen().findNiftyControl("time_limit", TextField.class)
+                    .setText((editedLevel.timeLimit/1000)+"");
+        }
+        if(nifty.getCurrentScreen().getScreenId().equals("save_as")){ 
+            if(editedLevel.name != null){
+                TextField t = nifty.getCurrentScreen().findNiftyControl("file_name", TextField.class);
+                t.setText(editedLevel.name);
+            }
+        }
+    }
     
     @Override public void bind(Nifty nifty, Screen screen){
         this.nifty = nifty;
@@ -174,14 +191,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
                 fileList.addItem(name);
             }
         }
-        
-        //BUGOVALO TO PRI EDITACI EXISTUJICIHO LEVELU
-//        if(editedLevel.name != null){
-//            System.out.println(editedLevel.name);
-//            TextField t = nifty.getScreen("save_as").findNiftyControl("file_name", TextField.class);
-//            System.out.println(t);
-//            t.setText(editedLevel.name);
-//        }
         
         nifty.gotoScreen("save_as");
     }
@@ -357,12 +366,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     }
     
     public void setObstacles(){
-        for(ObstacleType o : editedLevel.availableObst.keySet()){
-            nifty.getScreen("obstacle_select").findNiftyControl(o.toString().toLowerCase() + "_field",
-                    TextField.class).setText(editedLevel.availableObst.get(o).toString());
-        }
-        //nifty.getScreen("obstacle_select").findNiftyControl("time_limit", TextField.class)
-        //        .setText(editedLevel.timeLimit+"");
         nifty.gotoScreen("obstacle_select");
     }
     
@@ -425,29 +428,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         typeSelector = nifty.getCurrentScreen().findNiftyControl("item_drop_down", DropDown.class);
         for(ObstacleType o : ObstacleType.values()){
             typeSelector.addItem(o.toString());
-        }
-        Element e = nifty.getScreen("obstacle_select").findElementByName("scroll_inside");
-        if(e.getElements().size() == 0){
-            System.out.println(e);
-            for(final ObstacleType o : ObstacleType.values()){
-                PanelBuilder builder = new PanelBuilder(o.toString()+"_panel"){{
-                    childLayoutHorizontal();
-                    height("10%");
-                    width("100%");
-
-                    control(new LabelBuilder(o.toString() + "_text", o.toString()+": "){{
-                        height("100%");
-                        width("50%");
-                    }});
-
-                    control(new TextFieldBuilder(o.toString().toLowerCase() + "_field", "0"){{
-                        height("100%");
-                        width("50%");
-                    }});
-
-                }};
-                builder.build(nifty, nifty.getScreen("obstacle_select"), e);
-            }
         }
     }
     

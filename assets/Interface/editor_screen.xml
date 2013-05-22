@@ -106,9 +106,40 @@
     <screen id="obstacle_select" controller="editor.EditingScreen">
         <layer id="foreground" childLayout="vertical">
             <panel id="upper" width="100%" height="80%" childLayout="vertical" backgroundColor="#f008">
-                <control id="scroll_panel" name="scrollPanel" width="100%" height="90%" horizontal="false">
-                    <panel id="scroll_inside" width="100%" height="100%" childLayout="vertical" />
-                </control>
+                <panel id="obstacle_panel" childLayout="vertical" width="100%" height="90%">
+                    <panel childLayout="horizontal" width="90%" height="25%">
+                        <panel childLayout="center" width="50%" height="100%">
+                            <text text="DOG: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                        </panel>
+                        <panel childLayout="center" width="50%" height="100%">
+                            <control name="textfield" id="dog_field" />
+                        </panel>
+                    </panel>
+                    <panel childLayout="horizontal" width="90%" height="25%">
+                        <panel childLayout="center" width="50%" height="100%">
+                            <text text="GLASS: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                        </panel>
+                        <panel childLayout="center" width="50%" height="100%">
+                            <control name="textfield" id="glass_field" />
+                        </panel>
+                    </panel>
+                    <panel childLayout="horizontal" width="90%" height="25%">
+                        <panel childLayout="center" width="50%" height="100%">
+                            <text text="FIRE: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                        </panel>
+                        <panel childLayout="center" width="50%" height="100%">
+                            <control name="textfield" id="fire_field" />
+                        </panel>
+                    </panel>
+                    <panel childLayout="horizontal" width="90%" height="25%">
+                        <panel childLayout="center" width="50%" height="100%">
+                            <text text="FLASH: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                        </panel>
+                        <panel childLayout="center" width="50%" height="100%">
+                            <control name="textfield" id="flash_field" />
+                        </panel>
+                    </panel>
+                </panel>
                 <panel id="time_panel" childLayout="horizontal">
                     <text text="Nastavte casovy limit:(ve vterinach)" font="Interface/Fonts/Default.fnt" color='#000f' />
                     <control name="textfield" id="time_limit" />

@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pavel
+ * @author Pavel Pilař
  */
 public class Editor extends SimpleApplication {
     
@@ -34,8 +34,8 @@ public class Editor extends SimpleApplication {
         nifty.fromXml("Interface/editor_screen.xml", "start", mainScreen, editingScreen);
         guiViewPort.addProcessor(niftyDisplay);
         
-        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
-        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
+//        Logger.getLogger("de.lessvoid.nifty").setLevel(Level.SEVERE);
+//        Logger.getLogger("NiftyInputEventHandlingLog").setLevel(Level.SEVERE); 
         
         inputManager.removeListener(flyCam);
     }
