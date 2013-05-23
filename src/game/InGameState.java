@@ -193,11 +193,6 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 if(actualLevel.index >= app.player.levelAchived){
                     int next = actualLevel.index+1;
                     app.player.levelAchived = next;
-                    if(next < 13){
-                        nifty.getScreen("level_select")
-                                .findNiftyControl("but_" + next, Button.class).enable();
-
-                    }
                     try{
                         app.player.save();
                     } catch (IOException e){}
@@ -341,6 +336,10 @@ public class InGameState extends AbstractAppState implements ScreenController {
         localRootNode.detachAllChildren();
         app.getStateManager().detach(this);
         nifty.gotoScreen(target);
+        for(int i=1 ; i<app.player.levelAchived+1; ++i){
+                nifty.getScreen("level_select")
+                        .findNiftyControl(("butt_" + i), Button.class).enable();
+        }
         app.getStateManager().attach(app.startScreenState);
     }
     
@@ -392,11 +391,6 @@ public class InGameState extends AbstractAppState implements ScreenController {
                         if(actualLevel.index >= app.player.levelAchived){
                             int next = actualLevel.index+1;
                             app.player.levelAchived = next;
-                            if(next < 13){
-                                nifty.getScreen("level_select")
-                                        .findNiftyControl("but_" + next, Button.class).enable();
-                                        
-                            }
                             try{
                                 app.player.save();
                             } catch (IOException e){}

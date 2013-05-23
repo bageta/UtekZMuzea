@@ -18,7 +18,7 @@ public class DogObstacle extends Obstacle {
     public DogObstacle(AssetManager am){
         super(am, ObstacleType.DOG);
         
-        model = am.loadModel("Models/Wolf/wolf.obj");
+        model = am.loadModel("Models/Wolf/wolf.j3o");
         model.setLocalScale(0.4f);
         this.attachChild(model);
     }

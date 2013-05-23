@@ -63,7 +63,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
     
     /**
-     * Při prvním zobrazení obrazovky, se uzamknou levely, do kteréch hráč ještě
+     * Při prvním zobrazení obrazovky, se uzamknou levely, do kterych hráč ještě
      * nemá přístup.
      */
     public void onStartScreen(){

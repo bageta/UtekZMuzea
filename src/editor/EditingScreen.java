@@ -389,16 +389,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         nifty.gotoScreen("editing");
     }
     
-    public void validate(){
-        editedLevel.rooms = newRooms.toArray(new Room[0]);
-        for(int i=0; i<editedLevel.rooms.length; ++i){
-            editedLevel.rooms[i].index = i;
-        }
-        System.out.println("ZBEHNE----------------------------------------------");
-        LevelTester lt = new LevelTester(editedLevel);
-        System.out.println(lt.test());
-    }
-    
     private void deleteRoom(Geometry toCompare){
         int toDelete = -1;
         for(int i=0; i<newRooms.size(); ++i){
