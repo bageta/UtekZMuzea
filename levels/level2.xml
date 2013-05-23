@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <level>
 	<name>level2</name>
-	<timeLimit>40000</timeLimit>
+	<timeLimit>51000</timeLimit>
 	<index>2</index>
 	<next>level3</next>
 	<rooms>

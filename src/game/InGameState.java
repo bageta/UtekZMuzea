@@ -191,7 +191,13 @@ public class InGameState extends AbstractAppState implements ScreenController {
                 isRunning = false;
                 thief.setAnimation("stand");
                 if(actualLevel.index >= app.player.levelAchived){
-                    app.player.levelAchived = actualLevel.index+1;
+                    int next = actualLevel.index+1;
+                    app.player.levelAchived = next;
+                    if(next < 13){
+                        nifty.getScreen("level_select")
+                                .findNiftyControl("but_" + next, Button.class).enable();
+
+                    }
                     try{
                         app.player.save();
                     } catch (IOException e){}
@@ -384,7 +390,13 @@ public class InGameState extends AbstractAppState implements ScreenController {
                         thief.setAnimation("stand");
                         nifty.gotoScreen("win");
                         if(actualLevel.index >= app.player.levelAchived){
-                            app.player.levelAchived = actualLevel.index+1;
+                            int next = actualLevel.index+1;
+                            app.player.levelAchived = next;
+                            if(next < 13){
+                                nifty.getScreen("level_select")
+                                        .findNiftyControl("but_" + next, Button.class).enable();
+                                        
+                            }
                             try{
                                 app.player.save();
                             } catch (IOException e){}

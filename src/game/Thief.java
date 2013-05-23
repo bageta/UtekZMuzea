@@ -142,6 +142,7 @@ public class Thief extends Node {
                         door = false;
                     } else {
                         carrying = map.rooms[actualAction.to].item;
+                        carrying.actualPosition = null;
                         this.attachChild(carrying);
                         carrying.setLocalTranslation(0,4.0f,0);
                         actualPosition.deleteItem();
@@ -157,6 +158,7 @@ public class Thief extends Node {
                         this.detachChild(carrying);
                         map.rooms[actualAction.from].setItem(carrying);
                         carrying.setLocalTranslation(map.rooms[actualAction.from].getPosition());
+                        carrying.actualPosition = actualPosition;
                         map.attachChild(carrying);
                         carrying = null;
                         target = map.rooms[actualAction.from].getDoor(map.rooms[actualAction.to]).position;

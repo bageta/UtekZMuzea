@@ -87,7 +87,7 @@
                         <control name="button" id="toggle_aloved" label="uzamknout&#10;odemknout" width="25%" height="100%">
                             <interact onClick="toggleAloved()"/>
                         </control>
-                        <control name="button" id="obstacle_button" label="Nastavit prekazky&#10;a limit" width="25%" height="100%">
+                        <control name="button" id="obstacle_button" label="Nastavit překážky&#10;a limit" width="25%" height="100%">
                             <interact onClick="setObstacles()"/>
                         </control>
                     </panel>

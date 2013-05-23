@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <level>
 	<name>level10</name>
-	<timeLimit>33000</timeLimit>
+	<timeLimit>38000</timeLimit>
 	<index>10</index>
+	<index>10</index>
+	<next>level11</next>
 	<rooms>
 		<room>
 			<index>0</index>
 			<width>10.0</width>
 			<height>10.0</height>
 			<position>(7.321888, 0.10000229, -2.5561295)</position>
-			<isAloved>true</isAloved>
+			<isAloved>false</isAloved>
 			<neighbours>
 				<neighbour>1</neighbour>
 				<neighbour>6</neighbour>
