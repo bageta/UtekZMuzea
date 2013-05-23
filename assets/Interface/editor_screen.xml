@@ -3,29 +3,29 @@
     <useControls filename="nifty-default-controls.xml" />
     <useStyles filename="nifty-default-styles.xml" />
     <screen id="start" controller="editor.MainScreen">
-        <layer id="background" backgroundColor="#003f" childLayout="center">
+        <layer id="background" backgroundColor="#0000" childLayout="center">
             <image filename="Interface/images/background.jpg" width="100%" height="100%"></image>
         </layer>
         <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
-            <panel id="panel_top" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#f008">
+            <panel id="panel_top" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#0000">
                 <image filename="Interface/images/headline.png" width="100%" height="100%" />
             </panel>
-            <panel id="panel_mid" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#0f08">
-                <text text="editor levelu, vytvorte novy level, nebo upravte stavajici" font="Interface/Fonts/Default.fnt" wrap="true" color="#000f" />
+            <panel id="panel_mid" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#0000">
+                <text text="Editor levelů, můžete vytvořit nový level, nebo upravit některý ze stávajících" font="Interface/fonts/FrontPage.fnt" wrap="true" width="100%"/>
             </panel>
-            <panel id="panel_bottom" height="50%" width="75%" align="center" childLayout="vertical" backgroundColor="#00f8">
-                <panel id="panel_bottom_upper" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#44f8">
-                    <control name="button" label="Vytvorit level" id="newLevelButton" align="center" valign="center" visibleToMouse="true">
+            <panel id="panel_bottom" height="50%" width="75%" align="center" childLayout="vertical" backgroundColor="#0000">
+                <panel id="panel_bottom_upper" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#0000">
+                    <control name="button" label="Vytvořit level" id="newLevelButton" align="center" valign="center" visibleToMouse="true" width="40%" height="80%">
                         <interact onClick="newLevel()"/>
                     </control>
                 </panel>
-                <panel id="panel_bottom_center" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#88f8">
-                    <control name="button" label="Upravit level" id="editLevelButton" align="center" valign="center" visibleToMouse="false">
+                <panel id="panel_bottom_center" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#0000">
+                    <control name="button" label="Upravit level" id="editLevelButton" align="center" valign="center" visibleToMouse="false" width="40%" height="80%">
                         <interact onClick="editLevel()"/>
                     </control>
                 </panel>
-                <panel id="panel_bottom_lower" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#88f8">
-                    <control name="button" label="Ukoncit" id="exitGameButton" align="center" valign="center" visibleToMouse="true">
+                <panel id="panel_bottom_lower" height="25%" width="100%" valign="center" childLayout="center" backgroundColor="#0000">
+                    <control name="button" label="Ukončit" id="exitGameButton" align="center" valign="center" visibleToMouse="true" width="40%" height="80%">
                         <interact onClick="quitEditor()"/>
                     </control>
                 </panel>
@@ -33,18 +33,21 @@
         </layer>
     </screen>
     <screen id="load" controller="editor.MainScreen">
+        <layer id="background" backgroundColor="#0000" childLayout="center">
+            <image filename="Interface/images/background.jpg" width="100%" height="100%"></image>
+        </layer>
         <layer id="foreground" childLayout="vertical">
-            <panel id="top" childLayout="vertical">
-                <control name="listBox" id="file_list" selection = "single" width="100%" height="100%" vertical="optional" horizontal="optional" displayItems="10" />
+            <panel id="top" childLayout="center">
+                <control name="listBox" id="file_list" selection = "single" width="80%" height="100%" vertical="optional" horizontal="optional" displayItems="10" />
             </panel>
             <panel id="bottom" childLayout="horizontal">
                 <panel id="left" width="50%" height="100%" childLayout="center">
-                    <control name="button" label="Upravit">
+                    <control name="button" label="Upravit" width="30%" height="20%">
                         <interact onClick="editLevelLoad()" />
                     </control>
                 </panel>
                 <panel id="right" width="50%" height="100%" childLayout="center">
-                    <control name="button" label="Zrusit">
+                    <control name="button" label="Zrušit" width="30%" height="20%">
                         <interact onClick="cancel()" />
                     </control>
                 </panel>
@@ -58,42 +61,42 @@
             <panel id="panel_bottom" height="25%" width="100%" align="center" valign="bottom" childLayout="horizontal" backgroundColor="#ffff">
                 <panel id="bottom_left" height="100%" width="85%" aling="left" childLayout="vertical" backgroundColor="#f008">
                     <panel id="upper_controls" height="50%" width="100%" childLayout="horizontal">
-                        <control name="button" id="roomButton" label="pridat mistnost" width="25%" height="100%" valign="center">
+                        <control name="button" id="roomButton" label="přidat místnost" width="25%" height="100%" valign="center">
                             <interact onClick="addRoom()" />
                         </control>
                         <panel id="item_panel" height="100%" width="25%" childLayout="vertical">
                             <control name="dropDown" id="item_drop_down" width="100%" height="50%" displatItems="3"/>
-                            <control name="button" id="itemButton" label="pridat vec" width="100%" height="50%" valign="center">
+                            <control name="button" id="itemButton" label="přidat věc" width="100%" height="50%" valign="center">
                                 <interact onClick="addItem()" />
                             </control>    
                         </panel>
                         <control name="button" id="delete" label="odstranit" width="25%" height="100%" valign="center">
                             <interact onClick="delete()" />
                         </control>
-                        <control name="button" id="doorsButton" label="pridat dvere" width="25%" height="100%" valign="center"> 
+                        <control name="button" id="doorsButton" label="přidat dveře" width="25%" height="100%" valign="center"> 
                             <interact onClick="addDoor()" />
                         </control>
                     </panel>
                     <panel id="lower_controls" height="50%" width="100%" childLayout="horizontal">
-                        <control name="button" id="select_start_button" label="Zvolit Start" width="25%" height="100%">
+                        <control name="button" id="select_start_button" label="zvolit Start" width="25%" height="100%">
                             <interact onClick="selectStart()"/>
                         </control>
-                        <control name="button" id="select_finish_button" label="Zvolit Cil" width="25%" height="100%">
+                        <control name="button" id="select_finish_button" label="zvolit Cíl" width="25%" height="100%">
                             <interact onClick="selectFinish()"/>
                         </control>
-                        <control name="button" id="toggle_aloved" label="Uzamknout/Odemknout" width="25%" height="100%">
+                        <control name="button" id="toggle_aloved" label="uzamknout&#10;odemknout" width="25%" height="100%">
                             <interact onClick="toggleAloved()"/>
                         </control>
-                        <control name="button" id="obstacle_button" label="Nastavit prekazky a limit" width="25%" height="100%">
+                        <control name="button" id="obstacle_button" label="Nastavit prekazky&#10;a limit" width="25%" height="100%">
                             <interact onClick="setObstacles()"/>
                         </control>
                     </panel>
                 </panel>
                 <panel id="bottom_right" height="100%" width="15%" childLayout="vertical" backgroundColor="#00f8">
-                    <control name="button" label="Ulozit" width="100%" height="33%">
+                    <control name="button" label="Uložit" width="100%" height="33%">
                         <interact onClick="save()" />
                     </control>
-                    <control name="button" label="Ulozit jako..." width="100%" height="33%">
+                    <control name="button" label="Uložit jako..." width="100%" height="33%">
                         <interact onClick="saveAs()" />
                     </control>
                     <control name="button" label="Konec" width="100%" height="33%">
@@ -104,61 +107,63 @@
         </layer>
     </screen>
     <screen id="obstacle_select" controller="editor.EditingScreen">
-        <layer id="foreground" childLayout="vertical">
-            <panel id="upper" width="100%" height="80%" childLayout="vertical" backgroundColor="#f008">
-                <panel id="obstacle_panel" childLayout="vertical" width="100%" height="90%">
-                    <panel childLayout="horizontal" width="90%" height="25%">
-                        <panel childLayout="center" width="50%" height="100%">
-                            <text text="DOG: " font="Interface/Fonts/Default.fnt" color='#000f' />
+        <layer id="foreground" childLayout="center">
+            <panel style="nifty-panel-bright" width="90%" height="70%" childLayout="vertical">
+                <panel id="upper" width="100%" height="80%" childLayout="vertical" backgroundColor="#0000">
+                    <panel id="obstacle_panel" childLayout="vertical" width="100%" height="90%">
+                        <panel childLayout="horizontal" width="90%" height="25%">
+                            <panel childLayout="center" width="50%" height="100%">
+                                <text text="DOG: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                            </panel>
+                            <panel childLayout="center" width="50%" height="100%">
+                                <control name="textfield" id="dog_field" />
+                            </panel>
                         </panel>
-                        <panel childLayout="center" width="50%" height="100%">
-                            <control name="textfield" id="dog_field" />
+                        <panel childLayout="horizontal" width="90%" height="25%">
+                            <panel childLayout="center" width="50%" height="100%">
+                                <text text="GLASS: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                            </panel>
+                            <panel childLayout="center" width="50%" height="100%">
+                                <control name="textfield" id="glass_field" />
+                            </panel>
+                        </panel>
+                        <panel childLayout="horizontal" width="90%" height="25%">
+                            <panel childLayout="center" width="50%" height="100%">
+                                <text text="FIRE: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                            </panel>
+                            <panel childLayout="center" width="50%" height="100%">
+                                <control name="textfield" id="fire_field" />
+                            </panel>
+                        </panel>
+                        <panel childLayout="horizontal" width="90%" height="25%">
+                            <panel childLayout="center" width="50%" height="100%">
+                                <text text="FLASH: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                            </panel>
+                            <panel childLayout="center" width="50%" height="100%">
+                                <control name="textfield" id="flash_field" />
+                            </panel>
                         </panel>
                     </panel>
-                    <panel childLayout="horizontal" width="90%" height="25%">
+                    <panel id="time_panel" childLayout="horizontal" height="10%" width="90%">
                         <panel childLayout="center" width="50%" height="100%">
-                            <text text="GLASS: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                            <text text="Casovy limit(v sekundách):" font="Interface/Fonts/Default.fnt" color='#000f' />
                         </panel>
                         <panel childLayout="center" width="50%" height="100%">
-                            <control name="textfield" id="glass_field" />
-                        </panel>
-                    </panel>
-                    <panel childLayout="horizontal" width="90%" height="25%">
-                        <panel childLayout="center" width="50%" height="100%">
-                            <text text="FIRE: " font="Interface/Fonts/Default.fnt" color='#000f' />
-                        </panel>
-                        <panel childLayout="center" width="50%" height="100%">
-                            <control name="textfield" id="fire_field" />
-                        </panel>
-                    </panel>
-                    <panel childLayout="horizontal" width="90%" height="25%">
-                        <panel childLayout="center" width="50%" height="100%">
-                            <text text="FLASH: " font="Interface/Fonts/Default.fnt" color='#000f' />
-                        </panel>
-                        <panel childLayout="center" width="50%" height="100%">
-                            <control name="textfield" id="flash_field" />
+                            <control name="textfield" id="time_limit" />
                         </panel>
                     </panel>
                 </panel>
-                <panel id="time_panel" childLayout="horizontal" height="10%" width="90%">
-                    <panel childLayout="center" width="50%" height="100%">
-                        <text text="Nastavte casovy limit:(ve vterinach)" font="Interface/Fonts/Default.fnt" color='#000f' />
+                <panel id="lower" width="100%" height="20%" childLayout="horizontal">
+                    <panel id="sub_left" width="50%" height="100%" childLayout="center">
+                        <control name="button" id="ok" label="Ok">
+                            <interact onClick="saveObstacles()" />
+                        </control>
                     </panel>
-                    <panel childLayout="center" width="50%" height="100%">
-                        <control name="textfield" id="time_limit" />
+                    <panel id="sub_right" width="50%" height="100%" childLayout="center">
+                        <control name="button" id="cancel" label="Zrušit">
+                            <interact onClick="cancel()" />
+                        </control>
                     </panel>
-                </panel>
-            </panel>
-            <panel id="lower" width="100%" height="20%" childLayout="horizontal">
-                <panel id="sub_left" width="50%" height="100%" childLayout="center">
-                    <control name="button" id="ok" label="Ok">
-                        <interact onClick="saveObstacles()" />
-                    </control>
-                </panel>
-                <panel id="sub_right" width="50%" height="100%" childLayout="center">
-                    <control name="button" id="cancel" label="Zrusit">
-                        <interact onClick="cancel()" />
-                    </control>
                 </panel>
             </panel>
         </layer>
@@ -175,12 +180,12 @@
             </panel>
             <panel id="bottom" width="100%" height="20%" childLayout="horizontal">
                 <panel id="left" width="50%" height="100%" childLayout="center">
-                    <control name="button" id="ok" label="Ulozit">
+                    <control name="button" id="ok" label="Uložit">
                         <interact onClick="saveAsConfirm()" />
                     </control>  
                 </panel>
                 <panel id="right" width="50%" height="100%" childLayout="center">
-                    <control name="button" id="cancel" label="Zrusit">
+                    <control name="button" id="cancel" label="Zrušit">
                         <interact onClick="cancel()" />
                     </control> 
                 </panel>
