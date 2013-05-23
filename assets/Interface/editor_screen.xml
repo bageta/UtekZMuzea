@@ -113,7 +113,7 @@
                     <panel id="obstacle_panel" childLayout="vertical" width="100%" height="90%">
                         <panel childLayout="horizontal" width="90%" height="25%">
                             <panel childLayout="center" width="50%" height="100%">
-                                <text text="DOG: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                                <text text="Pes: " font="Interface/Fonts/Default.fnt" color='#000f' />
                             </panel>
                             <panel childLayout="center" width="50%" height="100%">
                                 <control name="textfield" id="dog_field" />
@@ -121,7 +121,7 @@
                         </panel>
                         <panel childLayout="horizontal" width="90%" height="25%">
                             <panel childLayout="center" width="50%" height="100%">
-                                <text text="GLASS: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                                <text text="Sklo: " font="Interface/Fonts/Default.fnt" color='#000f' />
                             </panel>
                             <panel childLayout="center" width="50%" height="100%">
                                 <control name="textfield" id="glass_field" />
@@ -129,7 +129,7 @@
                         </panel>
                         <panel childLayout="horizontal" width="90%" height="25%">
                             <panel childLayout="center" width="50%" height="100%">
-                                <text text="FIRE: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                                <text text="Ohen: " font="Interface/Fonts/Default.fnt" color='#000f' />
                             </panel>
                             <panel childLayout="center" width="50%" height="100%">
                                 <control name="textfield" id="fire_field" />
@@ -137,7 +137,7 @@
                         </panel>
                         <panel childLayout="horizontal" width="90%" height="25%">
                             <panel childLayout="center" width="50%" height="100%">
-                                <text text="FLASH: " font="Interface/Fonts/Default.fnt" color='#000f' />
+                                <text text="Blesk: " font="Interface/Fonts/Default.fnt" color='#000f' />
                             </panel>
                             <panel childLayout="center" width="50%" height="100%">
                                 <control name="textfield" id="flash_field" />

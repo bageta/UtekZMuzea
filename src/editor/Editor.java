@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Hlavní třída editoru.
  * @author Pavel Pilař
  */
 public class Editor extends SimpleApplication {
@@ -16,11 +16,18 @@ public class Editor extends SimpleApplication {
     public MainScreen mainScreen;
     public EditingScreen editingScreen;
     
+    /**
+     * Spustitelná metoda editoru.
+     * @param args argumenty programu, nepoužívají se
+     */
     public static void main(String[] args){
         Editor edit = new Editor();
         edit.start();
     }
     
+    /**
+     * inicializují se stavy Editoru a prvky GUI editoru. Zároveň se vytvoří kamera.
+     */
     @Override public void simpleInitApp(){
         mainScreen = new MainScreen(this);
         editingScreen = new EditingScreen(this);
@@ -28,6 +35,7 @@ public class Editor extends SimpleApplication {
         stateManager.attach(mainScreen);
         
         setDisplayStatView(false);
+        setDisplayFps(false);
         
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, viewPort);
         Nifty nifty = niftyDisplay.getNifty();

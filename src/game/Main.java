@@ -55,6 +55,7 @@ public class Main extends SimpleApplication {
         
         /* vypnutí výpisu statistik na obrazovku */
         setDisplayStatView(false);
+        setDisplayFps(false);
         
         /* inicializace gui*/
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);

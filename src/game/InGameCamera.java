@@ -243,7 +243,7 @@ public class InGameCamera implements Control, ActionListener {
      * Metoda, která vrací pozici kamery ve světových souřadnicích v závislosti
      * na pozici bodu obrazovky.
      * @param screenPos souřednice bodu na obrazovce 
-     * @return 
+     * @return souřadnice pozice
      */
     public Vector3f getWorldCoordinates(Vector2f screenPos){
         return cam.getWorldCoordinates(screenPos, 0f);
@@ -252,7 +252,7 @@ public class InGameCamera implements Control, ActionListener {
     /**
      * metoda, která vrací směrový vektor kamery s počátkem v bodu obrazovky.
      * @param screenPos souřadnice bodu na obrazovce
-     * @return 
+     * @return směrový vektor
      */
     public Vector3f getCoordinatedDirection(Vector2f screenPos){
         Vector3f coordinates = cam.getWorldCoordinates(screenPos, 0f);
