@@ -10,4 +10,19 @@ public enum ObstacleType {
     DOG,
     FIRE,
     FLASH;
+    
+    public String toButtonText(){
+        switch(this){
+            case GLASS:
+                return "Sklo";
+            case DOG:
+                return "Pes";
+            case FIRE:
+                return "Ohen";
+            case FLASH:
+                return "Blesk:";
+            default:
+                return "neplatný typ překážky";
+        }
+    }
 }

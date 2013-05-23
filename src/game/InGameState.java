@@ -240,7 +240,7 @@ public class InGameState extends AbstractAppState implements ScreenController {
         for(ObstacleType o : actualLevel.availableObst.keySet()){
             buttonMapping.put(i, o);
             nifty.getScreen("hud").findNiftyControl("obstacle" + i, Button.class)
-                    .setText(o.toString() + ": " + actualLevel.availableObst.get(o));
+                    .setText(o.toButtonText() + ": " + actualLevel.availableObst.get(o));
             ++i;
         }
     }
@@ -399,8 +399,10 @@ public class InGameState extends AbstractAppState implements ScreenController {
                     int i = actualLevel.availableObst.get(newObstacle);
                     actualLevel.availableObst.put(newObstacle, i-1);
                     nifty.getCurrentScreen().findNiftyControl("obstacle" + buttonNumber, Button.class)
-                    .setText(newObstacle.toString() + ": " + (i-1));
-                    addingObstacle = false;
+                    .setText(newObstacle.toButtonText() + ": " + (i-1));
+                    if(i-1 <= 0){
+                        addingObstacle = false;
+                    }
                 }
             }
             if(name.equals("rightMouseClick") && !keyPressed){
