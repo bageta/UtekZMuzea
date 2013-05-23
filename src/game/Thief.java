@@ -275,6 +275,10 @@ public class Thief extends Node {
         return this.actualPosition;
     }
     
+    public void setActualPosition(Room newPosition){
+        this.actualPosition = newPosition;
+    }
+    
     /**
      * Pomocný enum pro repzerentaci stavu provádění akce.
      */

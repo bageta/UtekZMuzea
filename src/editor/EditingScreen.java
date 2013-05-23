@@ -37,6 +37,7 @@ import game.items.Item;
 import java.io.File;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -99,9 +100,7 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
     public void setEditedLevel(String levelPath){
         editedLevel = new Level(levelPath, assetManager);
         editedLevel.load();
-        for(Room r: editedLevel.rooms){
-            newRooms.add(r);
-        }
+        newRooms.addAll(Arrays.asList(editedLevel.rooms));
         index = editedLevel.rooms.length;
         initializeLevel();
     }
@@ -167,7 +166,6 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         for(int i=0; i<editedLevel.rooms.length; ++i){
             editedLevel.rooms[i].index = i;
         }
-        //editedLevel.name = "level";
         System.out.println(editedLevel.name);
         if(editedLevel.name != null){
             editedLevel.save();
@@ -389,6 +387,16 @@ public class EditingScreen extends AbstractAppState implements ScreenController 
         editedLevel.name = "custom/" + levelName;
         save();
         nifty.gotoScreen("editing");
+    }
+    
+    public void validate(){
+        editedLevel.rooms = newRooms.toArray(new Room[0]);
+        for(int i=0; i<editedLevel.rooms.length; ++i){
+            editedLevel.rooms[i].index = i;
+        }
+        System.out.println("ZBEHNE----------------------------------------------");
+        LevelTester lt = new LevelTester(editedLevel);
+        System.out.println(lt.test());
     }
     
     private void deleteRoom(Geometry toCompare){

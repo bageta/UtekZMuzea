@@ -4,11 +4,11 @@
     <useStyles filename="nifty-default-styles.xml" />
     <screen id="start" controller="editor.MainScreen">
         <layer id="background" backgroundColor="#003f" childLayout="center">
-            <image filename="Interface/images/background.png" width="100%" height="100%"></image>
+            <image filename="Interface/images/background.jpg" width="100%" height="100%"></image>
         </layer>
         <layer id="foreground" backgroundColor="#0000" childLayout="vertical">
             <panel id="panel_top" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#f008">
-                <text text="Utek Z Muzea" font="Interface/Fonts/Default.fnt" height="100%" width="100%" color='#000f' />
+                <image filename="Interface/images/headline.png" width="100%" height="100%" />
             </panel>
             <panel id="panel_mid" height="25%" width="75%" align="center" childLayout="center" backgroundColor="#0f08">
                 <text text="editor levelu, vytvorte novy level, nebo upravte stavajici" font="Interface/Fonts/Default.fnt" wrap="true" color="#000f" />

@@ -16,10 +16,12 @@ import com.jme3.math.Vector3f;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Button;
+import de.lessvoid.nifty.controls.Label;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.spi.render.RenderFont;
 
 import game.obstacles.DogObstacle;
 import game.obstacles.FireObstacle;
